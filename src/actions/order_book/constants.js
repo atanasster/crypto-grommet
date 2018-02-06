@@ -1,0 +1,2 @@
+export const APPEND_ORDER_BOOK = 'APPEND_ORDER_BOOK';
+export const CLEAR_ORDER_BOOK = 'CLEAR_ORDER_BOOK';

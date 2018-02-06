@@ -1,0 +1,50 @@
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+import { Grommet, Box, Stack } from 'grommet';
+import Content from './components/Content';
+import configureStore from './store';
+import { getExchanges } from './actions/exchanges/actions';
+import { getCoins } from './actions/coins/actions';
+
+
+// eslint-disable-next-line no-underscore-dangle
+const preloadedState = window.__PRELOADED_STATE__;
+const history = createHistory();
+const store = configureStore(preloadedState, history);
+
+
+const theme = {
+  global: {
+    colors: {
+      brand: '#336699',
+    },
+  },
+  table: {
+  },
+};
+
+export default class App extends Component {
+  componentDidMount() {
+    // global lists that are used throughout
+    store.dispatch(getExchanges());
+    store.dispatch(getCoins());
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <Grommet theme={theme}>
+            <Stack guidingChild='last' style={{ minHeight: '100vh' }}>
+              <Box>
+                <Content />
+              </Box>
+            </Stack>
+          </Grommet>
+        </Router>
+      </Provider>
+    );
+  }
+}

@@ -1,0 +1,1 @@
+export const GET_COINS_SUCCESS = 'GET_COINS_SUCCESS';
