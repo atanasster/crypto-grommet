@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const env = process.env.NODE_ENV || 'production';
-const useAlias = process.env.USE_ALIAS;
 
 let plugins = [
   new CopyWebpackPlugin([{ from: './public' }]),
@@ -69,12 +68,10 @@ plugins.push(new webpack.LoaderOptionsPlugin(loaderOptionsConfig));
 
 module.exports = Object.assign({
   devtool: 'hidden-source-map',
-  entry: {
-    client: './src/index.js',
-    server: './server/server.js',
-  },
+  entry: './src/index.js',
   output: {
     path: path.resolve('./dist'),
+    filename: 'index.js',
     publicPath: '/',
   },
   resolve: {
