@@ -20,29 +20,27 @@ let alias;
 const devConfig = {};
 if (env === 'production') {
   loaderOptionsConfig.minimize = true;
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        screw_ie8: true,
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-      },
-      mangle: {
-        screw_ie8: true,
-      },
-      output: {
-        comments: false,
-        screw_ie8: true,
-      },
-    })
-  );
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false,
+      screw_ie8: true,
+      conditionals: true,
+      unused: true,
+      comparisons: true,
+      sequences: true,
+      dead_code: true,
+      evaluate: true,
+      if_return: true,
+      join_vars: true,
+    },
+    mangle: {
+      screw_ie8: true,
+    },
+    output: {
+      comments: false,
+      screw_ie8: true,
+    },
+  }));
 } else {
   plugins = plugins.concat([
     new webpack.HotModuleReplacementPlugin(),
@@ -65,23 +63,18 @@ if (env === 'production') {
     },
     historyApiFallback: true,
   };
-  if (useAlias) {
-    console.log('Using alias to local grommet.');
-    alias = {
-      'grommet': path.resolve(__dirname, '../grommet/src/js'),
-      'grommet-icons': path.resolve(__dirname, '../grommet-icons/src/js'),
-    };
-  }
 }
 
 plugins.push(new webpack.LoaderOptionsPlugin(loaderOptionsConfig));
 
 module.exports = Object.assign({
   devtool: 'hidden-source-map',
-  entry: './src/index.js',
+  entry: {
+    client: './src/index.js',
+    server: './server/server.js',
+  },
   output: {
     path: path.resolve('./dist'),
-    filename: 'index.js',
     publicPath: '/',
   },
   resolve: {
