@@ -1,6 +1,9 @@
 # crypto-grommet
 
-A sample project using grommet v2 and cctx.
+A sample project using: 
+* grommet v2: https://v2.grommet.io/ 
+* cctx: https://github.com/ccxt/ccxt
+* CryptoCompare: https://www.cryptocompare.com/api/
 
 To run this application, execute the following commands:
 
