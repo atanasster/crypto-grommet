@@ -5,6 +5,8 @@ A sample project using:
 * cctx: https://github.com/ccxt/ccxt
 * CryptoCompare: https://www.cryptocompare.com/api/
 
+Live site: https://crypto-grommet.herokuapp.com
+
 To run this application, execute the following commands:
 
   1. Install NPM modules
