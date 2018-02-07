@@ -17,13 +17,13 @@ To run this application, execute the following commands:
   2. Start the back-end dev server:
 
   ```
-  $ npm run start-server
+  $ npm run dev-server
   ```
 
   2. Start the front-end dev server:
 
   ```
-  $ npm run dev-serve
+  $ npm run start-dev
   ```
 
   3. Start production build
