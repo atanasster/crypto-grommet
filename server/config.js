@@ -1,5 +1,5 @@
 const config = {
-  'port': 8568,
+  'port': 8080,
   'corsHeaders': ['Link'],
 };
 
