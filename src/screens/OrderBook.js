@@ -11,7 +11,7 @@ import Page from '../components/Page';
 import CardScroll from '../components/CardScroll';
 import Table from '../components/table/Table';
 import Exchange from '../components/Exchange';
-import { getOrderBook } from '../actions/order_book/actions';
+import { requestOrderBook } from '../actions/order_book/actions';
 
 function renderAskBidTable(data, key) {
   const rows = data.slice(0, 10).map((item, index) => (
@@ -37,7 +37,7 @@ function renderAskBidTable(data, key) {
 
 class OrderBook extends Component {
   requestOrderBook(props) {
-    this.props.getOrderBook(props.match.params.symbol, props.match.params.toSymbol);
+    this.props.requestOrderBook(props.match.params.symbol, props.match.params.toSymbol);
   }
   componentDidMount() {
     this.requestOrderBook(this.props);
@@ -105,7 +105,7 @@ class OrderBook extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ getOrderBook }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ requestOrderBook }, dispatch);
 
 const mapStateToProps = state =>
   ({

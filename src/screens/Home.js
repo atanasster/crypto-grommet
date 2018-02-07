@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Paragraph, Box, WorldMap, Heading, Image, RoutedAnchor } from 'grommet';
 import Table from '../components/table/Table';
 import Page from '../components/Page';
-import PriceChart from '../components/PriceChart';
+import PriceGroup from '../components/PriceGroup';
 import SideLayer from '../components/SideLayer';
 import { renderCountries } from '../components/Exchange';
 
@@ -95,7 +95,6 @@ class Home extends Component {
         <Box border='bottom' align='center'>
             <WorldMap
               style={ {width: 'auto' }}
-              color='neutral-1'
               continents={this.continents.map(c => (
                 {
                   ...c,
@@ -106,7 +105,13 @@ class Home extends Component {
             {layer}
         </Box>
         <Box border='bottom' full='horizontal'>
-          <PriceChart symbol='BTC/USD' />
+          <PriceGroup symbolPairs={[
+            {symbol:'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
+            {symbol:'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
+            {symbol:'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
+            {symbol:'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
+            {symbol:'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
+          ]} />
         </Box>
       </Page>
     );

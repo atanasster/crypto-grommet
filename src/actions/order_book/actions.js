@@ -12,7 +12,7 @@ export const appendOrderBook = (symbol, toSymbol, exchange, data) => ({
 export const clearOrderBook = () => ({ type: ActionTypes.CLEAR_ORDER_BOOK });
 
 
-export function getOrderBook(from, to) {
+export function requestOrderBook(from, to) {
   return (dispatch, getState) => {
     const { socket } = getState().api;
     socket.on('order_book_data', ({
