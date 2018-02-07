@@ -12,18 +12,18 @@ To run this application, execute the following commands:
   1. Install NPM modules
 
   ```
-  $ npm install (or yarn install)
+  $ npm install
   ```
   2. Start the back-end dev server:
 
   ```
-  $ npm run dev-server
+  $ npm run start-server
   ```
 
   2. Start the front-end dev server:
 
   ```
-  $ npm run start-dev
+  $ npm run start
   ```
 
   3. Build client package
@@ -35,7 +35,7 @@ To run this application, execute the following commands:
   4. Start production server
 
   ```
-  $ npm run start
+  $ npm run server
   ```
 
   5. Test and run linters:

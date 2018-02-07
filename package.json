@@ -14,11 +14,11 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "start": "node dist/dev.js",
+    "start": "cross-env NODE_ENV=development grommet pack",
     "heroku-postbuild": "cross-env NODE_ENV=production grommet pack",
     "check": "cross-env NODE_ENV=test grommet check",
-    "start-dev": "cross-env NODE_ENV=development grommet pack",
-    "dev-server": "cross-env NODE_ENV=development $NODE_DEBUG_OPTION node ./public/dev.js",
+    "server": "node dist/dev.js",
+    "start-server": "cross-env NODE_ENV=development $NODE_DEBUG_OPTION node ./public/dev.js",
     "test": "grommet check -t",
     "test-update": "grommet check -t -- --updateSnapshot",
     "test-watch": "grommet check -t -- --watchAll"
