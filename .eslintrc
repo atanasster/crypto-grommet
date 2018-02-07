@@ -5,6 +5,11 @@
     "node": true,
     "es6": true
   },
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "codeFrame": false
+  },
   "globals": {
     "it": true,
     "expect": true,

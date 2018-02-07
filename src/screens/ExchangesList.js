@@ -20,7 +20,6 @@ function renderExchange(exchange, index) {
 
 
 class ExchangesList extends Component {
-
   renderExchanges() {
     const { exchanges: { all: allExchanges }, countries } = this.props;
     let filtered = [...allExchanges];

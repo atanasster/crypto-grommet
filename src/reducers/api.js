@@ -1,11 +1,10 @@
 import openSocket from 'socket.io-client';
 
-const apiServer = process.env.NODE_ENV === "production" ? '' : '//localhost:8568';
-const socketServer = process.env.NODE_ENV === "production" ? '' : '//localhost:8568';
+const apiServer = process.env.NODE_ENV === 'production' ? '' : '//localhost:8568';
+const socketServer = process.env.NODE_ENV === 'production' ? '' : '//localhost:8568';
 
 function api(state) {
   if (!state) {
-    console.log
     const socket = openSocket(`${socketServer}`);
     return {
       url: `${apiServer}/api`,

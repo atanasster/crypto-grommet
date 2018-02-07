@@ -73,11 +73,11 @@ class OrderBook extends Component {
             <Text textAlign='center'>{moment(item.orderBook.timestamp).format('LLL')}</Text>
             <Box direction='row' pad=' small'>
               <Box basis='1/2' align='center'>
-                <Text size='medium'>Bid</Text>
+                <Text size='medium'><strong>Bid</strong></Text>
                 {renderAskBidTable(item.orderBook.bids, 'bids')}
               </Box>
               <Box basis='1/2' align='center'>
-                <Text size='medium'>Ask</Text>
+                <Text size='medium'><strong>Ask</strong></Text>
                 {renderAskBidTable(item.orderBook.asks, 'asks')}
               </Box>
             </Box>

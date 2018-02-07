@@ -6,7 +6,8 @@ const symbolParities = {
   'USDT': 'USD',
   'EUR': 'EURT',
   'EURT': 'EUR',
-}
+};
+
 export default ({
   socket, symbol, toSymbol, config, db,
 }) => {

@@ -1,50 +1,50 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Paragraph, Box, WorldMap, Heading, Image, RoutedAnchor } from 'grommet';
+import { Box, WorldMap, Heading, Image, RoutedAnchor } from 'grommet';
 import Table from '../components/table/Table';
 import Page from '../components/Page';
 import PriceGroup from '../components/PriceGroup';
 import SideLayer from '../components/SideLayer';
 import { renderCountries } from '../components/Exchange';
 
+const continents = [
+  {
+    name: 'Africa',
+    color: 'accent-1',
+    code: 'AF',
+  },
+  {
+    name: 'Australia',
+    color: 'accent-2',
+    code: 'OC',
+  },
+  {
+    name: 'Asia',
+    color: 'neutral-1',
+    code: 'AS',
+  },
+  {
+    name: 'Europe',
+    color: 'neutral-2',
+    code: 'EU',
+  },
+  {
+    name: 'NorthAmerica',
+    color: 'neutral-3',
+    code: 'NA',
+  },
+  {
+    name: 'SouthAmerica',
+    color: 'status-warning',
+    code: 'SA',
+  },
+];
 class Home extends Component {
-  continents = [
-    {
-      name: 'Africa',
-      color: 'accent-1',
-      code: 'AF',
-    },
-    {
-      name: 'Australia',
-      color: 'accent-2',
-      code: 'OC',
-    },
-    {
-      name: 'Asia',
-      color: 'neutral-1',
-      code: 'AS',
-    },
-    {
-      name: 'Europe',
-      color: 'neutral-2',
-      code: 'EU',
-    },
-    {
-      name: 'NorthAmerica',
-      color: 'neutral-3',
-      code: 'NA',
-    },
-    {
-      name: 'SouthAmerica',
-      color: 'status-warning',
-      code: 'SA',
-    },
-  ];
   state = { continentExchanges: undefined, continent: undefined };
 
   onContinentClick = (name) => {
     const { exchanges, countries } = this.props;
-    const continent = this.continents.find(c => (c.name === name));
+    const continent = continents.find(c => (c.name === name));
     const continentExchanges = [];
     countries.filter(c => (c.continent === continent.code))
       .forEach((c) => {
@@ -93,25 +93,27 @@ class Home extends Component {
     return (
       <Page name='Crypto Grommet'>
         <Box border='bottom' align='center'>
-            <WorldMap
-              style={ {width: 'auto' }}
-              continents={this.continents.map(c => (
-                {
-                  ...c,
-                  onClick: this.onContinentClick,
-                }))}
-              selectColor='accent-2'
-            />
-            {layer}
+          <WorldMap
+            style={{ width: 'auto' }}
+            continents={continents.map(c => (
+              {
+                ...c,
+                onClick: this.onContinentClick,
+              }))}
+            selectColor='accent-2'
+          />
+          {layer}
         </Box>
         <Box border='bottom' full='horizontal'>
-          <PriceGroup symbolPairs={[
-            {symbol:'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
-            {symbol:'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
-            {symbol:'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
-            {symbol:'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
-            {symbol:'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day'},
-          ]} />
+          <PriceGroup
+            symbolPairs={[
+            { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+            { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+            { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+            { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+            { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+            ]}
+          />
         </Box>
       </Page>
     );
