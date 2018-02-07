@@ -20,19 +20,18 @@ app.use(compression());
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 // 3rd party middleware
-app.use(cors({
-  exposedHeaders: config.corsHeaders,
-}));
+app.use(cors());
 // connect to db
 initializeDb((db) => {
   // internal middleware
   app.use(middleware({ config, db }));
   // api router
   app.use('/api', api({ config, db }));
+  const port = process.env.PORT || config.port;
   app.use('/', express.static(path.resolve(__dirname)));
-  app.server.listen(process.env.PORT || config.port, () => {
+  app.server.listen(port, () => {
     console.log(`Started on port ${app.server.address().port}`);
   });
-  sockets({ config, db });
+  sockets({ app: app.server, config, db });
 });
 
