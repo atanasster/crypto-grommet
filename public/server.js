@@ -28,7 +28,11 @@ initializeDb((db) => {
   // api router
   app.use('/api', api({ config, db }));
   const port = process.env.PORT || config.port;
-  app.use('/', express.static(path.resolve(__dirname)));
+  const dir = path.resolve(__dirname);
+  app.use(express.static(dir));
+  app.get('*', (req, res) => {
+    res.sendfile(path.resolve(dir, 'index.html'));
+  });
   app.server.listen(port, () => {
     console.log(`Started on port ${app.server.address().port}`);
   });
