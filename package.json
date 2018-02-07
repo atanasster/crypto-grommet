@@ -23,6 +23,7 @@
     "test-watch": "grommet check -t -- --watchAll"
   },
   "dependencies": {
+    "babel-register": "^6.26.0",
     "ccxt": "^1.10.981",
     "cors": "^2.7.1",
     "grommet": "https://github.com/grommet/grommet/tarball/NEXT-stable",
