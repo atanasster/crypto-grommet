@@ -26,13 +26,19 @@ To run this application, execute the following commands:
   $ npm run start-dev
   ```
 
-  3. Start production build
+  3. Build client package
+
+  ```
+  $ npm run heroku-postbuild
+  ```
+
+  4. Start production server
 
   ```
   $ npm run start
   ```
 
-  4. Test and run linters:
+  5. Test and run linters:
 
   ```
   $ npm test
