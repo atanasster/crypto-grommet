@@ -27,7 +27,6 @@ class PriceGroup extends Component {
         <PriceCard key={`history_${index}`} history={history} color={colors[colorIdx]} />
       );
     });
-    console.log(priceHistory);
     return (
       <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
         <CardScroll>
