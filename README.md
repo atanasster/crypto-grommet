@@ -23,13 +23,13 @@ To run this application, execute the following commands:
   2. Start the front-end dev server:
 
   ```
+  $ npm run dev-serve
+  ```
+
+  3. Start production build
+
+  ```
   $ npm run start
-  ```
-
-  3. Create the app distribution
-
-  ```
-  $ npm run build
   ```
 
   4. Test and run linters:
