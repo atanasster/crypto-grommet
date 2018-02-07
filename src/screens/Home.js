@@ -92,9 +92,9 @@ class Home extends Component {
     }
     return (
       <Page name='Crypto Grommet'>
-        <Box border='bottom' full='horizontal' align='center'>
-          <Box>
+        <Box border='bottom' align='center'>
             <WorldMap
+              style={ {width: 'auto' }}
               color='neutral-1'
               continents={this.continents.map(c => (
                 {
@@ -104,7 +104,6 @@ class Home extends Component {
               selectColor='accent-2'
             />
             {layer}
-          </Box>
         </Box>
         <Box border='bottom' full='horizontal'>
           <PriceChart symbol='BTC/USD' />
