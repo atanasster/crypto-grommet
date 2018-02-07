@@ -4,6 +4,7 @@ import {
   Box,
   Heading,
   Paragraph,
+  Anchor,
   RoutedAnchor,
 } from 'grommet';
 import Nav from '../components/Nav';
@@ -50,6 +51,10 @@ export default class Page extends Component {
             <Box margin={{ horizontal: 'small' }}>
               <RoutedAnchor path='/about' label='about' />
             </Box>
+            <Box margin={{ horizontal: 'small' }}>
+              <Anchor href='https://github.com/atanasster/crypto-grommet' target='_blank' label='git' />
+            </Box>
+
           </Box>
         </Box>
       </Box>
