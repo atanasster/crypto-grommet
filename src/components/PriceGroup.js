@@ -24,7 +24,7 @@ class PriceGroup extends Component {
       ];
       const colorIdx = index % colors.length;
       return (
-        <PriceCard history={history} color={colors[colorIdx]} />
+        <PriceCard key={`history_${index}`} history={history} color={colors[colorIdx]} />
       );
     });
     console.log(priceHistory);
