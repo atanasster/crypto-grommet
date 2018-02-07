@@ -9,37 +9,54 @@ Live site: https://crypto-grommet.herokuapp.com
 
 To run this application, execute the following commands:
 
-  1. Install NPM modules
+## Install
+  
+  * Get sources in local folder
+  ```
+  $ git clone https://github.com/atanasster/crypto-grommet.git
+  ```
 
+  * Move to your local folder
+  ```
+  $ cd crypto-grommet
+  ```
+
+  * Install dependencies
   ```
   $ npm install
   ```
-  2. Start the back-end dev server:
+## Local deployment
+
+  * Start the back-end dev server:
 
   ```
   $ npm run start-server
   ```
 
-  2. Start the front-end dev server:
+  * Start the front-end dev server:
 
   ```
   $ npm run start
   ```
 
-  3. Build client package
+## Production deployment
+
+  * Build client package
 
   ```
   $ npm run heroku-postbuild
   ```
 
-  4. Start production server
+  * Start production server
 
   ```
   $ npm run server
   ```
 
-  5. Test and run linters:
+## Testing
+ 
+ * Run linters:
 
   ```
-  $ npm test
+  $ npm check
   ```
