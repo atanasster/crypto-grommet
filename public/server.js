@@ -8,11 +8,11 @@ import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
-import config from './config';
-import initializeDb from './db/index';
-import middleware from './middleware/index';
-import api from './api/index';
-import sockets from './socket/index';
+import config from '../server/config';
+import initializeDb from '../server/db/index';
+import middleware from '../server/middleware/index';
+import api from '../server/api/index';
+import sockets from '../server/socket/index';
 
 const app = express();
 app.server = http.createServer(app);

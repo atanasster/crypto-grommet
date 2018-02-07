@@ -17,7 +17,7 @@
     "start": "cross-env NODE_ENV=production grommet pack",
     "check": "cross-env NODE_ENV=test grommet check",
     "start-dev": "cross-env NODE_ENV=development grommet pack",
-    "dev-server": "cross-env NODE_ENV=development $NODE_DEBUG_OPTION node ./server/dev.js",
+    "dev-server": "cross-env NODE_ENV=development $NODE_DEBUG_OPTION node ./public/dev.js",
     "test": "grommet check -t",
     "test-update": "grommet check -t -- --updateSnapshot",
     "test-watch": "grommet check -t -- --watchAll"

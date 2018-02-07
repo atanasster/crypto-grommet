@@ -1,1 +1,1 @@
-web: node server/dev.js
+web: node dist/dev.js
