@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import numeral from 'numeral';
-import { Box, Heading, Text, Chart } from 'grommet';
+import { Box, Heading, Text, Chart, Image } from 'grommet';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_stream/actions';
 import * as ActionTypes from '../actions/price_stream/constants';
 import Table from './table/Table';
@@ -79,11 +79,11 @@ class PriceCard extends Component {
     return null;
   }
   render() {
-    const { history, color } = this.props;
-
+    const { history, color, coin } = this.props;
     return (
       <Box pad='small' margin='small' border='all' align='center'>
-        <Heading level={1} margin='none'>{`${history.symbol}/${history.toSymbol}`}</Heading>
+        <Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading>
+        {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
         <Text>{history.exchange}</Text>
         <Box pad='small'>
           <Chart
@@ -115,8 +115,9 @@ PriceCard.propTypes = {
 const mapDispatchToProps = dispatch => bindActionCreators(
   { subscribeLastPrices, unSubscribeLastPrices }, dispatch);
 
-const mapStateToProps = (state, props) => (
-  { priceStream: state.priceStream[ActionTypes.actionToKey(props.history)] }
-);
+const mapStateToProps = (state, props) => ({
+  priceStream: state.priceStream[ActionTypes.actionToKey(props.history)],
+  coin: state.coins.all.find(c => (c.symbol === props.history.symbol)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(PriceCard);
