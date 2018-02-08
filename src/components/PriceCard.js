@@ -56,19 +56,19 @@ class PriceCard extends Component {
               </tr>
               <tr>
                 <td>Last trade volume</td>
-                <td><strong>{numeral(data.LASTVOLUME).format('0,0.00000000')}</strong></td>
+                <td>{numeral(data.LASTVOLUME).format('0,0.00000000')}</td>
               </tr>
               <tr>
                 <td>Last trade value</td>
-                <td><strong>{numeral(data.LASTVOLUMETO).format('$0,0.00')}</strong></td>
+                <td>{numeral(data.LASTVOLUMETO).format('$0,0.00')}</td>
               </tr>
               <tr>
                 <td>Day volume</td>
-                <td><strong>{numeral(data.VOLUME24HOUR).format('0,0.00000000')}</strong></td>
+                <td>{numeral(data.VOLUME24HOUR).format('0,0.00000000')}</td>
               </tr>
               <tr>
                 <td>Day value</td>
-                <td><strong>{numeral(data.VOLUME24HOURTO).format('$0,0.00')}</strong></td>
+                <td>{numeral(data.VOLUME24HOURTO).format('$0,0.00')}</td>
               </tr>
 
             </tbody>
@@ -117,6 +117,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 
 const mapStateToProps = (state, props) => (
   { priceStream: state.priceStream[ActionTypes.actionToKey(props.history)] }
-  );
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PriceCard);

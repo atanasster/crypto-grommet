@@ -107,11 +107,11 @@ class Home extends Component {
         <Box border='bottom' full='horizontal'>
           <PriceGroup
             symbolPairs={[
-            { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-            { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-            { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-            { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-            { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+              { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+              { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+              { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+              { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+              { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
             ]}
           />
         </Box>
