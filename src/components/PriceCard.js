@@ -122,12 +122,12 @@ class PriceCard extends Component {
                 <td>{numeral(data.LASTVOLUMETO).format('$0,0.00')}</td>
               </tr>
               <tr>
-                <td>Day volume</td>
-                <td>{numeral(data.VOLUME24HOUR).format('0,0.00000000')}</td>
+                <td>24hr volume</td>
+                <td>{numeral(data.VOLUME24HOUR).format('0,0')}</td>
               </tr>
               <tr>
-                <td>Day value</td>
-                <td>{numeral(data.VOLUME24HOURTO).format('$0,0.00')}</td>
+                <td>24hr value</td>
+                <td>{numeral(data.VOLUME24HOURTO).format('$0,0')}</td>
               </tr>
 
             </tbody>
