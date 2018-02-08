@@ -111,7 +111,9 @@ class Home extends Component {
               { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
               { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
               { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+              { symbol: 'ETC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
               { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
+
             ]}
           />
         </Box>
