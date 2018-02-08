@@ -197,18 +197,6 @@ class PriceCard extends Component {
   }
 }
 
-PriceCard.defaultProps = {
-  color: undefined,
-};
-
-PriceCard.propTypes = {
-  symbol: PropTypes.string.isRequired,
-  toSymbol: PropTypes.string.isRequired,
-  exchange: PropTypes.string.isRequired,
-  period: PropTypes.string.isRequired,
-  points: PropTypes.number.isRequired,
-  color: PropTypes.string,
-};
 
 const mapDispatchToProps = dispatch => bindActionCreators(
   { subscribeLastPrices, unSubscribeLastPrices, getPriceHistory }, dispatch);
@@ -219,4 +207,23 @@ const mapStateToProps = (state, props) => ({
   coin: state.coins.all.find(c => (c.symbol === props.symbol)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PriceCard);
+const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);
+
+ConnectedPriceCard.defaultProps = {
+  color: undefined,
+  period: 'day',
+  points: 60,
+  exchange: 'CCCAGG',
+  toSymbol: 'USD',
+};
+
+ConnectedPriceCard.propTypes = {
+  symbol: PropTypes.string.isRequired,
+  toSymbol: PropTypes.string,
+  exchange: PropTypes.string,
+  period: PropTypes.string,
+  points: PropTypes.number,
+  color: PropTypes.string,
+};
+
+export default ConnectedPriceCard;

@@ -88,15 +88,8 @@ class Home extends Component {
   };
 
   static renderPriceCards() {
-    const homeCards = [
-      { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
-      { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
-      { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
-      { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
-      { symbol: 'ETC', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
-      { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
-    ];
-    const cards = homeCards.map((pair, index) => {
+    const homeCards = ['BTC', 'ETH', 'LTC', 'BCH', 'ETC', 'XRP'];
+    const cards = homeCards.map((symbol, index) => {
       const colors = [
         'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
       ];
@@ -105,11 +98,7 @@ class Home extends Component {
         <PriceCard
           key={`history_${index}`}
           color={colors[colorIdx]}
-          symbol={pair.symbol}
-          toSymbol={pair.toSymbol}
-          exchange={pair.exchange}
-          period={pair.period}
-          points={60}
+          symbol={symbol}
         />
       );
     });
