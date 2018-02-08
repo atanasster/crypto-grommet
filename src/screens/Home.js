@@ -92,7 +92,7 @@ class Home extends Component {
     }
     return (
       <Page name='Crypto Grommet'>
-        <Box align='center' border='bottom'>
+        <Box align='center' border='bottom' pad='small'>
           <Box direction='row'>
             <WorldMap
               style={{ width: 'auto' }}
@@ -106,7 +106,7 @@ class Home extends Component {
             {layer}
           </Box>
         </Box>
-        <Box full='horizontal'>
+        <Box pad='small'>
           <PriceGroup
             symbolPairs={[
               { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
