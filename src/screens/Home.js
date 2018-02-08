@@ -92,19 +92,21 @@ class Home extends Component {
     }
     return (
       <Page name='Crypto Grommet'>
-        <Box border='bottom' align='center'>
-          <WorldMap
-            style={{ width: 'auto' }}
-            continents={continents.map(c => (
-              {
-                ...c,
-                onClick: this.onContinentClick,
-              }))}
-            selectColor='accent-2'
-          />
-          {layer}
+        <Box align='center' border='bottom'>
+          <Box direction='row'>
+            <WorldMap
+              style={{ width: 'auto' }}
+              continents={continents.map(c => (
+                {
+                  ...c,
+                  onClick: this.onContinentClick,
+                }))}
+              selectColor='accent-2'
+            />
+            {layer}
+          </Box>
         </Box>
-        <Box border='bottom' full='horizontal'>
+        <Box full='horizontal'>
           <PriceGroup
             symbolPairs={[
               { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },

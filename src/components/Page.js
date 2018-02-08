@@ -21,7 +21,7 @@ export default class Page extends Component {
         <Box pad={{ horizontal: 'large', top: 'large' }}>
           <Nav />
           <Box direction='row' responsive={true}>
-            <Box margin={{ vertical: 'large' }} basis='large' align='start'>
+            <Box margin={{ vertical: 'large' }} align='start'>
               <Heading level={1}>
                 <strong>{name}</strong>
               </Heading>
