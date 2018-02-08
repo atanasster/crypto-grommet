@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { Anchor, Box, Button, DropButton, Heading, Text } from 'grommet';
 import { FormAdd, FormClose } from 'grommet-icons';
 import Flag from 'react-world-flags';
-import { addSelectedCoutry,
+import {
+  addSelectedCoutry,
   removeSelectedCoutry,
   clearSelectedCoutries } from '../../actions/countries/actions';
 import MultiSelect from '../MultiSelect';

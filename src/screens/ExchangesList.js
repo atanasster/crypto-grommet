@@ -5,7 +5,7 @@ import {
 } from 'grommet';
 import { Blank } from 'grommet-icons';
 
-import CountryMultiSelect from '../components/multi-select/CountryMultiSelect';
+import CountryMultiSelect from '../components/select/CountryMultiSelect';
 import Exchange from '../components/Exchange';
 import Page from '../components/Page';
 import CardScroll from '../components/CardScroll';

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Box, WorldMap, Heading, Image, RoutedAnchor } from 'grommet';
 import Table from '../components/table/Table';
 import Page from '../components/Page';
-import PriceGroup from '../components/PriceGroup';
+import PriceCard from '../components/PriceCard';
 import SideLayer from '../components/SideLayer';
+import CardScroll from '../components/CardScroll';
 import { renderCountries } from '../components/Exchange';
 
 const continents = [
@@ -66,6 +67,40 @@ class Home extends Component {
     this.setState({ continentExchanges, continent });
   };
 
+  static renderPriceCards() {
+    const homeCards = [
+      { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
+      { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
+      { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
+      { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
+      { symbol: 'ETC', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
+      { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', period: 'day' },
+    ];
+    const cards = homeCards.map((pair, index) => {
+      const colors = [
+        'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
+      ];
+      const colorIdx = index % colors.length;
+      return (
+        <PriceCard
+          key={`history_${index}`}
+          color={colors[colorIdx]}
+          symbol={pair.symbol}
+          toSymbol={pair.toSymbol}
+          exchange={pair.exchange}
+          period={pair.period}
+        />
+      );
+    });
+    return (
+      <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
+        <CardScroll>
+          {cards}
+        </CardScroll>
+      </Box>
+    );
+  }
+
   render() {
     const { continentExchanges, continent } = this.state;
     let layer;
@@ -107,17 +142,7 @@ class Home extends Component {
           </Box>
         </Box>
         <Box pad='small'>
-          <PriceGroup
-            symbolPairs={[
-              { symbol: 'BTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-              { symbol: 'ETH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-              { symbol: 'LTC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-              { symbol: 'BCH', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-              { symbol: 'ETC', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-              { symbol: 'XRP', toSymbol: 'USD', exchange: 'CCCAGG', unit: 'day' },
-
-            ]}
-          />
+          {this.renderPriceCards()}
         </Box>
       </Page>
     );
