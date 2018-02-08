@@ -20,7 +20,7 @@ export default function reduce(state = initialState, action) {
       };
     }
     case ActionTypes.ADD_SELECTED_COUNTRY: {
-      const country = state.all[action.country];
+      const country = state.all.find(c => (c.code === action.country));
       return {
         ...state,
         selected: [...state.selected, country],
