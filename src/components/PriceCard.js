@@ -35,8 +35,10 @@ class PriceCard extends Component {
       const change24h = data.PRICE - data.OPEN24HOUR;
       return (
         <Box align='center'>
-          <Box border='bottom'>
-            <Text size='xlarge' color={priceColor} margin='medium'>{numeral(data.PRICE).format('$0,0.00')}</Text>
+          <Box border='bottom' margin='small'>
+            <Text size='xlarge' color={priceColor} margin='medium'>
+              <strong>{numeral(data.PRICE).format('$0,0.00')}</strong>
+            </Text>
           </Box>
           <Table>
             <tbody>
@@ -84,9 +86,11 @@ class PriceCard extends Component {
     const { history, color, coin } = this.props;
     return (
       <Box pad='small' margin='small' border='all' align='center'>
-        <Box border='bottom'><Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading></Box>
-        <Box border='bottom'>
+        <Box border='bottom' direction='row' align='center'>
           {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
+          <Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading>
+        </Box>
+        <Box margin='small'>
           <Text>{history.exchange}</Text>
         </Box>
         <Box pad='small'>
