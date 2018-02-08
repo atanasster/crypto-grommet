@@ -25,6 +25,15 @@ const optionLimit = [
   { label: '2000 points', value: 2000 },
 ];
 
+const valueToColor = (value) => {
+  if (value > 0) {
+    return 'status-ok';
+    // eslint-disable-next-line no-bitwise
+  } else if (value < 0) {
+    return 'status-critical';
+  }
+  return 'status-warning';
+};
 
 class PriceCard extends Component {
   constructor(props) {
@@ -53,15 +62,18 @@ class PriceCard extends Component {
     const { priceStream } = this.props;
     if (priceStream) {
       const { data } = priceStream;
-      let priceColor = 'status-warning';
+      let priceColor;
       // eslint-disable-next-line no-bitwise
       if (data.FLAGS & 1) {
-        priceColor = 'status-ok';
+        priceColor = valueToColor(1);
       // eslint-disable-next-line no-bitwise
       } else if (data.FLAGS & 1) {
-        priceColor = 'status-critical';
+        priceColor = valueToColor(-1);
+      } else {
+        priceColor = valueToColor(0);
       }
       const change24h = data.PRICE - data.OPEN24HOUR;
+      const pctChange24h = change24h / data.OPEN24HOUR;
       return (
         <Box align='center'>
           <Box border='bottom' margin='small'>
@@ -72,15 +84,29 @@ class PriceCard extends Component {
           <Table>
             <tbody>
               <tr>
-                <td>Day change</td>
-                <td>{numeral(change24h).format('$0,0.00')} / {numeral(change24h / data.OPEN24HOUR).format('0.00%')}</td>
+                <td>24hr change</td>
+                <td>
+                  <Box direction='row'>
+                    <Text color={valueToColor(change24h)}>
+                      <strong>{numeral(change24h).format('$0,0.00')}</strong>
+                    </Text>
+                    {' / '}
+                    <Text color={valueToColor(pctChange24h)}>
+                      <strong>{numeral(pctChange24h).format('0.00%')}</strong>
+                    </Text>
+                  </Box>
+                </td>
               </tr>
               <tr>
-                <td>Day high</td>
+                <td>24hr open</td>
+                <td>{numeral(data.OPEN24HOUR).format('$0,0.00')}</td>
+              </tr>
+              <tr>
+                <td>24hr high</td>
                 <td>{numeral(data.HIGH24HOUR).format('$0,0.00')}</td>
               </tr>
               <tr>
-                <td>Day low</td>
+                <td>24hr low</td>
                 <td>{numeral(data.LOW24HOUR).format('$0,0.00')}</td>
               </tr>
               <tr>
