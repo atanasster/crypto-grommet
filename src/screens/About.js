@@ -5,7 +5,7 @@ import Page from '../components/Page';
 export default class About extends Component {
   render() {
     return (
-      <Page name='About'>
+      <Page name='About crypto-grommet'>
         <Box>
           <Box margin={{ vertical: 'small' }} >
             <Heading level={1}>
