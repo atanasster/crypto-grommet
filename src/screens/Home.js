@@ -142,7 +142,7 @@ class Home extends Component {
           </Box>
         </Box>
         <Box pad='small'>
-          {this.renderPriceCards()}
+          {Home.renderPriceCards()}
         </Box>
       </Page>
     );
