@@ -35,7 +35,9 @@ class PriceCard extends Component {
       const change24h = data.PRICE - data.OPEN24HOUR;
       return (
         <Box align='center'>
-          <Text size='xlarge' color={priceColor} margin='medium'>{numeral(data.PRICE).format('$0,0.00')}</Text>
+          <Box border='bottom'>
+            <Text size='xlarge' color={priceColor} margin='medium'>{numeral(data.PRICE).format('$0,0.00')}</Text>
+          </Box>
           <Table>
             <tbody>
               <tr>
@@ -82,20 +84,24 @@ class PriceCard extends Component {
     const { history, color, coin } = this.props;
     return (
       <Box pad='small' margin='small' border='all' align='center'>
-        <Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading>
-        {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
-        <Text>{history.exchange}</Text>
+        <Box border='bottom'><Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading></Box>
+        <Box border='bottom'>
+          {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
+          <Text>{history.exchange}</Text>
+        </Box>
         <Box pad='small'>
-          <Chart
-            thickness='xsmall'
-            type='line'
-            color={color}
-            values={history.orderBook.map((price, index) => ({
-              value: [index, price.close],
-              label: moment(price.time)
-                .format('LLL'),
-            }))}
-          />
+          <Box border='bottom'>
+            <Chart
+              thickness='xsmall'
+              type='line'
+              color={color}
+              values={history.orderBook.map((price, index) => ({
+                value: [index, price.close],
+                label: moment(price.time)
+                  .format('LLL'),
+              }))}
+            />
+          </Box>
           {this.renderLastPrice()}
         </Box>
       </Box>
