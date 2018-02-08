@@ -40,10 +40,16 @@ const continents = [
     code: 'SA',
   },
 ];
-class Home extends Component {
-  state = { continentExchanges: undefined, continent: undefined };
 
-  onContinentClick = (name) => {
+class Home extends Component {
+  state = {
+    continentExchanges: undefined,
+    continent: undefined,
+    worldContinent: undefined,
+    worldExchanges: undefined,
+  };
+
+  exchangesByName(name) {
     const { exchanges, countries } = this.props;
     const continent = continents.find(c => (c.name === name));
     const continentExchanges = [];
@@ -55,7 +61,12 @@ class Home extends Component {
           }
         });
       });
-    continentExchanges.sort((a, b) => {
+    return { continentExchanges, continent };
+  }
+
+  onContinentClick = (name) => {
+    const exchanges = this.exchangesByName(name);
+    exchanges.continentExchanges.sort((a, b) => {
       if (a.name > b.name) {
         return 1;
       }
@@ -64,7 +75,16 @@ class Home extends Component {
       }
       return 0;
     });
-    this.setState({ continentExchanges, continent });
+    this.setState(exchanges);
+  };
+
+  onContinentHover = (hover, name) => {
+    if (hover) {
+      const exchanges = this.exchangesByName(name);
+      this.setState({ worldContinent: name, worldExchanges: exchanges.continentExchanges.length });
+    } else {
+      this.setState({ worldContinent: undefined });
+    }
   };
 
   static renderPriceCards() {
@@ -103,7 +123,7 @@ class Home extends Component {
   }
 
   render() {
-    const { continentExchanges, continent } = this.state;
+    const { continentExchanges, continent, worldContinent, worldExchanges } = this.state;
     let layer;
     if (continentExchanges) {
       const exchanges = continentExchanges.map(exchange => (
@@ -126,19 +146,29 @@ class Home extends Component {
         </SideLayer>
       );
     }
+    const continentHover = worldContinent ? (
+      `${worldExchanges} exchanges in ${worldContinent}, click to see more...`
+    ) : null;
     return (
       <Page name='Crypto Grommet'>
-        <Box align='center' border='bottom' pad='small'>
-          <Box direction='row'>
-            <WorldMap
-              style={{ width: 'auto' }}
-              continents={continents.map(c => (
-                {
-                  ...c,
-                  onClick: this.onContinentClick,
-                }))}
-              selectColor='accent-2'
-            />
+        <Box align='center' border='bottom'>
+          <Box>
+            <Box direction='row'>
+              <WorldMap
+                style={{ width: 'auto' }}
+                continents={continents.map(c => (
+                  {
+                    ...c,
+                    onClick: this.onContinentClick,
+                    onHover: hover => this.onContinentHover(hover, c.name),
+                  }))}
+                selectColor='accent-2'
+              />
+
+            </Box>
+            <Box align='end' basis='xsmall'>
+              {continentHover}
+            </Box>
             {layer}
           </Box>
         </Box>
