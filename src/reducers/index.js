@@ -8,6 +8,7 @@ import countries from '../actions/countries/reducer';
 import coins from '../actions/coins/reducer';
 import orderBook from '../actions/order_book/reducer';
 import priceHistory from '../actions/price_history/reducer';
+import priceStream from '../actions/price_stream/reducer';
 
 export default combineReducers({
   api,
@@ -18,5 +19,6 @@ export default combineReducers({
   coins,
   orderBook,
   routing,
+  priceStream,
   priceHistory,
 });
