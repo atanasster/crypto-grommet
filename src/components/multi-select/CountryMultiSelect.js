@@ -96,7 +96,7 @@ class CountryeMultiSelect extends Component {
     return (
       <Box basis='small'>
         <DropButton
-          a11yTitle='Open Countries drop'
+          a11yTitle='Select Countries'
           open={open}
           onClose={this.close}
           control={
