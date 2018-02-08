@@ -12,27 +12,36 @@ import Table from './table/Table';
 
 
 const optionDuration = [
-  { label: 'Day', value: 'day' },
-  { label: 'Hour', value: 'hour' },
-  { label: 'Minute', value: 'minute' },
+  { label: 'Daily', value: 'day' },
+  { label: 'Hourly', value: 'hour' },
+  { label: 'Minutes', value: 'minute' },
 ];
+
+const optionLimit = [
+  { label: '60 points', value: 60 },
+  { label: '100 points', value: 100 },
+  { label: '500 points', value: 500 },
+  { label: '1000 points', value: 1000 },
+  { label: '2000 points', value: 2000 },
+];
+
 
 class PriceCard extends Component {
   constructor(props) {
     super(props);
-    this.state = { period: props.period };
+    this.state = { period: props.period, points: props.points };
   }
 
-  requestPriceHistory(period) {
+  requestPriceHistory(period, points) {
     const { symbol, toSymbol, exchange } = this.props;
-    this.props.getPriceHistory(symbol, toSymbol, exchange, period);
+    this.props.getPriceHistory(symbol, toSymbol, exchange, period, points);
   }
 
 
   componentDidMount() {
-    const { symbol, toSymbol, exchange, period } = this.props;
+    const { symbol, toSymbol, exchange, period, points } = this.props;
     this.props.subscribeLastPrices({ symbol, toSymbol, exchange });
-    this.requestPriceHistory(period);
+    this.requestPriceHistory(period, points);
   }
 
   componentWillUnmount() {
@@ -103,14 +112,18 @@ class PriceCard extends Component {
     return null;
   }
 
-  onSelectPeriod = (period) => {
-    this.requestPriceHistory(period.value);
-    this.setState({ period: period.value });
+  onSelectPeriod = (item) => {
+    this.requestPriceHistory(item.value, this.state.points);
+    this.setState({ period: item.value });
   }
 
+  onSelectPoints = (item) => {
+    this.requestPriceHistory(this.state.period, item.value);
+    this.setState({ points: item.value });
+  }
   render() {
     const { symbol, toSymbol, exchange, color, coin, priceHistory } = this.props;
-    const { period } = this.state;
+    const { period, points } = this.state;
     return (
       <Box pad='small' margin='small' border='all' align='center'>
         <Box border='bottom' direction='row' align='center'>
@@ -124,13 +137,20 @@ class PriceCard extends Component {
         </Box>
         <Box pad='small'>
           <Box border='horizontal'>
-            <Box align='start' basis='1/2'>
+            <Box justify='between' direction='row'>
               <Menu
                 a11yTitle='Select period'
-                items={optionDuration.map(item => (
+                items={optionDuration.filter(item => (item.value !== period)).map(item => (
                   { ...item, onClick: () => this.onSelectPeriod(item) }
                 ))}
                 label={optionDuration.find(p => (p.value === period)).label}
+              />
+              <Menu
+                a11yTitle='Select data points'
+                items={optionLimit.filter(item => (item.value !== points)).map(item => (
+                  { ...item, onClick: () => this.onSelectPoints(item) }
+                ))}
+                label={optionLimit.find(p => (p.value === points)).label}
               />
             </Box>
             <Chart
@@ -160,6 +180,7 @@ PriceCard.propTypes = {
   toSymbol: PropTypes.string.isRequired,
   exchange: PropTypes.string.isRequired,
   period: PropTypes.string.isRequired,
+  points: PropTypes.number.isRequired,
   color: PropTypes.string,
 };
 

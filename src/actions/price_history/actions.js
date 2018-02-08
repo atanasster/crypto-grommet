@@ -10,8 +10,8 @@ export const getPriceHistorySuccess = (symbol, toSymbol, exchange, data) => ({
   data,
 });
 
-export function getPriceHistory(symbol, toSymbol, exchange, period) {
-  return dispatch => fetch(`https://min-api.cryptocompare.com/data/histo${period}?fsym=${symbol}&tsym=${toSymbol}&limit=60&aggregate=3&e=${exchange}`, {
+export function getPriceHistory(symbol, toSymbol, exchange, period, limit = 60) {
+  return dispatch => fetch(`https://min-api.cryptocompare.com/data/histo${period}?fsym=${symbol}&tsym=${toSymbol}&limit=${limit}&aggregate=3&e=${exchange}`, {
     method: 'GET',
     // eslint-disable-next-line no-undef
     headers: new Headers({

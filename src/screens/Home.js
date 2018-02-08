@@ -89,6 +89,7 @@ class Home extends Component {
           toSymbol={pair.toSymbol}
           exchange={pair.exchange}
           period={pair.period}
+          points={60}
         />
       );
     });
