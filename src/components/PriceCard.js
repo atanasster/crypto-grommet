@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import numeral from 'numeral';
-import { Box, Heading, Text, Chart, Image } from 'grommet';
+import { Box, Heading, Text, Chart, Image, RoutedAnchor } from 'grommet';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_stream/actions';
 import * as ActionTypes from '../actions/price_stream/constants';
 import Table from './table/Table';
@@ -88,7 +88,9 @@ class PriceCard extends Component {
       <Box pad='small' margin='small' border='all' align='center'>
         <Box border='bottom' direction='row' align='center'>
           {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
-          <Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading>
+          <RoutedAnchor path={`/order_book/${history.symbol}/${history.toSymbol}`}>
+            <Heading level={2} margin='none'>{coin ? coin.fullName : history.symbol}</Heading>
+          </RoutedAnchor>
         </Box>
         <Box margin='small'>
           <Text>{history.exchange}</Text>
