@@ -123,7 +123,7 @@ class PriceCard extends Component {
           <Text>{exchange}</Text>
         </Box>
         <Box pad='small'>
-          <Box border='bottom'>
+          <Box border='horizontal'>
             <Box align='start' basis='1/2'>
               <Menu
                 a11yTitle='Select period'
