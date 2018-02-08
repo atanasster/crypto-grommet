@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "description": "Crypto browser with grommet v2",
   "main": "src/index.js",
-  "homepage": "http://v2.grommet.io",
-  "bugs": "https://github.com/grommet/grommet-site/issues",
+  "homepage": "https://crypto-grommet.herokuapp.com",
+  "bugs": "https://github.com/atanasster/crypto-grommet/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/grommet/grommet-site.git"
+    "url": "https://github.com/atanasster/crypto-grommet.git"
   },
   "engines": {
     "node": "9.x"
