@@ -73,14 +73,15 @@ export function subscribeLastPrices({ symbol, toSymbol, exchange = 'CCCAGG' }) {
   return (dispatch) => {
     socket.on('m', (message) => {
       const messageType = message.substring(0, message.indexOf('~'));
-      if (messageType === '5') {
+      if (messageType === '5' || messageType === '2') {
         const data = currentUnpack(message);
         if (data.PRICE) {
           dispatch(appendPricePair(data.FROMSYMBOL, data.TOSYMBOL, data.MARKET, data));
         }
       }
     });
-    socket.emit('SubAdd', { subs: [`5~${exchange}~${symbol}~${toSymbol}`] });
+    const code = exchange === 'CCCAGG' ? 5 : 2;
+    socket.emit('SubAdd', { subs: [`${code}~${exchange}~${symbol}~${toSymbol}`] });
   };
 }
 

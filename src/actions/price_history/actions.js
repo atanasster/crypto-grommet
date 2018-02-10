@@ -1,36 +1,20 @@
+import { RSAA, getJSON } from 'redux-api-middleware';
 import * as ActionTypes from './constants';
-import { addError } from '../errors/actions';
 
 
-export const getPriceHistorySuccess = (symbol, toSymbol, exchange, data) => ({
-  type: ActionTypes.GET_PRICE_HISTORY_SUCCESS,
-  exchange,
-  symbol,
-  toSymbol,
-  data,
-});
-
-export function getPriceHistory(symbol, toSymbol, exchange, period, limit = 60) {
-  return dispatch => fetch(`https://min-api.cryptocompare.com/data/histo${period}?fsym=${symbol}&tsym=${toSymbol}&limit=${limit}&aggregate=3&e=${exchange}`, {
+export default (symbol, toSymbol, exchange, period = 'day', limit = 60) => ({
+  [RSAA]: {
+    endpoint: () => (`https://min-api.cryptocompare.com/data/histo${period}?fsym=${symbol}&tsym=${toSymbol}&limit=${limit}&aggregate=3&e=${exchange}`),
     method: 'GET',
-    // eslint-disable-next-line no-undef
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-  })
-    .then(response =>
-      response.json().then(json => ({
-        status: response.status,
-        json,
-      })))
-    .then(
-      ({ status, json }) => {
-        if (status >= 400) {
-          return dispatch(addError(json.error));
-        }
-
-        return dispatch(getPriceHistorySuccess(symbol, toSymbol, exchange, json.Data));
+    types: [
+      ActionTypes.REQUEST_PRICE_HISTORY,
+      {
+        type: ActionTypes.SUCCESS_PRICE_HISTORY,
+        payload: (action, state, res) => getJSON(res).then(json => (
+          { symbol, toSymbol, exchange, data: json.Data }
+        )),
       },
-      err => dispatch(addError(err))
-    );
-}
+      ActionTypes.FAILURE_PRICE_HISTORY,
+    ],
+  },
+});

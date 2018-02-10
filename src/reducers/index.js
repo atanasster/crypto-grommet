@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import api from './api';
 import errors from '../actions/errors/reducer';
 import exchanges from '../actions/exchanges/reducer';
 import exchange from '../actions/exchange/reducer';
@@ -11,7 +10,6 @@ import priceHistory from '../actions/price_history/reducer';
 import priceStream from '../actions/price_stream/reducer';
 
 export default combineReducers({
-  api,
   errors,
   exchanges,
   countries,

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Heading, Text, Chart, Image, RoutedAnchor, Menu } from 'grommet';
-import { getPriceHistory } from '../actions/price_history/actions';
+import requestPriceHistory from '../actions/price_history/actions';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_stream/actions';
 import * as ActionTypes from '../actions/price_stream/constants';
 import Table from './table/Table';
@@ -41,16 +41,28 @@ class PriceCard extends Component {
     this.state = { period: props.period, points: props.points };
   }
 
-  requestPriceHistory(period, points) {
-    const { symbol, toSymbol, exchange } = this.props;
-    this.props.getPriceHistory(symbol, toSymbol, exchange, period, points);
+  requestPriceHistory(period, points, props) {
+    const { symbol, toSymbol, exchange } = props;
+    this.props.requestPriceHistory(symbol, toSymbol, exchange, period, points);
   }
 
 
   componentDidMount() {
     const { symbol, toSymbol, exchange, period, points } = this.props;
     this.props.subscribeLastPrices({ symbol, toSymbol, exchange });
-    this.requestPriceHistory(period, points);
+    this.requestPriceHistory(period, points, this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { symbol, toSymbol, exchange } = nextProps;
+    const { period, points } = this.state;
+    if (symbol !== this.props.symbol ||
+        toSymbol !== this.props.toSymbol ||
+        exchange !== this.props.exchange) {
+      this.props.unSubscribeLastPrices(this.props);
+      this.props.subscribeLastPrices(nextProps);
+      this.requestPriceHistory(period, points, nextProps);
+    }
   }
 
   componentWillUnmount() {
@@ -109,10 +121,13 @@ class PriceCard extends Component {
                 <td>24hr low</td>
                 <td>{numeral(data.LOW24HOUR).format('$0,0.00')}</td>
               </tr>
-              <tr>
-                <td>Last exchange</td>
-                <td><strong>{data.LASTMARKET}</strong></td>
-              </tr>
+              {data.LASTMARKET ? (
+                <tr>
+                  <td>Last exchange</td>
+                  <td><strong>{data.LASTMARKET}</strong></td>
+                </tr>
+              ) : null
+              }
               <tr>
                 <td>Last trade volume</td>
                 <td>{numeral(data.LASTVOLUME).format('0,0.00000000')}</td>
@@ -139,12 +154,12 @@ class PriceCard extends Component {
   }
 
   onSelectPeriod = (item) => {
-    this.requestPriceHistory(item.value, this.state.points);
+    this.requestPriceHistory(item.value, this.state.points, this.props);
     this.setState({ period: item.value });
   }
 
   onSelectPoints = (item) => {
-    this.requestPriceHistory(this.state.period, item.value);
+    this.requestPriceHistory(this.state.period, item.value, this.props);
     this.setState({ points: item.value });
   }
   render() {
@@ -154,12 +169,12 @@ class PriceCard extends Component {
       <Box pad='small' margin='small' border='all' align='center'>
         <Box border='bottom' direction='row' align='center'>
           {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
-          <RoutedAnchor path={`/order_book/${symbol}/${toSymbol}`}>
+          <RoutedAnchor path={`/coins/info/${symbol}/${toSymbol}/${exchange}`}>
             <Heading level={2} margin='none'>{coin ? coin.fullName : symbol}</Heading>
           </RoutedAnchor>
         </Box>
         <Box margin='small'>
-          <Text>{exchange}</Text>
+          <Text size='medium'><strong>{exchange}</strong></Text>
         </Box>
         <Box pad='small'>
           <Box border='horizontal'>
@@ -199,7 +214,7 @@ class PriceCard extends Component {
 
 
 const mapDispatchToProps = dispatch => bindActionCreators(
-  { subscribeLastPrices, unSubscribeLastPrices, getPriceHistory }, dispatch);
+  { subscribeLastPrices, unSubscribeLastPrices, requestPriceHistory }, dispatch);
 
 const mapStateToProps = (state, props) => ({
   priceStream: state.priceStream[ActionTypes.actionToKey(props)],

@@ -1,37 +1,15 @@
-import { addError } from '../errors/actions';
+import { RSAA } from 'redux-api-middleware';
 import * as ActionTypes from './constants';
+import { apiServer } from '../api/api';
 
-
-export const getCoinsSuccess = coins => ({
-  type: ActionTypes.GET_COINS_SUCCESS,
-  coins,
-});
-
-
-export function getCoins() {
-  return (dispatch, getState) => {
-    const { url } = getState().api;
-    return fetch(`${url}/coins`, {
-      method: 'GET',
-      // eslint-disable-next-line no-undef
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    })
-      .then(response =>
-        response.json().then(json => ({
-          status: response.status,
-          json,
-        })))
-      .then(
-        ({ status, json }) => {
-          if (status >= 400) {
-            return dispatch(addError(json.error));
-          }
-
-          return dispatch(getCoinsSuccess(json.data));
-        },
-        err => dispatch(addError(err))
-      );
-  };
-}
+export default {
+  [RSAA]: {
+    endpoint: `${apiServer}/coins`,
+    method: 'GET',
+    types: [
+      ActionTypes.REQUEST_COINS_LIST,
+      ActionTypes.SUCCESS_COINS_LIST,
+      ActionTypes.FAILURE_COINS_LIST,
+    ],
+  },
+};

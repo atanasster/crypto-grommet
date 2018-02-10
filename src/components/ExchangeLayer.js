@@ -118,7 +118,7 @@ export default ({ exchange, onClose }) => {
   }
   return (
     <SideLayer onClose={onClose} >
-      <RoutedAnchor path={`/exchanges/${exchange.id}`}>
+      <RoutedAnchor path={`/exchanges/${exchange.name}`}>
         <Box align='cener'>
           <Image
             src={exchange.logo}

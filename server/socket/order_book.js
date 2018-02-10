@@ -1,12 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { exchanges } from '../models/exchanges';
-
-const symbolParities = {
-  'USD': 'USDT',
-  'USDT': 'USD',
-  'EUR': 'EURT',
-  'EURT': 'EUR',
-};
+import { symbolParities } from '../api/utils';
 
 export default ({
   socket, symbol, toSymbol, config, db,
@@ -19,10 +13,6 @@ export default ({
       }
       if (market && exchange.has.fetchOrderBook) {
         exchange.fetchOrderBook(market.symbol)
-          .catch((err) => {
-            console.log(err);
-            // return allBboks;
-          })
           .then((data) => {
             if (data) {
               socket.emit('order_book_data', {
@@ -31,6 +21,9 @@ export default ({
                 data,
               });
             }
+          })
+          .catch((err) => {
+            // console.log(err);
           });
       }
     }

@@ -18,24 +18,26 @@ const baseExchangeInfo = (exchange) => {
   return {
     id: exchange.id,
     name: exchange.name,
-    fees: exchange.fees,
     logo: exchange.urls ? exchange.urls.logo : null,
     url: exchange.urls ? exchange.urls.www : null,
+    hasOrderBook: exchange.has.fetchOrderBook,
     countries: countries.map(c => (c === 'UK' ? 'GB' : c)),
   };
 };
 
 export default exchanges.map(exchange => (baseExchangeInfo(exchange)));
 
-export const exchangeDetails = (exchangeId) => {
-  const exchange = exchanges.find(exch => exch.id === exchangeId);
+export const findByName = exchangeName => (exchanges.find(exch => exch.name === exchangeName));
+
+export const exchangeByName = (exchangeName) => {
+  const exchange = findByName(exchangeName);
   if (exchange) {
     return {
       ...baseExchangeInfo(exchange),
+      fees: exchange.fees,
       currencies: exchange.currencies,
       markets: exchange.markets,
     };
   }
   return null;
 };
-

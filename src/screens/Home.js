@@ -117,8 +117,8 @@ class Home extends Component {
     if (continentExchanges) {
       const exchanges = continentExchanges.map(exchange => (
         <tr key={`e_l_${exchange.id}`}>
-          <td><RoutedAnchor path={`/exchanges/${exchange.id}`}><Image src={exchange.logo} /></RoutedAnchor></td>
-          <td><RoutedAnchor path={`/exchanges/${exchange.id}`}>{exchange.name}</RoutedAnchor></td>
+          <td><RoutedAnchor path={`/exchanges/${exchange.name}`}><Image src={exchange.logo} /></RoutedAnchor></td>
+          <td><RoutedAnchor path={`/exchanges/${exchange.name}`}>{exchange.name}</RoutedAnchor></td>
           <td><Box direction='row'>{renderCountries(exchange.countries)}</Box></td>
         </tr>
       ));

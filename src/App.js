@@ -5,8 +5,8 @@ import createHistory from 'history/createBrowserHistory';
 import { Grommet, Box, Stack } from 'grommet';
 import Content from './components/Content';
 import configureStore from './store';
-import { getExchanges } from './actions/exchanges/actions';
-import { getCoins } from './actions/coins/actions';
+import requestExchanges from './actions/exchanges/actions';
+import requestCoins from './actions/coins/actions';
 
 
 // eslint-disable-next-line no-underscore-dangle
@@ -28,8 +28,8 @@ const theme = {
 export default class App extends Component {
   componentDidMount() {
     // global lists that are used throughout
-    store.dispatch(getExchanges());
-    store.dispatch(getCoins());
+    store.dispatch(requestExchanges);
+    store.dispatch(requestCoins);
   }
 
   render() {

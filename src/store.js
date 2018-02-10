@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
-import api from './middleware/api';
+import { apiMiddleware } from 'redux-api-middleware';
 import rootReducer from './reducers';
 
 const middlewareBuilder = (history) => {
-  const universalMiddleware = [routerMiddleware(history), thunk, api];
+  const universalMiddleware = [routerMiddleware(history), thunk, apiMiddleware];
   const middleware = applyMiddleware(...universalMiddleware);
   let allComposeElements = [
     middleware,

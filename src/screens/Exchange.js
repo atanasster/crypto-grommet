@@ -5,16 +5,16 @@ import { Box, Text, Image, Heading, RoutedAnchor } from 'grommet';
 import CardScroll from '../components/CardScroll';
 import Page from '../components/Page';
 import Table from '../components/table/Table';
-import { getExchangeInfo } from '../actions/exchange/actions';
+import requestExchangeInfo from '../actions/exchange/actions';
 
 class Exchange extends Component {
   componentDidMount() {
-    this.props.getExchangeInfo(this.props.match.params.exchange);
+    this.props.requestExchangeInfo(this.props.match.params.exchange);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.exchange !== this.props.match.params.exchange) {
-      this.props.getExchangeInfo(nextProps.match.params.exchange);
+      this.props.requestExchangeInfo(nextProps.match.params.exchange);
     }
   }
   renderItem = (label, value) => (
@@ -31,12 +31,12 @@ class Exchange extends Component {
     return this.renderItem('Countries', countries.join());
   };
   renderCurrencyPairs(currency) {
-    const { exchange: { markets } } = this.props;
+    const { exchange: { markets, name: exchanegName } } = this.props;
     const pairs = Object.keys(markets).filter(key =>
       key.startsWith(`${currency}/`)).map(key => (markets[key]));
     const rows = pairs.map(pair => (
       <tr key={`${currency}_${pair.id}`}>
-        <td><RoutedAnchor path={`/order_book/${pair.symbol}`}>{pair.symbol}</RoutedAnchor></td>
+        <td><RoutedAnchor path={`/coins/info/${pair.symbol}/${exchanegName}`}>{pair.symbol}</RoutedAnchor></td>
         <td>{pair.darkpool ? 'Y' : ''}</td>
         <td>{pair.maker}</td>
         <td>{pair.taker}</td>
@@ -66,7 +66,7 @@ class Exchange extends Component {
         const currency = exchange.currencies[key];
         return (
           <Box key={`curr${currency.code}`} border='all' margin='small' pad='small' align='center'>
-            <RoutedAnchor path={`/order_book/${currency.code}`}>{currency.code}</RoutedAnchor>
+            <RoutedAnchor path={`/coins/info/${currency.code}/USD/${exchange.name}`}>{currency.code}</RoutedAnchor>
             <Text size='xsmall'>precision: {currency.precision}</Text>
             {this.renderCurrencyPairs(currency.code)}
           </Box>
@@ -86,7 +86,7 @@ class Exchange extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ getExchangeInfo }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ requestExchangeInfo }, dispatch);
 
 const mapStateToProps = (state, props) =>
   ({

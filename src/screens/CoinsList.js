@@ -16,7 +16,7 @@ class CoinsList extends Component {
     const rows = allCoins.map(coin => (
       <tr key={coin.id} >
         <td><Anchor href={coin.url} target='_blank'><Image src={coin.imageUrl} style={{ width: '24px', height: '24px' }} /></Anchor></td>
-        <td><RoutedAnchor path={`/order_book/${coin.symbol}`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
+        <td><RoutedAnchor path={`/coins/${coin.symbol}`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
         <td>{coin.algorithm}</td>
         <td>{coin.proofType}</td>
         <td>{coin.fullyPremined === '0' ? 'Yes' : ''}</td>

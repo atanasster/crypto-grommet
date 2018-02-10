@@ -1,28 +1,18 @@
 /* eslint-disable no-unused-vars */
-import resource from 'resource-router-middleware';
-import list, { exchangeDetails } from '../models/exchanges';
+import list, { exchangeByName } from '../models/exchanges';
 
-export default ({ config, db }) => resource({
+export const exchangesList = ({ res, req, config, db }) => {
+  res.json({ data: list });
+};
 
-  /** Property name to store preloaded entity on `request`. */
-  id: 'exchange',
 
-  /** For requests with an `id`, you can auto-load the entity.
-   *  Errors terminate the request, success sets `req[id] = data`.
-   */
-  load(req, id, callback) {
-    const exchange = exchangeDetails(id);
-    const err = exchange ? null : 'Not found';
-    callback(err, exchange);
-  },
-
-  /** GET / - List all entities */
-  index({ params }, res) {
-    res.json({ data: list });
-  },
-
-  /** GET /:id - Return a given entity */
-  read({ exchange }, res) {
+export const exchangeInfo = ({ res, req, config, db }) => {
+  const { exchange: exchangeName } = req.params;
+  const exchange = exchangeByName(exchangeName);
+  if (!exchange) {
+    res.status(404)
+      .send(`Could not find exchange ${exchangeName}`);
+  } else {
     res.json({ data: exchange });
-  },
-});
+  }
+};

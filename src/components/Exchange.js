@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Anchor, Box, Button, Image, Text } from 'grommet';
+import { Anchor, Box, RoutedAnchor, Image, Text } from 'grommet';
 import Flag from 'react-world-flags';
-import ExchangeLayer from './ExchangeLayer';
 
 export function renderURLS(url) {
   const urls = typeof url === 'string' ? [url] : url;
@@ -25,14 +24,11 @@ export function renderCountries(countries) {
 }
 
 export default class Exchange extends Component {
-  state = { layer: false };
-
   render() {
     const { exchange } = this.props;
-    const { layer } = this.state;
     return (
       <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-        <Button onClick={() => this.setState({ layer: true })}>
+        <RoutedAnchor path={`/exchanges/${exchange.name}`}>
           <Box align='center'>
             <Box justify='between' direction='row'>
               {renderCountries(exchange.countries)}
@@ -43,14 +39,10 @@ export default class Exchange extends Component {
               style={{ maxWidth: '80%', maxHeight: '100%', height: 'auto' }}
             />
           </Box>
-        </Button>
+        </RoutedAnchor>
         <Box margin={{ top: 'xsmall' }} >
           {renderURLS(exchange.url)}
         </Box>
-        {layer ? (<ExchangeLayer
-          onClose={() => this.setState({ layer: undefined })}
-          exchange={exchange}
-        />) : null}
       </Box>
     );
   }

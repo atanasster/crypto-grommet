@@ -4,15 +4,15 @@ const initialState = {};
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.GET_EXCHANGE_INFO_SUCCESS:
+    case ActionTypes.SUCCESS_EXHANGE_INFO:
       return {
         ...state,
-        [action.id]: action.exchange.data,
+        [action.payload.data.name]: action.payload.data,
       };
-    case ActionTypes.START_GET_EXCHANGE_INFO:
+    case ActionTypes.REQUEST_EXHANGE_INFO:
       return {
         ...state,
-        [action.id]: { id: action.id, name: action.id },
+        [action.name]: { id: action.id, name: action.id },
       };
     default:
       return state;

@@ -7,8 +7,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.GET_EXCHANGES_SUCCESS:
-      return { ...state, all: action.exchanges.data };
+    case ActionTypes.SUCCESS_EXCHANGES_LIST:
+      return { ...state, all: [...action.payload.data] };
     default:
       return state;
   }

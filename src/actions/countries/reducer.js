@@ -1,5 +1,5 @@
 import * as ActionTypes from './constants';
-import { EXCHANGES_LOADED } from '../exchanges/constants';
+import { SUCCESS_EXCHANGES_LIST } from '../exchanges/constants';
 import allCountries from './countries';
 
 const initialState = {
@@ -9,8 +9,8 @@ const initialState = {
 
 export default function reduce(state = initialState, action) {
   switch (action.type) {
-    case EXCHANGES_LOADED: {
-      const uniqueCountries = [...new Set(action.exchanges.reduce((arr, ex) =>
+    case SUCCESS_EXCHANGES_LIST: {
+      const uniqueCountries = [...new Set(action.payload.data.reduce((arr, ex) =>
         ([...arr, ...ex.countries]), [])),
       ];
       return {

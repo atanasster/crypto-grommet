@@ -1,2 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-export const GET_COINS_SUCCESS = 'GET_COINS_SUCCESS';
+export const REQUEST_COINS_LIST = 'REQUEST_COINS_LIST';
+export const SUCCESS_COINS_LIST = 'SUCCESS_COINS_LIST';
+export const FAILURE_COINS_LIST = 'FAILURE_COINS_LIST';
