@@ -89,12 +89,12 @@ class OrderBookCard extends Component {
     };
     const asks = [];
     const bids = [];
-    data.asks.slice(0, 30).reduce((total, item) => {
+    data.asks.reduce((total, item) => {
       const t = total + item[1];
       asks.push([item[0], t]);
       return t;
     }, 0);
-    data.bids.slice(0, 30).reduce((total, item) => {
+    data.bids.reduce((total, item) => {
       const t = total + item[1];
       bids.push([item[0], t]);
       return t;
