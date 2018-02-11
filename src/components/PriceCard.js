@@ -189,9 +189,9 @@ class PriceCard extends Component {
               <Menu
                 a11yTitle='Select data points'
                 items={optionLimit.filter(item => (item.value !== points)).map(item => (
-                  { ...item, onClick: () => this.onSelectPoints(item) }
+                  { value: item.value, label: `${item.value} ${period}s`, onClick: () => this.onSelectPoints(item) }
                 ))}
-                label={optionLimit.find(p => (p.value === points)).label}
+                label={`${optionLimit.find(p => (p.value === points)).value} ${period}s`}
               />
             </Box>
             <Chart
