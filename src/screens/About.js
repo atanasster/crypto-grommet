@@ -33,18 +33,18 @@ export default class About extends Component {
           </Box>
           <Box margin={{ vertical: 'small' }} >
             <Heading level={1}>
-              <strong>Advanced charting</strong>
-            </Heading>
-            <Paragraph size='large'>
-              <Anchor label='Highcharts' href=' http://www.highcharts.com' target='_blank' /> - JavaScript charting library based on SVG, with fallbacks to VML and canvas for old browsers.
-            </Paragraph>
-          </Box>
-          <Box margin={{ vertical: 'small' }} >
-            <Heading level={1}>
               <strong>Market exchanges API library</strong>
             </Heading>
             <Paragraph size='large'>
               <Anchor label='CCXT – CryptoCurrency eXchange Trading Library' href=' https://github.com/ccxt/ccxt/wiki' target='_blank' /> - JavaScript / Python / PHP cryptocurrency trading library with support for more than 90 bitcoin/altcoin exchanges.
+            </Paragraph>
+          </Box>
+          <Box margin={{ vertical: 'small' }} >
+            <Heading level={1}>
+              <strong>Advanced charting</strong>
+            </Heading>
+            <Paragraph size='large'>
+              <Anchor label='Highcharts' href=' http://www.highcharts.com' target='_blank' /> - JavaScript charting library based on SVG, with fallbacks to VML and canvas for old browsers.
             </Paragraph>
           </Box>
         </Box>
