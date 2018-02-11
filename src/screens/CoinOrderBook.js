@@ -69,10 +69,9 @@ class OrderBook extends Component {
   }
 }
 
-const mapStateToProps = state =>
-  ({
-    orderBook: state.orderBook.data,
-    exchanges: state.exchanges.all,
-  });
+const mapStateToProps = state => ({
+  orderBook: state.orderBook.data,
+  exchanges: state.exchanges.all,
+});
 
 export default connect(mapStateToProps)(OrderBook);
