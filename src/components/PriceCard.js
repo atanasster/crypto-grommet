@@ -244,11 +244,12 @@ class PriceCard extends Component {
         </Layer>
       );
     }
+    const exchangeName = exchange === 'CCCAGG' ? 'Bitstamp' : exchange;
     return (
       <Box pad='small' margin='small' border='all' align='center'>
         <Box border='bottom' direction='row' align='center'>
           {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
-          <RoutedAnchor path={`/coins/info/${symbol}/${toSymbol}/${exchange}`}>
+          <RoutedAnchor path={`/coins/info/${symbol}/${toSymbol}/${exchangeName}`}>
             <Heading level={2} margin='none'>{coin ? coin.fullName : symbol}</Heading>
           </RoutedAnchor>
         </Box>
