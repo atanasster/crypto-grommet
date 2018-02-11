@@ -11,6 +11,7 @@ import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_str
 import * as ActionTypes from '../actions/price_stream/constants';
 import PriceChart from './PriceChart';
 import Table from './table/Table';
+import { FormattedCoinValue } from './Coin';
 
 const optionDuration = [
   { label: 'Daily', value: 'day' },
@@ -72,7 +73,7 @@ class PriceCard extends Component {
   }
 
   renderLastPrice() {
-    const { priceStream, exchanges } = this.props;
+    const { priceStream, exchanges, toSymbol } = this.props;
 
     if (priceStream) {
       const { data } = priceStream;
@@ -91,10 +92,15 @@ class PriceCard extends Component {
       const pctChange24h = change24h / data.OPEN24HOUR;
       return (
         <Box align='center'>
-          <Box border='bottom' margin='small'>
-            <Text size='xlarge' color={priceColor} margin='medium'>
-              <strong>{numeral(data.PRICE).format('$0,0.00')}</strong>
-            </Text>
+          <Box border='bottom' margin='small' >
+            <strong>
+              <Text size='xlarge' color={priceColor} >
+                {numeral(data.PRICE).format('0,0.00')}
+              </Text>
+              <Text size='xsmall' color={priceColor} >
+                {toSymbol}
+              </Text>
+            </strong>
           </Box>
           <Table>
             <tbody>
@@ -103,7 +109,12 @@ class PriceCard extends Component {
                 <td>
                   <Box direction='row'>
                     <Text color={valueToColor(change24h)}>
-                      <strong>{numeral(change24h).format('$0,0.00')}</strong>
+                      <strong>
+                        {numeral(change24h).format('0,0.00')}
+                        <Text size='xsmall' >
+                          {toSymbol}
+                        </Text>
+                      </strong>
                     </Text>
                     {' / '}
                     <Text color={valueToColor(pctChange24h)}>
@@ -114,15 +125,30 @@ class PriceCard extends Component {
               </tr>
               <tr>
                 <td>24hr open</td>
-                <td>{numeral(data.OPEN24HOUR).format('$0,0.00')}</td>
+                <td>
+                  <FormattedCoinValue
+                    value={data.OPEN24HOUR}
+                    toSymbol={toSymbol}
+                  />
+                </td>
               </tr>
               <tr>
                 <td>24hr high</td>
-                <td>{numeral(data.HIGH24HOUR).format('$0,0.00')}</td>
+                <td>
+                  <FormattedCoinValue
+                    value={data.HIGH24HOUR}
+                    toSymbol={toSymbol}
+                  />
+                </td>
               </tr>
               <tr>
                 <td>24hr low</td>
-                <td>{numeral(data.LOW24HOUR).format('$0,0.00')}</td>
+                <td>
+                  <FormattedCoinValue
+                    value={data.LOW24HOUR}
+                    toSymbol={toSymbol}
+                  />
+                </td>
               </tr>
               {data.LASTMARKET ? (
                 <tr>
@@ -150,7 +176,12 @@ class PriceCard extends Component {
               </tr>
               <tr>
                 <td>Last trade value</td>
-                <td>{numeral(data.LASTVOLUMETO).format('$0,0.00')}</td>
+                <td>
+                  <FormattedCoinValue
+                    value={data.LASTVOLUMETO}
+                    toSymbol={toSymbol}
+                  />
+                </td>
               </tr>
               <tr>
                 <td>24hr volume</td>
@@ -158,7 +189,12 @@ class PriceCard extends Component {
               </tr>
               <tr>
                 <td>24hr value</td>
-                <td>{numeral(data.VOLUME24HOURTO).format('$0,0')}</td>
+                <td>
+                  <FormattedCoinValue
+                    value={data.VOLUME24HOURTO}
+                    toSymbol={toSymbol}
+                  />
+                </td>
               </tr>
 
             </tbody>
