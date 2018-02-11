@@ -36,7 +36,20 @@ function renderAskBidTable(data, key) {
 
 class OrderBookCard extends Component {
   componentDidMount() {
-    const { symbol, toSymbol, exchange } = this.props;
+    this.requestOrderBook(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { symbol, toSymbol, exchange } = nextProps;
+    if (symbol !== this.props.symbol ||
+        toSymbol !== this.props.toSymbol ||
+        exchange !== this.props.exchange) {
+      this.requestOrderBook(nextProps);
+    }
+  }
+
+  requestOrderBook(props) {
+    const { symbol, toSymbol, exchange } = props;
     this.props.requestOrderBook({ symbol, toSymbol, exchange });
   }
 
@@ -89,16 +102,22 @@ class OrderBookCard extends Component {
     };
     const asks = [];
     const bids = [];
-    data.asks.reduce((total, item) => {
-      const t = total + item[1];
-      asks.push([item[0], t]);
-      return t;
-    }, 0);
-    data.bids.reduce((total, item) => {
-      const t = total + item[1];
-      bids.push([item[0], t]);
-      return t;
-    }, 0);
+    // remove unnatural asks / bids
+    const MarketThreshold = 2;
+    data.asks.filter(item => ((item[0] / data.asks[0][0]) < MarketThreshold))
+      .reduce((total, item) => {
+        const t = total + item[1];
+        asks.push([item[0], t]);
+        return t;
+      }
+        , 0);
+    data.bids.filter(item => ((data.bids[0][0] / item[0]) < MarketThreshold))
+      .reduce((total, item) => {
+        const t = total + item[1];
+        bids.push([item[0], t]);
+        return t;
+      }
+        , 0);
     bids.reverse();
     return (
       <ReactHighcharts
