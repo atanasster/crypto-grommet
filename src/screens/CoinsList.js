@@ -13,19 +13,31 @@ import Table from '../components/table/Table';
 class CoinsList extends Component {
   renderCoinsList() {
     const { coins: { all: allCoins } } = this.props;
-    const rows = allCoins.map(coin => (
-      <tr key={coin.id} >
-        <td><Anchor href={coin.url} target='_blank'><Image src={coin.imageUrl} style={{ width: '24px', height: '24px' }} /></Anchor></td>
-        <td><RoutedAnchor path={`/coins/${coin.symbol}`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
-        <td>{coin.algorithm}</td>
-        <td>{coin.proofType}</td>
-        <td>{coin.fullyPremined === '0' ? 'Yes' : ''}</td>
-        <td>{coin.preMinedValue}</td>
-        <td style={{ textAlign: 'right' }}>{numeral(coin.totalCoinSupply).format('0,000')}</td>
-        <td>{coin.totalCoinsFreeFloat}</td>
-        <td>{coin.sponsored ? 'Yes' : ''}</td>
-      </tr>
-    ));
+    const rows = Object.keys(allCoins).sort((a, b) => {
+      const aVal = a.toUpperCase();
+      const bVal = b.toUpperCase();
+      if (aVal > bVal) {
+        return 1;
+      } else if (aVal < bVal) {
+        return -1;
+      }
+      return 0;
+    }).map((key) => {
+      const coin = allCoins[key];
+      return (
+        <tr key={coin.id} >
+          <td><Anchor href={coin.url} target='_blank'><Image src={coin.imageUrl} style={{ width: '24px', height: '24px' }} /></Anchor></td>
+          <td><RoutedAnchor path={`/coins/info/${coin.symbol}/USD/Bitstamp`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
+          <td>{coin.algorithm}</td>
+          <td>{coin.proofType}</td>
+          <td>{coin.fullyPremined === '0' ? 'Yes' : ''}</td>
+          <td>{coin.preMinedValue}</td>
+          <td style={{ textAlign: 'right' }}>{numeral(coin.totalCoinSupply).format('0,000')}</td>
+          <td>{coin.totalCoinsFreeFloat}</td>
+          <td>{coin.sponsored ? 'Yes' : ''}</td>
+        </tr>
+      );
+    });
     return (
       <Table>
         <thead>

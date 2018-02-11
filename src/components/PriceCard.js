@@ -219,7 +219,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 const mapStateToProps = (state, props) => ({
   priceStream: state.priceStream[ActionTypes.actionToKey(props)],
   priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
-  coin: state.coins.all.find(c => (c.symbol === props.symbol)),
+  coin: state.coins.all[props.symbol],
 });
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);
