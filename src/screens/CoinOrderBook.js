@@ -17,7 +17,7 @@ class OrderBook extends Component {
     const { exchanges } = nextProps;
     if (symbol !== this.props.match.params.symbol ||
       toSymbol !== this.props.match.params.toSymbol ||
-      exchanges.length !== this.props.exchanges.length) {
+      Object.keys(exchanges).length !== Object.keys(this.props.exchanges).length) {
       this.buildOrderBookCards(nextProps);
     }
   }
@@ -25,7 +25,9 @@ class OrderBook extends Component {
   buildOrderBookCards(props) {
     const { exchanges } = props;
     const { symbol, toSymbol } = props.match.params;
-    const selected = exchanges.filter(exchange => (exchange.hasOrderBook));
+    const selected = Object.keys(exchanges)
+      .map(key => (exchanges[key]))
+      .filter(exchange => (exchange.hasOrderBook));
     const cards = selected.map(exchange => (
       <OrderBookCard
         key={`order_${exchange.name}`}

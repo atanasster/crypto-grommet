@@ -12,7 +12,6 @@ import * as ActionTypes from '../actions/price_stream/constants';
 import PriceChart from './PriceChart';
 import Table from './table/Table';
 
-
 const optionDuration = [
   { label: 'Daily', value: 'day' },
   { label: 'Hourly', value: 'hour' },
@@ -73,7 +72,8 @@ class PriceCard extends Component {
   }
 
   renderLastPrice() {
-    const { priceStream } = this.props;
+    const { priceStream, exchanges } = this.props;
+
     if (priceStream) {
       const { data } = priceStream;
       let priceColor;
@@ -86,6 +86,8 @@ class PriceCard extends Component {
       } else {
         priceColor = valueToColor(0);
       }
+      const exchange = exchanges[data.LASTMARKET];
+      console.log(exchanges.all);
       const change24h = data.PRICE - data.OPEN24HOUR;
       const pctChange24h = change24h / data.OPEN24HOUR;
       return (
@@ -126,7 +128,19 @@ class PriceCard extends Component {
               {data.LASTMARKET ? (
                 <tr>
                   <td>Last exchange</td>
-                  <td><strong>{data.LASTMARKET}</strong></td>
+                  <td>
+                    <RoutedAnchor path={`/exchanges/${data.LASTMARKET}`}>
+                      <Box align='center' direction='row'>
+                        {exchange ? (
+                          <Image
+                            src={exchange.logo}
+                            style={{ height: '24px' }}
+                          />)
+                          : (<strong>{data.LASTMARKET}</strong>)
+                        }
+                      </Box>
+                    </RoutedAnchor>
+                  </td>
                 </tr>
               ) : null
               }
@@ -252,6 +266,7 @@ const mapStateToProps = (state, props) => ({
   priceStream: state.priceStream[ActionTypes.actionToKey(props)],
   priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
   coin: state.coins.all[props.symbol],
+  exchanges: state.exchanges.all,
 });
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);

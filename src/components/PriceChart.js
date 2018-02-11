@@ -40,6 +40,9 @@ class PriceChart extends Component {
       credits: {
         enabled: false,
       },
+      tooltip: {
+        shared: true,
+      },
       rangeSelector: {
         enabled: false,
         selected: 1,
@@ -53,7 +56,7 @@ class PriceChart extends Component {
           x: -3,
         },
         title: {
-          text: 'OHLC',
+          text: `${symbol}/${toSymbol}`,
         },
         height: '60%',
         lineWidth: 2,

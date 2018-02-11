@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Box } from 'grommet';
-import { requestAllOrderBooks } from '../actions/order_book/actions';
 import CoinPage from '../components/CoinPage';
 import PriceCard from '../components/PriceCard';
 import PriceChart from '../components/PriceChart';
 import OrderBookCard from '../components/OrderBookCard';
 
 
-class CoinInfo extends Component {
+export default class CoinInfo extends Component {
   render() {
     const { symbol, toSymbol, exchange } = this.props.match.params;
     return (
@@ -39,13 +36,3 @@ class CoinInfo extends Component {
     );
   }
 }
-
-const mapDispatchToProps = dispatch => bindActionCreators({ requestAllOrderBooks }, dispatch);
-
-const mapStateToProps = state =>
-  ({
-    orderBook: state.orderBook,
-    exchanges: state.exchanges.all,
-  });
-
-export default connect(mapStateToProps, mapDispatchToProps)(CoinInfo);

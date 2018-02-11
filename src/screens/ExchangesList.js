@@ -21,7 +21,8 @@ function renderExchange(exchange, index) {
 
 class ExchangesList extends Component {
   renderExchanges() {
-    const { exchanges: { all: allExchanges }, countries } = this.props;
+    const { exchanges: { all }, countries } = this.props;
+    const allExchanges = Object.keys(all).map(key => all[key]);
     let filtered = [...allExchanges];
     if (countries.length) {
       filtered = filtered.filter(e =>

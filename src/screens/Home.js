@@ -50,8 +50,9 @@ class Home extends Component {
   };
 
   exchangesByName(name) {
-    const { exchanges, countries } = this.props;
+    const { exchanges: allExchanges, countries } = this.props;
     const continent = continents.find(c => (c.name === name));
+    const exchanges = Object.keys(allExchanges).map(key => allExchanges[key]);
     const continentExchanges = [];
     countries.filter(c => (c.continent === continent.code))
       .forEach((c) => {
