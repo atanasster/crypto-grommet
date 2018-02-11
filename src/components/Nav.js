@@ -22,8 +22,8 @@ export default () => (
     <Box direction='row' align='center'>
       <NavAnchor path='/exchanges' label='exchanges' />
       <NavAnchor path='/coins' label='coins' />
-      <NavAnchor path='/coins/info/BTC/USD/Bitstamp' label='bitcoin' />
-      <NavAnchor path='/coins/info/ETH/USD/Bitstamp' label='ethereum' />
+      <NavAnchor path='/coins/info/BTC/USD/Bittrex' label='bitcoin' />
+      <NavAnchor path='/coins/info/ETH/USD/Bittrex' label='ethereum' />
     </Box>
   </Box>
 );
