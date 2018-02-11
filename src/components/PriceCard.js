@@ -87,7 +87,6 @@ class PriceCard extends Component {
         priceColor = valueToColor(0);
       }
       const exchange = exchanges[data.LASTMARKET];
-      console.log(exchanges.all);
       const change24h = data.PRICE - data.OPEN24HOUR;
       const pctChange24h = change24h / data.OPEN24HOUR;
       return (
@@ -130,14 +129,15 @@ class PriceCard extends Component {
                   <td>Last exchange</td>
                   <td>
                     <RoutedAnchor path={`/exchanges/${data.LASTMARKET}`}>
-                      <Box align='center' direction='row'>
+                      <Box align='center' direction='row' justify='between'>
                         {exchange ? (
                           <Image
                             src={exchange.logo}
                             style={{ height: '24px' }}
                           />)
-                          : (<strong>{data.LASTMARKET}</strong>)
+                          : null
                         }
+                        <strong>{data.LASTMARKET}</strong>
                       </Box>
                     </RoutedAnchor>
                   </td>
