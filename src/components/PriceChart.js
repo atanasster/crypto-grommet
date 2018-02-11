@@ -16,7 +16,6 @@ class PriceChart extends Component {
 
   renderChart() {
     const { priceHistory } = this.props;
-    console.log(priceHistory);
     const { symbol, toSymbol } = this.props;
     const groupingUnits = [[
       'week',
