@@ -24,7 +24,7 @@ export default class ExchangeCard extends Component {
             <ExchangeCountries countries={exchange.countries} />
           </Box>
         )}
-        borderTitle='bottom'
+        border='top'
       >
         <Paragraph>
           {renderURLS(exchange.url)}
