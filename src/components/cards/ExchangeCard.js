@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Anchor, Text, Paragraph } from 'grommet';
-import Exchange, { ExchangeCountries } from './Exchange';
+import Exchange, { ExchangeCountries } from '../Exchange';
 import Card from './Card';
 
 export function renderURLS(url) {

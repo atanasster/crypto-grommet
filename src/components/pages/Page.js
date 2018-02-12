@@ -7,7 +7,7 @@ import {
   Anchor,
   RoutedAnchor,
 } from 'grommet';
-import TopMenu from '../components/TopMenu';
+import TopMenu from '../TopMenu';
 
 export default class Page extends Component {
   componentDidMount() {
@@ -16,22 +16,28 @@ export default class Page extends Component {
 
   render() {
     const { children, desc, name } = this.props;
+    let header;
+    if (name) {
+      header = (
+        <Box direction='row' responsive={true}>
+          <Box margin={{ vertical: 'large' }} align='start'>
+            <Heading level={1}>
+              <strong>{name}</strong>
+            </Heading>
+            {desc ? (
+              <Paragraph size='large'>
+                {desc}
+              </Paragraph>
+            ) : null}
+          </Box>
+        </Box>
+      );
+    }
     return (
       <Box>
-        <Box pad={{ horizontal: 'large', top: 'large' }}>
+        <Box pad={{ horizontal: 'large', top: 'medium' }}>
           <TopMenu />
-          <Box direction='row' responsive={true}>
-            <Box margin={{ vertical: 'large' }} align='start'>
-              <Heading level={1}>
-                <strong>{name}</strong>
-              </Heading>
-              {desc ? (
-                <Paragraph size='large'>
-                  {desc}
-                </Paragraph>
-              ) : null}
-            </Box>
-          </Box>
+          {header}
           {children}
         </Box>
 
@@ -64,9 +70,10 @@ export default class Page extends Component {
 
 Page.propTypes = {
   desc: PropTypes.object,
-  name: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  name: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 Page.defaultProps = {
   desc: undefined,
+  name: undefined,
 };

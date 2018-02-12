@@ -5,10 +5,10 @@ import {
 } from 'grommet';
 import { Blank } from 'grommet-icons';
 
-import CountryMultiSelect from '../components/select/CountryMultiSelect';
-import ExchangeCard from '../components/ExchangeCard';
-import Page from '../components/Page';
-import CardScroll from '../components/CardScroll';
+import CountryMultiSelect from '../../components/select/CountryMultiSelect';
+import ExchangeCard from '../../components/cards/ExchangeCard';
+import Page from '../../components/pages/Page';
+import CardScroll from '../../components/CardScroll';
 
 class ExchangesList extends Component {
   renderExchanges() {

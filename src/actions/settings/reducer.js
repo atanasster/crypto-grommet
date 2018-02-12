@@ -1,8 +1,17 @@
 
+const aggExchange = 'CCCAGG';
+
 const initialState = {
   defaultExchange: 'Bitstamp',
-  defaultCoins: ['BTC', 'ETH', 'LTC', 'BCH', 'ETC', 'XRP'],
-  aggregatedExchange: 'CCCAGG',
+  favCoins: [
+    { symbol: 'BTC', toSymbol: 'USD' },
+    { symbol: 'ETH', toSymbol: 'USD' },
+    { symbol: 'LTC', toSymbol: 'USD' },
+    { symbol: 'BCH', toSymbol: 'USD' },
+    { symbol: 'ETC', toSymbol: 'USD' },
+    { symbol: 'XRP', toSymbol: 'USD' },
+  ],
+  aggregatedExchange: aggExchange,
 };
 
 export default (state = initialState) => state;

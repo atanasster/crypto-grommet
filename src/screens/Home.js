@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Box, WorldMap, Heading, Image, RoutedAnchor } from 'grommet';
 import Table from '../components/table/Table';
-import Page from '../components/Page';
-import PriceCard from '../components/PriceCard';
+import Page from '../components/pages/Page';
 import SideLayer from '../components/SideLayer';
-import CardScroll from '../components/CardScroll';
 import { ExchangeCountries } from '../components/Exchange';
+import FavoritePrices from '../components/FavoritePrices';
+import FavoriteOrderBooks from '../components/FavoriteOrderBooks';
 
 const continents = [
   {
@@ -88,38 +88,15 @@ class Home extends Component {
     }
   };
 
-  renderPriceCards() {
-    const { defaultCoins } = this.props;
-    const cards = defaultCoins.map((symbol, index) => {
-      const colors = [
-        'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
-      ];
-      const colorIdx = index % colors.length;
-      return (
-        <PriceCard
-          key={`history_${index}`}
-          color={colors[colorIdx]}
-          symbol={symbol}
-        />
-      );
-    });
-    return (
-      <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-        <CardScroll>
-          {cards}
-        </CardScroll>
-      </Box>
-    );
-  }
-
   render() {
     const { continentExchanges, continent, worldContinent, worldExchanges } = this.state;
+    const { aggregatedExchange, defaultExchange } = this.props;
     let layer;
     if (continentExchanges) {
       const exchanges = continentExchanges.map(exchange => (
         <tr key={`e_l_${exchange.id}`}>
-          <td><RoutedAnchor path={`/exchanges/${exchange.name}`}><Image src={exchange.logo} /></RoutedAnchor></td>
-          <td><RoutedAnchor path={`/exchanges/${exchange.name}`}>{exchange.name}</RoutedAnchor></td>
+          <td><RoutedAnchor path={`/exchanges/prices/${exchange.name}`}><Image src={exchange.logo} /></RoutedAnchor></td>
+          <td><RoutedAnchor path={`/exchanges/prices/${exchange.name}`}>{exchange.name}</RoutedAnchor></td>
           <td><Box direction='row'>
             <ExchangeCountries countries={exchange.countries} />
           </Box></td>
@@ -142,31 +119,42 @@ class Home extends Component {
       `${worldExchanges} exchanges in ${worldContinent}, click to see more...`
     ) : null;
     return (
-      <Page name='Crypto Grommet'>
-        <Box align='center' border='bottom'>
-          <Box>
-            <Box direction='row'>
-              <WorldMap
-                style={{ width: 'auto' }}
-                continents={continents.map(c => (
-                  {
-                    ...c,
-                    onClick: this.onContinentClick,
-                    onHover: hover => this.onContinentHover(hover, c.name),
-                  }))}
-                selectColor='accent-2'
-              />
+      <Page>
+        <Box align='center' >
+          <Heading level={1} >
+            <strong>Exchanges by continent</strong>
+          </Heading>
+          <Box direction='row' >
+            <WorldMap
+              style={{ width: 'auto' }}
+              continents={continents.map(c => (
+                {
+                  ...c,
+                  onClick: this.onContinentClick,
+                  onHover: hover => this.onContinentHover(hover, c.name),
+                }))}
+              selectColor='accent-2'
+            />
 
-            </Box>
-            <Box align='end' basis='xsmall'>
-              {continentHover}
-            </Box>
-            {layer}
           </Box>
+          <Box align='end' basis='xsmall'>
+            {continentHover}
+          </Box>
+          {layer}
         </Box>
-        <Box pad='small'>
-          {this.renderPriceCards()}
+        <Box pad='small' align='center' border='top'>
+          <Heading level={1} >
+            <strong>Prices</strong>
+          </Heading>
+          <FavoritePrices exchange={aggregatedExchange} />
         </Box>
+        <Box pad='small' align='center' border='top' >
+          <Heading level={1} >
+            <strong>Order books</strong>
+          </Heading>
+          <FavoriteOrderBooks exchange={defaultExchange} />
+        </Box>
+
       </Page>
     );
   }
@@ -175,7 +163,8 @@ class Home extends Component {
 const mapStateToProps = state => ({
   exchanges: state.exchanges.all,
   countries: state.countries.all,
-  defaultCoins: state.settings.defaultCoins,
+  aggregatedExchange: state.settings.aggregatedExchange,
+  defaultExchange: state.settings.defaultExchange,
 });
 
 export default connect(mapStateToProps)(Home);

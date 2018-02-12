@@ -6,14 +6,14 @@ import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Text, Chart, Menu, Layer, Button } from 'grommet';
 import { Close } from 'grommet-icons';
-import requestPriceHistory from '../actions/price_history/actions';
-import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_stream/actions';
-import * as ActionTypes from '../actions/price_stream/constants';
+import requestPriceHistory from '../../actions/price_history/actions';
+import { subscribeLastPrices, unSubscribeLastPrices } from '../../actions/price_stream/actions';
+import * as ActionTypes from '../../actions/price_stream/constants';
 import Card from './Card';
-import PriceChart from './PriceChart';
-import Exchange from './Exchange';
-import Table from './table/Table';
-import { FormattedCoinValue, CoinToCoin } from './Coin';
+import PriceChart from '../PriceChart';
+import Exchange from '../Exchange';
+import Table from '../table/Table';
+import { FormattedCoinValue, CoinToCoin } from '../Coin';
 
 const optionDuration = [
   { label: 'Daily', value: 'day' },

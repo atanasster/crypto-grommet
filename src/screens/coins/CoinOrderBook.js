@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CardScroll from '../components/CardScroll';
-import CoinPage from '../components/CoinPage';
-import OrderBookCard from '../components/OrderBookCard';
-import { actionToKey } from '../actions/price_stream/constants';
+import CardScroll from '../../components/CardScroll';
+import CoinPage from '../../components/pages/CoinPage';
+import OrderBookCard from '../../components/cards/OrderBookCard';
+import { actionToKey } from '../../actions/price_stream/constants';
 
 class OrderBook extends Component {
   state = { cards: [] };

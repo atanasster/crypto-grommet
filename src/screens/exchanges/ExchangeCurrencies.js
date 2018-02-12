@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Box, Text, Heading, RoutedAnchor } from 'grommet';
-import CardScroll from '../components/CardScroll';
-import Page from '../components/Page';
-import Table from '../components/table/Table';
-import requestExchangeInfo from '../actions/exchange/actions';
-import Exchange from '../components/Exchange';
+import { Box, Text, RoutedAnchor } from 'grommet';
+import CardScroll from '../../components/CardScroll';
+import ExchangePage from '../../components/pages/ExchangePage';
+import Table from '../../components/table/Table';
+import requestExchangeInfo from '../../actions/exchange/actions';
 
 class ExchangeCurrencies extends Component {
   componentDidMount() {
@@ -75,14 +74,11 @@ class ExchangeCurrencies extends Component {
       });
     }
     return (
-      <Page name={<Exchange exchange={exchange.name} level={1} />} >
-        <Box align='center'>
-          <Heading level={4} margin='none'><strong>Currencies</strong></Heading>
-          <CardScroll>
-            {currencies}
-          </CardScroll>
-        </Box>
-      </Page>
+      <ExchangePage exchange={exchange.name} >
+        <CardScroll>
+          {currencies}
+        </CardScroll>
+      </ExchangePage>
     );
   }
 }

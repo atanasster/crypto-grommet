@@ -7,8 +7,8 @@ import {
   Anchor,
   RoutedAnchor,
 } from 'grommet';
-import Page from '../components/Page';
-import Table from '../components/table/Table';
+import Page from '../../components/pages/Page';
+import Table from '../../components/table/Table';
 
 class CoinsList extends Component {
   renderCoinsList() {

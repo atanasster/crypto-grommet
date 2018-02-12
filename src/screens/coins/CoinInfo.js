@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Box } from 'grommet';
-import CoinPage from '../components/CoinPage';
-import PriceCard from '../components/PriceCard';
-import PriceChart from '../components/PriceChart';
-import OrderBookCard from '../components/OrderBookCard';
+import CoinPage from '../../components/pages/CoinPage';
+import PriceCard from '../../components/cards/PriceCard';
+import PriceChart from '../../components/PriceChart';
+import OrderBookCard from '../../components/cards/OrderBookCard';
 
 
 export default class CoinInfo extends Component {

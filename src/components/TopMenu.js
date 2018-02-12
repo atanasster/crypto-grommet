@@ -10,7 +10,7 @@ export const NavAnchor = ({ path, label }) => (
 );
 
 const TopMenu = ({ defaultExchange }) => (
-  <Box direction='row' justify='between' align='center'>
+  <Box direction='row' justify='between' align='center' pad={{ bottom: 'medium' }} border='bottom'>
     <RoutedAnchor path='/'>
       <Box direction='row' align='center'>
         <GrommetIcon color='plain' />

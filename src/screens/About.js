@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Box, Anchor, Paragraph, Heading } from 'grommet';
-import Page from '../components/Page';
+import Page from '../components/pages/Page';
 
 export default class About extends Component {
   render() {

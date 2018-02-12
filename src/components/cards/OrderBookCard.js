@@ -6,12 +6,12 @@ import ReactHighcharts from 'react-highcharts';
 import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
-import requestOrderBook from '../actions/order_book/actions';
-import Table from './table/Table';
+import requestOrderBook from '../../actions/order_book/actions';
+import Table from '../table/Table';
 import Card from './Card';
-import { CoinToCoin } from './Coin';
-import Exchange from './Exchange';
-import * as ActionTypes from '../actions/price_stream/constants';
+import { CoinToCoin } from '../Coin';
+import Exchange from '../Exchange';
+import * as ActionTypes from '../../actions/price_stream/constants';
 
 function renderAskBidTable(data, key) {
   const rows = data.slice(0, 10).map((item, index) => (
