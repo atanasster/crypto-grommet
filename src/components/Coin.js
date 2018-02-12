@@ -54,7 +54,7 @@ const mapStateToProps = (state, props) => ({
 const ConnectedCoin = connect(mapStateToProps)(Coin);
 
 Coin.defaultProps = {
-  level: 2,
+  level: 3,
   border: 'bottom',
 };
 
