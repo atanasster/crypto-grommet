@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Box, Text, RoutedAnchor } from 'grommet';
 import CardScroll from '../../components/CardScroll';
+import Coin from '../../components/Coin';
+import Card from '../../components/cards/Card';
 import ExchangePage from '../../components/pages/ExchangePage';
 import Table from '../../components/table/Table';
 import requestExchangeInfo from '../../actions/exchange/actions';
@@ -59,17 +61,25 @@ class ExchangeCurrencies extends Component {
     );
   }
   render() {
-    const { exchange } = this.props;
+    const { exchange, defaultCurrency } = this.props;
     let currencies;
     if (exchange.currencies) {
       currencies = Object.keys(exchange.currencies).map((key) => {
         const currency = exchange.currencies[key];
         return (
-          <Box key={`curr${currency.code}`} border='all' margin='small' pad='small' align='center'>
-            <RoutedAnchor path={`/coins/info/${currency.code}/USD/${exchange.name}`}>{currency.code}</RoutedAnchor>
-            <Text size='xsmall'>precision: {currency.precision}</Text>
+          <Card
+            key={`curr${currency.code}`}
+            title={(
+              <Coin
+                symbol={currency.code}
+                toSymbol={defaultCurrency}
+                exchange={exchange.name}
+              />
+            )}
+            subTitle={`precision: ${currency.precision}`}
+          >
             {this.renderCurrencyPairs(currency.code)}
-          </Box>
+          </Card>
         );
       });
     }
@@ -89,6 +99,7 @@ const mapStateToProps = (state, props) =>
   ({
     exchange: state.exchange[props.match.params.exchange] ||
   { id: props.match.params.exchange, name: props.match.params.exchange },
+    defaultCurrency: state.settings.defaultCurrency,
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExchangeCurrencies);

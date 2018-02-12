@@ -22,11 +22,14 @@ const Card = ({ title, subTitle, children, border, borderTitle }) => (
 Card.defaultProps = {
   border: null,
   borderTitle: null,
+  subTitle: undefined,
 };
 
 Card.propTypes = {
   border: PropTypes.string,
   borderTitle: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  subTitle: PropTypes.string,
 };
 
 export default Card;

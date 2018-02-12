@@ -12,6 +12,7 @@ const initialState = {
     { symbol: 'XRP', toSymbol: 'USD' },
   ],
   aggregatedExchange: aggExchange,
+  defaultCurrency: 'USD',
 };
 
 export default (state = initialState) => state;
