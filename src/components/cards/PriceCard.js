@@ -4,13 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import numeral from 'numeral';
-import { Box, Text, Chart, Menu, Layer, Button } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Box, Text, Chart, Menu, RoutedButton } from 'grommet';
 import requestPriceHistory from '../../actions/price_history/actions';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../actions/price_stream/actions';
 import * as ActionTypes from '../../actions/price_stream/constants';
 import Card from './Card';
-import PriceChart from '../PriceChart';
 import Exchange from '../Exchange';
 import Table from '../table/Table';
 import { FormattedCoinValue, CoinToCoin } from '../Coin';
@@ -203,36 +201,9 @@ class PriceCard extends Component {
     this.setState({ points: item.value });
   }
 
-  onClick = (e) => {
-    e.preventDefault();
-    this.setState({ chart: true });
-  }
   render() {
     const { symbol, toSymbol, exchange, color, priceHistory } = this.props;
-    const { period, points, chart } = this.state;
-    let imageLayer;
-    if (chart) {
-      const closeLayer = () => this.setState({ chart: undefined });
-      imageLayer = (
-        <Layer onEsc={closeLayer} plain={true}>
-          <Box full={true} background={{ color: 'black', opacity: 'weak' }}>
-            <Box align='end' pad='medium'>
-              <Button icon={<Close size='large' color='white' />} onClick={closeLayer} />
-            </Box>
-            <Box margin='medium' basis='xlarge'>
-              <PriceChart
-                symbol={symbol}
-                toSymbol={toSymbol}
-                exchange={exchange}
-                period={period}
-                points={points}
-              />
-            </Box>
-          </Box>
-        </Layer>
-      );
-    }
-
+    const { period, points } = this.state;
     return (
       <Card
         title={<CoinToCoin symbol={symbol} toSymbol={toSymbol} exchange={exchange} border='bottom' />}
@@ -257,22 +228,22 @@ class PriceCard extends Component {
                 label={`${optionLimit.find(p => (p.value === points)).value} ${period}s`}
               />
             </Box>
-            <Chart
-              thickness='xsmall'
-              onClick={this.onClick}
-              type='line'
-              color={color}
-              style={{ cursor: 'pointer' }}
-              values={priceHistory ? priceHistory.data.map((price, index) => ({
-                value: [index, price.close],
-                label: moment(price.time)
-                  .format('LLL'),
-              })) : []}
-            />
+            <RoutedButton path={`/coins/chart/${symbol}/${toSymbol}/${exchange}`}>
+              <Chart
+                thickness='xsmall'
+                type='line'
+                color={color}
+                style={{ cursor: 'pointer' }}
+                values={priceHistory ? priceHistory.data.map((price, index) => ({
+                  value: [index, price.close],
+                  label: moment(price.time)
+                    .format('LLL'),
+                })) : []}
+              />
+            </RoutedButton>
           </Box>
           {this.renderLastPrice()}
         </Box>
-        {imageLayer}
       </Card>
     );
   }
