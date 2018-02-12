@@ -45,9 +45,9 @@ class PriceCard extends Component {
     this.state = { period: props.period, points: props.points, chart: false };
   }
 
-  requestPriceHistory(period, points, props) {
+  requestPriceHistory(period, limit, props) {
     const { symbol, toSymbol, exchange } = props;
-    this.props.requestPriceHistory({ symbol, toSymbol, exchange, period, points });
+    this.props.requestPriceHistory({ symbol, toSymbol, exchange, period, limit });
   }
 
 
