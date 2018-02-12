@@ -1,7 +1,7 @@
 {
   "name": "crypto-grommet",
-  "version": "0.1.0",
-  "description": "Crypto browser with grommet v2",
+  "version": "0.2.0",
+  "description": "Crypto browser",
   "main": "src/index.js",
   "homepage": "https://crypto-grommet.herokuapp.com",
   "bugs": "https://github.com/atanasster/crypto-grommet/issues",
