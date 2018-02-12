@@ -22,8 +22,8 @@ const TopMenu = ({ defaultExchange }) => (
     <Box direction='row' align='center'>
       <NavAnchor path='/exchanges' label='exchanges' />
       <NavAnchor path='/coins' label='coins' />
-      <NavAnchor path={`/coins/info/BTC/USD/${defaultExchange}`} label='bitcoin' />
-      <NavAnchor path={`/coins/info/ETH/USD/${defaultExchange}`} label='ethereum' />
+      <NavAnchor path={`/coins/general/BTC/USD/${defaultExchange}`} label='bitcoin' />
+      <NavAnchor path={`/coins/general/ETH/USD/${defaultExchange}`} label='ethereum' />
     </Box>
   </Box>
 );

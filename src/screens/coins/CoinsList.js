@@ -27,7 +27,7 @@ class CoinsList extends Component {
       return (
         <tr key={coin.id} >
           <td><Anchor href={coin.url} target='_blank'><Image src={coin.imageUrl} style={{ width: '24px', height: '24px' }} /></Anchor></td>
-          <td><RoutedAnchor path={`/coins/info/${coin.symbol}/USD/Bitstamp`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
+          <td><RoutedAnchor path={`/coins/general/${coin.symbol}/USD/Bitstamp`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
           <td>{coin.algorithm}</td>
           <td>{coin.proofType}</td>
           <td>{coin.fullyPremined === '0' ? 'Yes' : ''}</td>

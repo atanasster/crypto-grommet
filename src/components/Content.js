@@ -8,8 +8,10 @@ import ExchangeOrderBooks from '../screens/exchanges/ExchangeOrderBooks';
 import ExchangeCurrencies from '../screens/exchanges/ExchangeCurrencies';
 import ExchangeFees from '../screens/exchanges/ExchangeFees';
 import CoinsList from '../screens/coins/CoinsList';
-import CoinOrderBook from '../screens/coins/CoinOrderBook';
 import CoinInfo from '../screens/coins/CoinInfo';
+import CoinChartAnalysis from '../screens/coins/CoinChartAnalysis';
+import CoinOrderBook from '../screens/coins/CoinOrderBook';
+
 
 export default () => (
   <Switch>
@@ -21,7 +23,8 @@ export default () => (
     <Route exact={true} path='/exchanges/fees/:exchange' component={ExchangeFees} />
     <Route exact={true} path='/exchanges' component={ExchangesList} />
     <Route exact={true} path='/coins/order_book/:symbol/:toSymbol/:exchange' component={CoinOrderBook} />
-    <Route exact={true} path='/coins/info/:symbol/:toSymbol/:exchange' component={CoinInfo} />
+    <Route exact={true} path='/coins/chart/:symbol/:toSymbol/:exchange' component={CoinChartAnalysis} />
+    <Route exact={true} path='/coins/general/:symbol/:toSymbol/:exchange' component={CoinInfo} />
     <Route exact={true} path='/coins' component={CoinsList} />
   </Switch>
 );

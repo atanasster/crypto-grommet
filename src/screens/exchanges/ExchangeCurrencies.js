@@ -38,7 +38,7 @@ class ExchangeCurrencies extends Component {
       key.startsWith(`${currency}/`)).map(key => (markets[key]));
     const rows = pairs.map(pair => (
       <tr key={`${currency}_${pair.id}`}>
-        <td><RoutedAnchor path={`/coins/info/${pair.symbol}/${exchanegName}`}>{pair.symbol}</RoutedAnchor></td>
+        <td><RoutedAnchor path={`/coins/general/${pair.symbol}/${exchanegName}`}>{pair.symbol}</RoutedAnchor></td>
         <td>{pair.darkpool ? 'Y' : ''}</td>
         <td>{pair.maker}</td>
         <td>{pair.taker}</td>

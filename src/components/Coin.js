@@ -22,7 +22,7 @@ const Coin = (
   const title = <Heading level={level} margin='none'>{coin ? coin.fullName : symbol}</Heading>;
   const link = coin ? (
     <RoutedAnchor
-      path={`/coins/info/${symbol}/${toSymbol}/${exchange === aggregatedExchange ? defaultExchange : exchange}`}
+      path={`/coins/general/${symbol}/${toSymbol}/${exchange === aggregatedExchange ? defaultExchange : exchange}`}
     >
       {title}
     </RoutedAnchor>

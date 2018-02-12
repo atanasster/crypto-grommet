@@ -29,7 +29,7 @@ Card.propTypes = {
   border: PropTypes.string,
   borderTitle: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-  subTitle: PropTypes.string,
+  subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 export default Card;

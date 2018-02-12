@@ -5,7 +5,7 @@ import CoinPage from '../../components/pages/CoinPage';
 import OrderBookCard from '../../components/cards/OrderBookCard';
 import { actionToKey } from '../../actions/price_stream/constants';
 
-class OrderBook extends Component {
+class CoinOrderBook extends Component {
   state = { cards: [] };
 
   componentDidMount() {
@@ -76,4 +76,4 @@ const mapStateToProps = state => ({
   exchanges: state.exchanges.all,
 });
 
-export default connect(mapStateToProps)(OrderBook);
+export default connect(mapStateToProps)(CoinOrderBook);

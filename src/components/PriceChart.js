@@ -29,9 +29,6 @@ class PriceChart extends Component {
     const volumeTo = priceHistory.data.map(item => (
       [moment.unix(item.time).valueOf(), item.volumeto]
     ));
-    const volumeFrom = priceHistory.data.map(item => (
-      [moment.unix(item.time).valueOf(), item.volumefrom]
-    ));
     const config = {
       chart: {
         height: '500px',
@@ -51,6 +48,9 @@ class PriceChart extends Component {
       },
       subtitle: {
         text: exchange,
+      },
+      legend: {
+        enabled: true,
       },
       yAxis: [{
         labels: {
@@ -74,24 +74,11 @@ class PriceChart extends Component {
           text: `${toSymbol}`,
         },
         top: '65%',
-        height: '20%',
+        height: '35%',
         offset: 0,
         lineWidth: 2,
       },
-      {
-        labels: {
-          align: 'right',
-          x: -3,
-        },
-        title: {
-          text: `${symbol}`,
-        },
-        top: '80%',
-        height: '20%',
-        offset: 0,
-        lineWidth: 2,
-      }],
-
+      ],
       plotOptions: {
         candlestick: {
           color: 'red',
@@ -101,6 +88,7 @@ class PriceChart extends Component {
       series: [{
         type: 'candlestick',
         name: `${symbol}/${toSymbol}`,
+        id: 'ohlc',
         data: ohlc,
         dataGrouping: {
           units: groupingUnits,
@@ -108,20 +96,15 @@ class PriceChart extends Component {
       }, {
         type: 'column',
         name: `Volume ${toSymbol}`,
+        id: 'volume',
         data: volumeTo,
         yAxis: 1,
+        color: 'black',
         dataGrouping: {
           units: groupingUnits,
         },
-      }, {
-        type: 'column',
-        name: `Volume ${symbol}`,
-        data: volumeFrom,
-        yAxis: 2,
-        dataGrouping: {
-          units: groupingUnits,
-        },
-      }],
+      },
+      ],
     };
     return (
       <ReactHighstock
