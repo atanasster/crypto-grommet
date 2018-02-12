@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Box, Text, Image, Heading, RoutedAnchor } from 'grommet';
+import { Box, Text, Heading, RoutedAnchor } from 'grommet';
 import CardScroll from '../components/CardScroll';
 import Page from '../components/Page';
 import Table from '../components/table/Table';
 import requestExchangeInfo from '../actions/exchange/actions';
+import Exchange from '../components/Exchange';
 
-class Exchange extends Component {
+class ExchangeCurrencies extends Component {
   componentDidMount() {
     this.props.requestExchangeInfo(this.props.match.params.exchange);
   }
@@ -74,7 +75,7 @@ class Exchange extends Component {
       });
     }
     return (
-      <Page name={<Box direction='row' align='center'><Image src={exchange.logo} />{exchange.name}</Box>}>
+      <Page name={<Exchange exchange={exchange.name} level={1} />} >
         <Box align='center'>
           <Heading level={4} margin='none'><strong>Currencies</strong></Heading>
           <CardScroll>
@@ -94,4 +95,4 @@ const mapStateToProps = (state, props) =>
   { id: props.match.params.exchange, name: props.match.params.exchange },
   });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Exchange);
+export default connect(mapStateToProps, mapDispatchToProps)(ExchangeCurrencies);

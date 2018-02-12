@@ -6,14 +6,14 @@ import {
 import { Blank } from 'grommet-icons';
 
 import CountryMultiSelect from '../components/select/CountryMultiSelect';
-import Exchange from '../components/Exchange';
+import ExchangeCard from '../components/ExchangeCard';
 import Page from '../components/Page';
 import CardScroll from '../components/CardScroll';
 
-function renderExchange(exchange, index) {
+function renderExchange(exchange) {
   return (
-    <Box key={index >= 0 ? `exchange_${index}` : undefined} margin='small' border='all'>
-      <Exchange exchange={exchange} />
+    <Box key={`exchange_${exchange.id}`} margin='small' border='all'>
+      <ExchangeCard exchange={exchange} />
     </Box>
   );
 }

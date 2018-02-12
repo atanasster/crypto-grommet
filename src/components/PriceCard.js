@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import numeral from 'numeral';
-import { Box, Heading, Text, Chart, Image, RoutedAnchor, Menu, Layer, Button } from 'grommet';
+import { Box, Text, Chart, Image, RoutedAnchor, Menu, Layer, Button } from 'grommet';
 import { Close } from 'grommet-icons';
 import requestPriceHistory from '../actions/price_history/actions';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_stream/actions';
 import * as ActionTypes from '../actions/price_stream/constants';
+import Card from './Card';
 import PriceChart from './PriceChart';
+import Exchange from './Exchange';
 import Table from './table/Table';
-import { FormattedCoinValue } from './Coin';
+import { FormattedCoinValue, CoinToCoin } from './Coin';
 
 const optionDuration = [
   { label: 'Daily', value: 'day' },
@@ -220,7 +222,7 @@ class PriceCard extends Component {
     this.setState({ chart: true });
   }
   render() {
-    const { symbol, toSymbol, exchange, color, coin, priceHistory, defaultExchange } = this.props;
+    const { symbol, toSymbol, exchange, color, priceHistory } = this.props;
     const { period, points, chart } = this.state;
     let imageLayer;
     if (chart) {
@@ -244,20 +246,14 @@ class PriceCard extends Component {
         </Layer>
       );
     }
-    const exchangeName = exchange === 'CCCAGG' ? defaultExchange : exchange;
+
     return (
-      <Box pad='small' margin='small' border='all' align='center'>
-        <Box border='bottom' direction='row' align='center'>
-          {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
-          <RoutedAnchor path={`/coins/info/${symbol}/${toSymbol}/${exchangeName}`}>
-            <Heading level={2} margin='none'>{coin ? coin.fullName : symbol}</Heading>
-          </RoutedAnchor>
-        </Box>
-        <Box margin='small'>
-          <Text size='medium'><strong>{exchange}</strong></Text>
-        </Box>
+      <Card
+        title={<CoinToCoin symbol={symbol} toSymbol={toSymbol} exchange={exchange} border='bottom' />}
+        subTitle={<Exchange exchange={exchange} />}
+      >
         <Box pad='small'>
-          <Box border='horizontal'>
+          <Box border='bottom'>
             <Box justify='between' direction='row'>
               <Menu
                 a11yTitle='Select period'
@@ -290,7 +286,7 @@ class PriceCard extends Component {
           {this.renderLastPrice()}
         </Box>
         {imageLayer}
-      </Box>
+      </Card>
     );
   }
 }
@@ -302,9 +298,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 const mapStateToProps = (state, props) => ({
   priceStream: state.priceStream[ActionTypes.actionToKey(props)],
   priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
-  coin: state.coins.all[props.symbol],
   exchanges: state.exchanges.all,
-  defaultExchange: state.settings.defaultExchange,
 });
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);

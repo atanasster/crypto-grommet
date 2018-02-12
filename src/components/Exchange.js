@@ -1,53 +1,58 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Anchor, Box, RoutedAnchor, Image, Text } from 'grommet';
+import { connect } from 'react-redux';
 import Flag from 'react-world-flags';
+import { Box, Image, Heading, RoutedAnchor } from 'grommet';
 
-export function renderURLS(url) {
-  const urls = typeof url === 'string' ? [url] : url;
-  return urls.map(href => (
-    <Anchor key={`www_${href}`} href={href}>
-      <Text truncate={true}>{href}</Text>
-    </Anchor>
-  ));
-}
-
-export function renderCountries(countries) {
-  return countries.map(code => (
+export const ExchangeCountries = ({ countries }) => (
+  countries.map(code => (
     <Box key={`country_${code}`} margin={{ right: 'xsmall' }} border='all' alignSelf='center'>
       <Flag
         code={code}
         height={12}
       />
     </Box>
-  ));
-}
+  ))
+);
 
-export default class Exchange extends Component {
-  render() {
-    const { exchange } = this.props;
-    return (
-      <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-        <RoutedAnchor path={`/exchanges/${exchange.name}`}>
-          <Box align='center'>
-            <Box justify='between' direction='row'>
-              {renderCountries(exchange.countries)}
-            </Box>
-            <strong>{exchange.name}</strong>
-            <Image
-              src={exchange.logo}
-              style={{ maxWidth: '80%', maxHeight: '100%', height: 'auto' }}
-            />
-          </Box>
-        </RoutedAnchor>
-        <Box margin={{ top: 'xsmall' }} >
-          {renderURLS(exchange.url)}
-        </Box>
-      </Box>
-    );
-  }
-}
+
+const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) => {
+  const exchangeName = exchange === aggregatedExchange ? 'Aggregated' : exchange;
+  return (
+    <Box border={border} direction='row' align='center'>
+      {exchangeObj ? (<Box margin='small'>
+        <Image
+          src={exchangeObj.logo}
+          style={{
+            width: '24px',
+            height: '24px',
+          }}
+        />
+      </Box>) : null}
+      <RoutedAnchor path={`/exchanges/${exchange}`}>
+        <Heading level={level} margin='none'><strong>{exchangeName}</strong></Heading>
+      </RoutedAnchor>
+    </Box>
+  );
+};
+
+const mapStateToProps = (state, props) => ({
+  exchangeObj: state.exchanges.all[props.exchange],
+  aggregatedExchange: state.settings.aggregatedExchange,
+});
+
+
+const ConnectedExchange = connect(mapStateToProps)(Exchange);
+
+Exchange.defaultProps = {
+  level: 4,
+  border: undefined,
+};
 
 Exchange.propTypes = {
-  exchange: PropTypes.object.isRequired,
+  exchange: PropTypes.string.isRequired,
+  level: PropTypes.number,
+  border: PropTypes.string,
 };
+
+export default ConnectedExchange;

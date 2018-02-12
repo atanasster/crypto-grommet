@@ -9,7 +9,8 @@ import { Box, Text } from 'grommet';
 import requestOrderBook from '../actions/order_book/actions';
 import Table from './table/Table';
 import Card from './Card';
-import Coin from './Coin';
+import { CoinToCoin } from './Coin';
+import Exchange from './Exchange';
 import * as ActionTypes from '../actions/price_stream/constants';
 
 function renderAskBidTable(data, key) {
@@ -132,15 +133,15 @@ class OrderBookCard extends Component {
   }
 
   render() {
-    const { orderBook, symbol, exchange, coin } = this.props;
+    const { orderBook, symbol, exchange } = this.props;
     if (!orderBook) {
       return null;
     }
     const { data, realToSymbol } = orderBook;
     return (
       <Card
-        title={<Coin coin={coin} symbol={symbol} toSymbol={realToSymbol} exchange={exchange} />}
-        subTitle={exchange}
+        title={<CoinToCoin symbol={symbol} toSymbol={realToSymbol} exchange={exchange} border='bottom' />}
+        subTitle={<Exchange exchange={exchange} />}
       >
         <Box basis='small' direction='row'>
           {this.renderChart()}
@@ -165,7 +166,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({ requestOrderBook }, 
 
 const mapStateToProps = (state, props) => ({
   orderBook: state.orderBook.data[ActionTypes.actionToKey(props)],
-  coin: state.coins.all[props.symbol],
 });
 
 OrderBookCard.propTypes = {

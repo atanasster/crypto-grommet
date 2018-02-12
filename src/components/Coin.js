@@ -1,15 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Box, Image, Text, RoutedAnchor, Heading } from 'grommet';
 import numeral from 'numeral';
-
-export default ({ coin, ...other }) => (
-  <Box border='bottom' direction='row' align='center'>
-    {coin ? <Box margin='small'><Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} /></Box> : null}
-    <RoutedAnchor path={`/coins/info/${other.symbol}/${other.toSymbol}/${other.exchange}`}>
-      <Heading level={2} margin='none'>{coin ? coin.fullName : other.symbol}</Heading>
-    </RoutedAnchor>
-  </Box>
-);
 
 export const FormattedCoinValue = ({ value, toSymbol }) => (
   <Box direction='row' align='baseline'>
@@ -22,3 +15,80 @@ export const FormattedCoinValue = ({ value, toSymbol }) => (
 
   </Box>
 );
+
+const Coin = (
+  { coin, exchange, defaultExchange, symbol, toSymbol, level, border, aggregatedExchange }
+) => {
+  const title = <Heading level={level} margin='none'>{coin ? coin.fullName : symbol}</Heading>;
+  const link = coin ? (
+    <RoutedAnchor
+      path={`/coins/info/${symbol}/${toSymbol}/${exchange === aggregatedExchange ? defaultExchange : exchange}`}
+    >
+      {title}
+    </RoutedAnchor>
+  ) : title;
+  let image;
+  if (coin) {
+    image = (
+      <Box margin='small'>
+        <Image src={coin.imageUrl} style={{ width: '34px', height: '34px' }} />
+      </Box>
+    );
+  }
+  return (
+    <Box border={border} direction='row' align='center'>
+      {image}
+      {link}
+    </Box>
+  );
+};
+
+
+const mapStateToProps = (state, props) => ({
+  coin: state.coins.all[props.symbol],
+  defaultExchange: state.settings.defaultExchange,
+  aggregatedExchange: state.settings.aggregatedExchange,
+});
+
+
+const ConnectedCoin = connect(mapStateToProps)(Coin);
+
+Coin.defaultProps = {
+  level: 2,
+  border: 'bottom',
+};
+
+Coin.propTypes = {
+  symbol: PropTypes.string.isRequired,
+  toSymbol: PropTypes.string.isRequired,
+  exchange: PropTypes.string.isRequired,
+  level: PropTypes.number,
+  border: PropTypes.string,
+};
+
+export default ConnectedCoin;
+
+
+export const CoinToCoin = ({ symbol, toSymbol, exchange }) => (
+  <Box align='center' border='bottom'>
+    <ConnectedCoin
+      symbol={symbol}
+      toSymbol={toSymbol}
+      exchange={exchange}
+      border={null}
+    />
+    <ConnectedCoin
+      symbol={toSymbol}
+      toSymbol={symbol}
+      exchange={exchange}
+      level={4}
+      border={null}
+    />
+  </Box>
+);
+
+CoinToCoin.propTypes = {
+  symbol: PropTypes.string.isRequired,
+  toSymbol: PropTypes.string.isRequired,
+  exchange: PropTypes.string.isRequired,
+};

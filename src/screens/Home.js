@@ -6,7 +6,7 @@ import Page from '../components/Page';
 import PriceCard from '../components/PriceCard';
 import SideLayer from '../components/SideLayer';
 import CardScroll from '../components/CardScroll';
-import { renderCountries } from '../components/Exchange';
+import { ExchangeCountries } from '../components/Exchange';
 
 const continents = [
   {
@@ -88,9 +88,9 @@ class Home extends Component {
     }
   };
 
-  static renderPriceCards() {
-    const homeCards = ['BTC', 'ETH', 'LTC', 'BCH', 'ETC', 'XRP'];
-    const cards = homeCards.map((symbol, index) => {
+  renderPriceCards() {
+    const { defaultCoins } = this.props;
+    const cards = defaultCoins.map((symbol, index) => {
       const colors = [
         'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
       ];
@@ -120,7 +120,9 @@ class Home extends Component {
         <tr key={`e_l_${exchange.id}`}>
           <td><RoutedAnchor path={`/exchanges/${exchange.name}`}><Image src={exchange.logo} /></RoutedAnchor></td>
           <td><RoutedAnchor path={`/exchanges/${exchange.name}`}>{exchange.name}</RoutedAnchor></td>
-          <td><Box direction='row'>{renderCountries(exchange.countries)}</Box></td>
+          <td><Box direction='row'>
+            <ExchangeCountries countries={exchange.countries} />
+          </Box></td>
         </tr>
       ));
       layer = (
@@ -163,7 +165,7 @@ class Home extends Component {
           </Box>
         </Box>
         <Box pad='small'>
-          {Home.renderPriceCards()}
+          {this.renderPriceCards()}
         </Box>
       </Page>
     );
@@ -173,6 +175,7 @@ class Home extends Component {
 const mapStateToProps = state => ({
   exchanges: state.exchanges.all,
   countries: state.countries.all,
+  defaultCoins: state.settings.defaultCoins,
 });
 
 export default connect(mapStateToProps)(Home);
