@@ -7,7 +7,7 @@ import {
   Anchor,
   RoutedAnchor,
 } from 'grommet';
-import Nav from '../components/Nav';
+import TopMenu from '../components/TopMenu';
 
 export default class Page extends Component {
   componentDidMount() {
@@ -19,7 +19,7 @@ export default class Page extends Component {
     return (
       <Box>
         <Box pad={{ horizontal: 'large', top: 'large' }}>
-          <Nav />
+          <TopMenu />
           <Box direction='row' responsive={true}>
             <Box margin={{ vertical: 'large' }} align='start'>
               <Heading level={1}>

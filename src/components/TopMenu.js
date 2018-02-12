@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import { Box, Text, RoutedAnchor } from 'grommet';
 import { Bitcoin as GrommetIcon } from 'grommet-icons';
 
@@ -9,7 +9,7 @@ export const NavAnchor = ({ path, label }) => (
   </Box>
 );
 
-export default () => (
+const TopMenu = ({ defaultExchange }) => (
   <Box direction='row' justify='between' align='center'>
     <RoutedAnchor path='/'>
       <Box direction='row' align='center'>
@@ -22,8 +22,15 @@ export default () => (
     <Box direction='row' align='center'>
       <NavAnchor path='/exchanges' label='exchanges' />
       <NavAnchor path='/coins' label='coins' />
-      <NavAnchor path='/coins/info/BTC/USD/Bitstamp' label='bitcoin' />
-      <NavAnchor path='/coins/info/ETH/USD/Bitstamp' label='ethereum' />
+      <NavAnchor path={`/coins/info/BTC/USD/${defaultExchange}`} label='bitcoin' />
+      <NavAnchor path={`/coins/info/ETH/USD/${defaultExchange}`} label='ethereum' />
     </Box>
   </Box>
 );
+
+
+const mapStateToProps = state => ({
+  defaultExchange: state.settings.defaultExchange,
+});
+
+export default connect(mapStateToProps)(TopMenu);

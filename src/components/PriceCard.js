@@ -220,7 +220,7 @@ class PriceCard extends Component {
     this.setState({ chart: true });
   }
   render() {
-    const { symbol, toSymbol, exchange, color, coin, priceHistory } = this.props;
+    const { symbol, toSymbol, exchange, color, coin, priceHistory, defaultExchange } = this.props;
     const { period, points, chart } = this.state;
     let imageLayer;
     if (chart) {
@@ -244,7 +244,7 @@ class PriceCard extends Component {
         </Layer>
       );
     }
-    const exchangeName = exchange === 'CCCAGG' ? 'Bitstamp' : exchange;
+    const exchangeName = exchange === 'CCCAGG' ? defaultExchange : exchange;
     return (
       <Box pad='small' margin='small' border='all' align='center'>
         <Box border='bottom' direction='row' align='center'>
@@ -304,6 +304,7 @@ const mapStateToProps = (state, props) => ({
   priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
   coin: state.coins.all[props.symbol],
   exchanges: state.exchanges.all,
+  defaultExchange: state.settings.defaultExchange,
 });
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);
