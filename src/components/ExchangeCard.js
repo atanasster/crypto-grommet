@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Anchor, Box, RoutedAnchor, Image, Text } from 'grommet';
-import { ExchangeCountries } from './Exchange';
+import { Box, Anchor, Text, Paragraph } from 'grommet';
+import Exchange, { ExchangeCountries } from './Exchange';
+import Card from './Card';
 
 export function renderURLS(url) {
   const urls = typeof url === 'string' ? [url] : url;
@@ -12,31 +13,27 @@ export function renderURLS(url) {
   ));
 }
 
-export default class Exchange extends Component {
+export default class ExchangeCard extends Component {
   render() {
     const { exchange } = this.props;
     return (
-      <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-        <RoutedAnchor path={`/exchanges/${exchange.name}`}>
-          <Box align='center'>
-            <Box justify='between' direction='row'>
-              <ExchangeCountries countries={exchange.countries} />
-            </Box>
-            <strong>{exchange.name}</strong>
-            <Image
-              src={exchange.logo}
-              style={{ maxWidth: '80%', maxHeight: '100%', height: 'auto' }}
-            />
+      <Card
+        title={<Exchange exchange={exchange.name} level={2} border={null} />}
+        subTitle={(
+          <Box direction='row'>
+            <ExchangeCountries countries={exchange.countries} />
           </Box>
-        </RoutedAnchor>
-        <Box margin={{ top: 'xsmall' }} >
+        )}
+        borderTitle='bottom'
+      >
+        <Paragraph>
           {renderURLS(exchange.url)}
-        </Box>
-      </Box>
+        </Paragraph>
+      </Card>
     );
   }
 }
 
-Exchange.propTypes = {
+ExchangeCard.propTypes = {
   exchange: PropTypes.object.isRequired,
 };

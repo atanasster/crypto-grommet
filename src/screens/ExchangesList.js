@@ -10,15 +10,6 @@ import ExchangeCard from '../components/ExchangeCard';
 import Page from '../components/Page';
 import CardScroll from '../components/CardScroll';
 
-function renderExchange(exchange) {
-  return (
-    <Box key={`exchange_${exchange.id}`} margin='small' border='all'>
-      <ExchangeCard exchange={exchange} />
-    </Box>
-  );
-}
-
-
 class ExchangesList extends Component {
   renderExchanges() {
     const { exchanges: { all }, countries } = this.props;
@@ -30,10 +21,8 @@ class ExchangesList extends Component {
           (countries.findIndex(c => (c.code === code)) !== -1)) !== -1));
     }
     const display =
-      filtered.map((exchange, index) => (
-        <div key={`echange_${index}`}>
-          {renderExchange(exchange)}
-        </div>
+      filtered.map(exchange => (
+        <ExchangeCard key={`exchange_${exchange.id}`} exchange={exchange} />
       ));
     return (
       <Fragment>

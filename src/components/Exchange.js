@@ -18,17 +18,22 @@ export const ExchangeCountries = ({ countries }) => (
 
 const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) => {
   const exchangeName = exchange === aggregatedExchange ? 'Aggregated' : exchange;
-  return (
-    <Box border={border} direction='row' align='center'>
-      {exchangeObj ? (<Box margin='small'>
+  let image;
+  if (exchangeObj) {
+    image = (
+      <Box margin={{ horizontal: 'small' }}>
         <Image
           src={exchangeObj.logo}
           style={{
-            width: '24px',
-            height: '24px',
+            height: level > 2 ? '24px' : '34px',
           }}
         />
-      </Box>) : null}
+      </Box>
+    );
+  }
+  return (
+    <Box border={border} direction='row' align='center'>
+      {image}
       <RoutedAnchor path={`/exchanges/${exchange}`}>
         <Heading level={level} margin='none'><strong>{exchangeName}</strong></Heading>
       </RoutedAnchor>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import numeral from 'numeral';
-import { Box, Text, Chart, Image, RoutedAnchor, Menu, Layer, Button } from 'grommet';
+import { Box, Text, Chart, Menu, Layer, Button } from 'grommet';
 import { Close } from 'grommet-icons';
 import requestPriceHistory from '../actions/price_history/actions';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../actions/price_stream/actions';
@@ -75,7 +75,7 @@ class PriceCard extends Component {
   }
 
   renderLastPrice() {
-    const { priceStream, exchanges, toSymbol } = this.props;
+    const { priceStream, toSymbol } = this.props;
 
     if (priceStream) {
       const { data } = priceStream;
@@ -89,7 +89,6 @@ class PriceCard extends Component {
       } else {
         priceColor = valueToColor(0);
       }
-      const exchange = exchanges[data.LASTMARKET];
       const change24h = data.PRICE - data.OPEN24HOUR;
       const pctChange24h = change24h / data.OPEN24HOUR;
       return (
@@ -155,20 +154,7 @@ class PriceCard extends Component {
               {data.LASTMARKET ? (
                 <tr>
                   <td>Last exchange</td>
-                  <td>
-                    <RoutedAnchor path={`/exchanges/${data.LASTMARKET}`}>
-                      <Box align='center' direction='row' justify='between'>
-                        {exchange ? (
-                          <Image
-                            src={exchange.logo}
-                            style={{ height: '24px' }}
-                          />)
-                          : null
-                        }
-                        <strong>{data.LASTMARKET}</strong>
-                      </Box>
-                    </RoutedAnchor>
-                  </td>
+                  <td><Exchange exchange={data.LASTMARKET} /></td>
                 </tr>
               ) : null
               }
@@ -251,6 +237,7 @@ class PriceCard extends Component {
       <Card
         title={<CoinToCoin symbol={symbol} toSymbol={toSymbol} exchange={exchange} border='bottom' />}
         subTitle={<Exchange exchange={exchange} />}
+        border='top'
       >
         <Box pad='small'>
           <Box border='bottom'>
@@ -298,7 +285,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 const mapStateToProps = (state, props) => ({
   priceStream: state.priceStream[ActionTypes.actionToKey(props)],
   priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
-  exchanges: state.exchanges.all,
 });
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);
