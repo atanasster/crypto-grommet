@@ -15,8 +15,7 @@ class PriceChart extends Component {
   }
 
   renderChart() {
-    const { priceHistory } = this.props;
-    const { symbol, toSymbol } = this.props;
+    const { priceHistory, symbol, toSymbol, exchange } = this.props;
     const groupingUnits = [[
       'week',
       [1],
@@ -49,6 +48,9 @@ class PriceChart extends Component {
       },
       title: {
         text: `${symbol}/${toSymbol} Historical`,
+      },
+      subtitle: {
+        text: exchange,
       },
       yAxis: [{
         labels: {
