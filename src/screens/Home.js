@@ -6,7 +6,6 @@ import Page from '../components/pages/Page';
 import SideLayer from '../components/SideLayer';
 import { ExchangeCountries } from '../components/Exchange';
 import FavoritePrices from '../components/FavoritePrices';
-import FavoriteOrderBooks from '../components/FavoriteOrderBooks';
 
 const continents = [
   {
@@ -90,7 +89,7 @@ class Home extends Component {
 
   render() {
     const { continentExchanges, continent, worldContinent, worldExchanges } = this.state;
-    const { aggregatedExchange, defaultExchange } = this.props;
+    const { aggregatedExchange } = this.props;
     let layer;
     if (continentExchanges) {
       const exchanges = continentExchanges.map(exchange => (
@@ -148,13 +147,6 @@ class Home extends Component {
           </Heading>
           <FavoritePrices exchange={aggregatedExchange} />
         </Box>
-        <Box pad='small' align='center' border='top' >
-          <Heading level={1} >
-            <strong>Order books</strong>
-          </Heading>
-          <FavoriteOrderBooks exchange={defaultExchange} />
-        </Box>
-
       </Page>
     );
   }
@@ -164,7 +156,6 @@ const mapStateToProps = state => ({
   exchanges: state.exchanges.all,
   countries: state.countries.all,
   aggregatedExchange: state.settings.aggregatedExchange,
-  defaultExchange: state.settings.defaultExchange,
 });
 
 export default connect(mapStateToProps)(Home);
