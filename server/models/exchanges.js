@@ -1,4 +1,5 @@
 import ccxt from 'ccxt';
+import { sleep } from '../api/utils';
 
 export const exchanges = ccxt.exchanges.map((exchangeId) => {
   const exchange = new ccxt[exchangeId]();
@@ -9,6 +10,7 @@ export const exchanges = ccxt.exchanges.map((exchangeId) => {
     })
     .catch(() => {
       console.log('ERROR : loadMarkets', exchangeId);
+      return sleep();
     });
   return exchange;
 });

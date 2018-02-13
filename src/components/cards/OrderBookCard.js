@@ -142,7 +142,6 @@ class OrderBookCard extends Component {
       <Card
         title={<CoinToCoin symbol={symbol} toSymbol={realToSymbol} exchange={exchange} border='bottom' />}
         subTitle={<Exchange exchange={exchange} />}
-        border='top'
       >
         <Box basis='small' direction='row'>
           {this.renderChart()}

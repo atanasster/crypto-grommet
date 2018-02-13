@@ -208,7 +208,6 @@ class PriceCard extends Component {
       <Card
         title={<CoinToCoin symbol={symbol} toSymbol={toSymbol} exchange={exchange} border='bottom' />}
         subTitle={<Exchange exchange={exchange} />}
-        border='top'
       >
         <Box pad='small'>
           <Box border='bottom'>

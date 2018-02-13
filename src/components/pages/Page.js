@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
   Heading,
   Paragraph,
   Anchor,
+  Text,
   RoutedAnchor,
+  Markdown,
 } from 'grommet';
 import TopMenu from '../TopMenu';
 
@@ -14,20 +16,48 @@ export default class Page extends Component {
     window.scrollTo(0, 0);
   }
 
+  renderMessages = () => {
+    const { messages } = this.props;
+    const colorMap = {
+      error: 'status-critical',
+      warning: 'status-warning',
+      info: 'status-disabled',
+    };
+    const msg = messages.map((message, idx) => (
+      <Box
+        background={colorMap[message.type]}
+        pad='small'
+        key={`message_${idx}`}
+        alignContent='stretch'
+      >
+        <Markdown
+          components={{ p: { component: Text, props: { size: 'large' } } }}
+          content={message.message}
+        />
+      </Box>
+    ));
+    return (
+      <Fragment>
+        {msg}
+      </Fragment>
+    );
+  }
+
   render() {
-    const { children, desc, name } = this.props;
+    const { children, description, name } = this.props;
     let header;
     if (name) {
       header = (
         <Box direction='row' responsive={true}>
-          <Box margin={{ vertical: 'large' }} align='start'>
+          <Box margin={{ vertical: 'medium' }} align='start'>
             <Heading level={1}>
               <strong>{name}</strong>
             </Heading>
-            {desc ? (
-              <Paragraph size='large'>
-                {desc}
-              </Paragraph>
+            {description ? (
+              <Markdown
+                components={{ p: { component: Paragraph, props: { size: 'medium' } } }}
+                content={description}
+              />
             ) : null}
           </Box>
         </Box>
@@ -37,6 +67,7 @@ export default class Page extends Component {
       <Box>
         <Box pad={{ horizontal: 'large', top: 'medium' }}>
           <TopMenu />
+          {this.renderMessages()}
           {header}
           {children}
         </Box>
@@ -69,11 +100,18 @@ export default class Page extends Component {
 }
 
 Page.propTypes = {
-  desc: PropTypes.object,
+  description: PropTypes.string,
+  messages: PropTypes.arrayOf(
+    PropTypes.shape({
+      message: PropTypes.string.isRequired,
+      type: PropTypes.oneOf(['error', 'warning', 'info']),
+    }),
+  ),
   name: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 Page.defaultProps = {
-  desc: undefined,
+  description: undefined,
   name: undefined,
+  messages: [],
 };

@@ -1,6 +1,7 @@
 # crypto-grommet
 
-A sample project using: 
+A react/redux/nodejs/babel/webpack project built with: 
+
 * grommet v2: https://v2.grommet.io/ 
 * cctx: https://github.com/ccxt/ccxt
 * CryptoCompare: https://www.cryptocompare.com/api/

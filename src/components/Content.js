@@ -9,6 +9,7 @@ import ExchangeCurrencies from '../screens/exchanges/ExchangeCurrencies';
 import ExchangeFees from '../screens/exchanges/ExchangeFees';
 import CoinsList from '../screens/coins/CoinsList';
 import CoinInfo from '../screens/coins/CoinInfo';
+import CoinSocial from '../screens/coins/CoinSocial';
 import CoinChartAnalysis from '../screens/coins/CoinChartAnalysis';
 import CoinOrderBook from '../screens/coins/CoinOrderBook';
 
@@ -23,6 +24,7 @@ export default () => (
     <Route exact={true} path='/exchanges/fees/:exchange' component={ExchangeFees} />
     <Route exact={true} path='/exchanges' component={ExchangesList} />
     <Route exact={true} path='/coins/order_book/:symbol/:toSymbol/:exchange' component={CoinOrderBook} />
+    <Route exact={true} path='/coins/social/:symbol/:toSymbol/:exchange' component={CoinSocial} />
     <Route exact={true} path='/coins/chart/:symbol/:toSymbol/:exchange' component={CoinChartAnalysis} />
     <Route exact={true} path='/coins/general/:symbol/:toSymbol/:exchange' component={CoinInfo} />
     <Route exact={true} path='/coins' component={CoinsList} />
