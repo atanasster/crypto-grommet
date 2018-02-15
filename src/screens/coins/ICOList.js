@@ -49,7 +49,7 @@ export default class ICOList extends Component {
   render() {
     return (
       <CoinsList
-        title='ICO'
+        title='ICOs'
         onFilter={this.filterCoin}
         columns={this.columns}
       />);
