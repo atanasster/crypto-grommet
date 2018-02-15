@@ -9,6 +9,26 @@ import { LinkDown, LinkUp } from 'grommet-icons';
 import StyledTable from './StyledTable';
 import PaginationComponent from './Pagination';
 
+const TableComponent = ({ children, className, ...rest }) => (
+  <div
+    className={classnames('rt-table', className)}
+    role='grid'
+    // tabIndex='0'
+    {...rest}
+  >
+    {children}
+  </div>
+);
+
+const TrComponent = ({ children, className, ...rest }) => (
+  <div
+    className={classnames('rt-tr', className)}
+    role='row'
+    {...rest}
+  >
+    {children}
+  </div>
+);
 
 const ThComponent = ({ toggleSort, className, children, ...rest }) => {
   const sortAsc = className.indexOf('-sort-asc') !== -1;
@@ -98,6 +118,8 @@ class Table extends Component {
       PaginationComponent,
       NoDataComponent,
       FilterComponent,
+      TableComponent,
+      TrComponent,
     };
     const props = { ...defaults, ...rest };
     return (
