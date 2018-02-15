@@ -49,7 +49,12 @@ const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) 
     );
   }
   return (
-    <Box border={border} direction='row' align='center'>
+    <Box
+      a11yTitle={`View details of ${exchangeName} exchange`}
+      border={border}
+      direction='row'
+      align='center'
+    >
       {image}
       <RoutedAnchor path={`/exchanges/prices/${exchange}`}>
         <Heading level={level} margin='none'><strong>{exchangeName}</strong></Heading>

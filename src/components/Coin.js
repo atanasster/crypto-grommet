@@ -19,7 +19,8 @@ export const FormattedCoinValue = ({ value, toSymbol }) => (
 const Coin = (
   { coin, exchange, defaultExchange, symbol, toSymbol, level, border, aggregatedExchange }
 ) => {
-  const title = <Heading level={level} margin='none'>{coin ? coin.fullName : symbol}</Heading>;
+  const coinName = coin ? coin.fullName : symbol;
+  const title = <Heading level={level} margin='none'>{coinName}</Heading>;
   const link = coin ? (
     <RoutedAnchor
       path={`/coins/general/${symbol}/${toSymbol}/${exchange === aggregatedExchange ? defaultExchange : exchange}`}
@@ -39,7 +40,12 @@ const Coin = (
     );
   }
   return (
-    <Box border={border} direction='row' align='center'>
+    <Box
+      a11yTitle={`View details of ${coinName} coin`}
+      border={border}
+      direction='row'
+      align='center'
+    >
       {image}
       {link}
     </Box>
