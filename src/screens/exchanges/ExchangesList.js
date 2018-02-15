@@ -51,10 +51,7 @@ class ExchangesList extends Component {
                 /> : undefined}
                 onChange={({ option }) => cell.onChange(option.code)}
               >
-                {(option) => {
-                  console.log(option);
-                  return <Country key={`country_${option.code}`} {...option} />;
-                }}
+                {option => <Country key={`country_${option.code}`} {...option} />}
               </Select>
             ),
             Cell: cell => (
