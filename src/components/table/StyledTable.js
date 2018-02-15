@@ -6,56 +6,48 @@ import ReactTableDOM from './ReactTableDOM';
 
 class GrommetTable extends Component {
   onKeyDown = (event) => {
+    let handled;
     switch (event.key) {
       case 'PageUp': {
         const dom = new ReactTableDOM(this.tableRef);
-        if (dom.previousPage()) {
-          break;
-        }
-        return true;
+        handled = dom.previousPage();
+        break;
       }
       case 'PageDown': {
         const dom = new ReactTableDOM(this.tableRef);
-        if (dom.nextPage()) {
-          break;
-        }
-        return true;
+        handled = dom.nextPage();
+        break;
       }
       case 'Home': {
         const dom = new ReactTableDOM(this.tableRef);
-        if (dom.firstPage()) {
-          break;
-        }
-        return true;
+        handled = dom.firstPage();
+        break;
       }
       case 'End': {
         const dom = new ReactTableDOM(this.tableRef);
-        if (dom.lastPage()) {
-          break;
-        }
-        return true;
+        handled = dom.lastPage();
+        break;
       }
       case 'ArrowRight':
       case 'ArrowLeft': {
         const dom = new ReactTableDOM(this.tableRef);
-        if (event.key === 'ArrowRight' ? dom.focusNextCell() : dom.focusPreviousCell()) {
-          break;
-        }
-        return true;
+        handled = event.key === 'ArrowRight' ? dom.focusNextCell() : dom.focusPreviousCell();
+        break;
       }
       case 'ArrowDown':
       case 'ArrowUp': {
         const dom = new ReactTableDOM(this.tableRef);
-        if (event.key === 'ArrowDown' ? dom.focusNextRow() : dom.focusPreviousRow()) {
-          break;
-        }
-        return true;
+        handled = event.key === 'ArrowDown' ? dom.focusNextRow() : dom.focusPreviousRow();
+        break;
       }
       default:
-        return true;
+        handled = false;
     }
-    event.preventDefault();
-    return false;
+    if (handled) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
   };
 
 
