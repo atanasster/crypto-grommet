@@ -13,7 +13,7 @@ export const CountryFlag = ({ code, height = 12 }) => (
 
 
 export const Country = ({ code, name = 'all countries', level = 4 }) => (
-  <Box direction='row' align='center' >
+  <Box direction='row' align='center' pad={{ horizontal: 'small' }}>
     <CountryFlag code={code} />
     <Box pad={{ horizontal: 'small' }}>
       <Heading margin='xsmall' level={level}>{name}</Heading>
@@ -23,7 +23,7 @@ export const Country = ({ code, name = 'all countries', level = 4 }) => (
 
 export const ExchangeCountries = ({ countries }) => (
   countries.map(code => (
-    <Box key={`country_${code}`} margin={{ right: 'xsmall' }} border='all' alignSelf='center'>
+    <Box key={`country_${code}`} margin={{ horizontal: 'xsmall' }} border='all' alignSelf='center'>
       <CountryFlag code={code} />
     </Box>
   ))

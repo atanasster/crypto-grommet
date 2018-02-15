@@ -23,7 +23,7 @@ const StyledPageInput = styled(TextInput)`
 `;
 
 const StyledSelect = styled(Select)`
-  max-width: 100px;
+  max-width: 80px;
 `;
 const Spacing = ({ size }) => (<Blank size={size || 'small'} />);
 
@@ -90,7 +90,7 @@ export default class ReactTablePagination extends Component {
       <Box direction='row' align='center' >
         <Text>{`${pageText} `}</Text>
         {pageJump}
-        {`${ofText} ${pages || 1}`}
+        <span style={{ whiteSpace: 'nowrap' }}>{`${ofText} ${pages || 1}`}</span>
         <Spacing size='large' />
       </Box>
     );

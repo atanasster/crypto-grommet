@@ -37,6 +37,7 @@ class ExchangesList extends Component {
               (!filter.value || row.countries.indexOf(filter.value) !== -1),
             Filter: cell => (
               <Select
+                tabindex='-1'
                 a11yTitle='Open countries filter'
                 onSearch={this.filterCountries}
                 onClose={() => this.setState({ searchCountries: undefined })}
@@ -49,7 +50,9 @@ class ExchangesList extends Component {
                 value={cell.filter ? <Country
                   {...countries.find(country => (country.code === cell.filter.value))}
                 /> : undefined}
-                onChange={({ option }) => cell.onChange(option.code)}
+                onChange={({ option }) => {
+                  cell.onChange(option.code);
+                }}
               >
                 {option => <Country key={`country_${option.code}`} {...option} />}
               </Select>
