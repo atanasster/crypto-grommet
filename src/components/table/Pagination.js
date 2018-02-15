@@ -63,7 +63,7 @@ export default class ReactTablePagination extends Component {
     if (showPageJump) {
       pageJump = (
         <StyledPageInput
-          a11yTitle='Select page to jump to'
+          aria-label='Select page to jump to'
           type={this.state.page === '' ? 'text' : 'number'}
           onChange={(e) => {
             const val = e.target.value;
@@ -102,7 +102,7 @@ export default class ReactTablePagination extends Component {
       return (
         <Box direction='row'>
           <StyledSelect
-            a11yTitle='Select rows per page'
+            aria-label='Select rows per page'
             onChange={e => onPageSizeChange(Number(e.option.split(' ')[0]))}
             value={`${pageSize} ${this.props.rowsText}`}
             options={pageSizeOptions.map(option => (`${option} ${this.props.rowsText}`))}
@@ -119,7 +119,7 @@ export default class ReactTablePagination extends Component {
     return (
       <Box direction='row' >
         <PreviousComponent
-          a11yTitle='Move to previous page'
+          aria-label='Move to previous page'
           Icon={Previous}
           label={this.props.previousText}
           onClick={canPrevious ? () => this.changePage(page - 1) : null}
@@ -136,7 +136,7 @@ export default class ReactTablePagination extends Component {
       return (
         <Box direction='row' >
           <NextComponent
-            a11yTitle='Move to next page'
+            aria-label='Move to next page'
             reverse={true}
             Icon={Next}
             label={this.props.nextText}
