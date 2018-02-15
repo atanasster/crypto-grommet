@@ -57,7 +57,6 @@ class CoinsList extends Component {
     ]
   );
   onExpand = (row) => {
-    console.log(row);
     if (row.original.ICO) {
       return (
         <Box direction='row' pad='small' justify='between'>
