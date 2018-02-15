@@ -89,6 +89,51 @@ class PriceCard extends Component {
       }
       const change24h = data.PRICE - data.OPEN24HOUR;
       const pctChange24h = change24h / data.OPEN24HOUR;
+      const rows = [
+        {
+          label: '24hr change',
+          value: (
+            <Box direction='row'>
+              <Text color={valueToColor(change24h)}>
+                <strong>
+                  {numeral(change24h).format('0,0.00')}
+                  <Text size='xsmall' >
+                    {toSymbol}
+                  </Text>
+                </strong>
+              </Text>
+              {' / '}
+              <Text color={valueToColor(pctChange24h)}>
+                <strong>{numeral(pctChange24h).format('0.00%')}</strong>
+              </Text>
+            </Box>
+          ),
+        }, {
+          label: '24hr open',
+          value: <FormattedCoinValue value={data.OPEN24HOUR} toSymbol={toSymbol} />,
+        }, {
+          label: '24hr high',
+          value: <FormattedCoinValue value={data.HIGH24HOUR} toSymbol={toSymbol} />,
+        }, {
+          label: '24hr low',
+          value: <FormattedCoinValue value={data.LOW24HOUR} toSymbol={toSymbol} />,
+        }, {
+          label: 'Last exchange',
+          value: <Exchange exchange={data.LASTMARKET} />,
+        }, {
+          label: 'Last trade volume',
+          value: numeral(data.LASTVOLUME).format('0,0.00000000'),
+        }, {
+          label: 'Last trade value',
+          value: <FormattedCoinValue value={data.LASTVOLUMETO} toSymbol={toSymbol} />,
+        }, {
+          label: '24hr volume',
+          value: numeral(data.VOLUME24HOUR).format('0,0'),
+        }, {
+          label: '24hr value',
+          value: <FormattedCoinValue value={data.VOLUME24HOURTO} toSymbol={toSymbol} />,
+        },
+      ];
       return (
         <Box align='center'>
           <Box border='bottom' margin='small' >
@@ -101,90 +146,13 @@ class PriceCard extends Component {
               </Text>
             </strong>
           </Box>
-          <Table>
-            <tbody>
-              <tr>
-                <td>24hr change</td>
-                <td>
-                  <Box direction='row'>
-                    <Text color={valueToColor(change24h)}>
-                      <strong>
-                        {numeral(change24h).format('0,0.00')}
-                        <Text size='xsmall' >
-                          {toSymbol}
-                        </Text>
-                      </strong>
-                    </Text>
-                    {' / '}
-                    <Text color={valueToColor(pctChange24h)}>
-                      <strong>{numeral(pctChange24h).format('0.00%')}</strong>
-                    </Text>
-                  </Box>
-                </td>
-              </tr>
-              <tr>
-                <td>24hr open</td>
-                <td>
-                  <FormattedCoinValue
-                    value={data.OPEN24HOUR}
-                    toSymbol={toSymbol}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>24hr high</td>
-                <td>
-                  <FormattedCoinValue
-                    value={data.HIGH24HOUR}
-                    toSymbol={toSymbol}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>24hr low</td>
-                <td>
-                  <FormattedCoinValue
-                    value={data.LOW24HOUR}
-                    toSymbol={toSymbol}
-                  />
-                </td>
-              </tr>
-              {data.LASTMARKET ? (
-                <tr>
-                  <td>Last exchange</td>
-                  <td><Exchange exchange={data.LASTMARKET} /></td>
-                </tr>
-              ) : null
-              }
-              <tr>
-                <td>Last trade volume</td>
-                <td>{numeral(data.LASTVOLUME).format('0,0.00000000')}</td>
-              </tr>
-              <tr>
-                <td>Last trade value</td>
-                <td>
-                  <FormattedCoinValue
-                    value={data.LASTVOLUMETO}
-                    toSymbol={toSymbol}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>24hr volume</td>
-                <td>{numeral(data.VOLUME24HOUR).format('0,0')}</td>
-              </tr>
-              <tr>
-                <td>24hr value</td>
-                <td>
-                  <FormattedCoinValue
-                    value={data.VOLUME24HOURTO}
-                    toSymbol={toSymbol}
-                  />
-                </td>
-              </tr>
-
-            </tbody>
-          </Table>
+          <Table
+            data={rows}
+            columns={[
+              { accessor: 'label' },
+              { accessor: 'value' },
+            ]}
+          />
         </Box>
       );
     }

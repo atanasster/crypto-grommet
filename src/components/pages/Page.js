@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -10,6 +11,10 @@ import {
   Markdown,
 } from 'grommet';
 import TopMenu from '../TopMenu';
+
+const LargeParagraph = styled(Paragraph)`
+  max-width: 100%;
+`;
 
 export default class Page extends Component {
   componentDidMount() {
@@ -55,7 +60,7 @@ export default class Page extends Component {
             </Heading>
             {description ? (
               <Markdown
-                components={{ p: { component: Paragraph, props: { size: 'medium' } } }}
+                components={{ p: { component: LargeParagraph, props: { size: 'medium' } } }}
                 content={description}
               />
             ) : null}
@@ -86,10 +91,19 @@ export default class Page extends Component {
             justify='center'
           >
             <Box margin={{ horizontal: 'small' }}>
-              <RoutedAnchor path='/about' label='about' />
+              <RoutedAnchor
+                path='/about'
+                label='about'
+                a11yTitle='About crypto-grommet'
+              />
             </Box>
             <Box margin={{ horizontal: 'small' }}>
-              <Anchor href='https://github.com/atanasster/crypto-grommet' target='_blank' label='git' />
+              <Anchor
+                href='https://github.com/atanasster/crypto-grommet'
+                target='_blank'
+                label='git'
+                a11yTitle='Go to the github page for this project'
+              />
             </Box>
 
           </Box>

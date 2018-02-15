@@ -6,7 +6,6 @@ import FavoritePrices from '../../components/FavoritePrices';
 class ExchangePrices extends Component {
   render() {
     const { exchange } = this.props;
-    console.log(this.props);
     return (
       <ExchangePage exchange={exchange} >
         <FavoritePrices exchange={exchange} />

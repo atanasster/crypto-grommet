@@ -30,7 +30,7 @@ const Coin = (
   let image;
   if (coin) {
     image = (
-      <Box margin='small'>
+      <Box margin={{ right: 'small' }}>
         <Image
           src={coin.imageUrl}
           style={{ width: level > 2 ? '24px' : '34px', height: level > 2 ? '24px' : '34px' }}

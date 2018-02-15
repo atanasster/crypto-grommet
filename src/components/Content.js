@@ -8,6 +8,7 @@ import ExchangeOrderBooks from '../screens/exchanges/ExchangeOrderBooks';
 import ExchangeCurrencies from '../screens/exchanges/ExchangeCurrencies';
 import ExchangeFees from '../screens/exchanges/ExchangeFees';
 import CoinsList from '../screens/coins/CoinsList';
+import ICOList from '../screens/coins/ICOList';
 import CoinInfo from '../screens/coins/CoinInfo';
 import CoinSocial from '../screens/coins/CoinSocial';
 import CoinChartAnalysis from '../screens/coins/CoinChartAnalysis';
@@ -28,5 +29,6 @@ export default () => (
     <Route exact={true} path='/coins/chart/:symbol/:toSymbol/:exchange' component={CoinChartAnalysis} />
     <Route exact={true} path='/coins/general/:symbol/:toSymbol/:exchange' component={CoinInfo} />
     <Route exact={true} path='/coins' component={CoinsList} />
+    <Route exact={true} path='/icos' component={ICOList} />
   </Switch>
 );

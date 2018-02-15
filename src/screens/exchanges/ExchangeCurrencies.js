@@ -36,28 +36,29 @@ class ExchangeCurrencies extends Component {
     const { exchange: { markets, name: exchanegName } } = this.props;
     const pairs = Object.keys(markets).filter(key =>
       key.startsWith(`${currency}/`)).map(key => (markets[key]));
-    const rows = pairs.map(pair => (
-      <tr key={`${currency}_${pair.id}`}>
-        <td><RoutedAnchor path={`/coins/general/${pair.symbol}/${exchanegName}`}>{pair.symbol}</RoutedAnchor></td>
-        <td>{pair.darkpool ? 'Y' : ''}</td>
-        <td>{pair.maker}</td>
-        <td>{pair.taker}</td>
-      </tr>
-    ));
     return (
-      <Table>
-        <thead>
-          <tr>
-            <th>Symbol</th>
-            <th>DP</th>
-            <th>Maker</th>
-            <th>Taker</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </Table>
+      <Table
+        data={pairs}
+        columns={[
+          {
+            accessor: 'symbol',
+            Header: 'Symbol',
+            Cell: props => (
+              <RoutedAnchor path={`/coins/general/${props.value}/${exchanegName}`}>
+                {props.value}
+              </RoutedAnchor>),
+          }, {
+            accessor: 'darkpool',
+            Header: 'DP',
+          }, {
+            accessor: 'maker',
+            Header: 'Maker',
+          }, {
+            accessor: 'taker',
+            Header: 'Taker',
+          },
+        ]}
+      />
     );
   }
   render() {

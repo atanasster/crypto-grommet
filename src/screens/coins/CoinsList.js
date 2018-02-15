@@ -1,71 +1,71 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import numeral from 'numeral';
-import {
-  Box,
-  Image,
-  Anchor,
-  RoutedAnchor,
-} from 'grommet';
+import { Box, Text } from 'grommet';
 import Page from '../../components/pages/Page';
 import Table from '../../components/table/Table';
+import Coin from '../../components/Coin';
 
 class CoinsList extends Component {
+  // eslint-disable-next-line no-undef
+  columns = props => (
+    [
+      {
+        Header: 'Coin',
+        accessor: 'coinName',
+        Cell: cell => (
+          <Coin
+            symbol={cell.original.symbol}
+            toSymbol={props.defaultCurrency}
+            exchange={props.defaultExchange}
+            level={4}
+            border={null}
+          />
+        ),
+      }, {
+        Header: 'Algo',
+        accessor: 'algorithm',
+      }, {
+        Header: 'Proof',
+        accessor: 'proofType',
+      }, {
+        Header: 'Pre-mined',
+        accessor: 'fullyPremined',
+        Cell: cell => (cell.value === 0 ? 'Yes' : ''),
+      }, {
+        Header: 'Pre-mined value',
+        accessor: 'preMinedValue',
+      }, {
+        Header: 'Total Coin Supply',
+        accessor: 'totalCoinSupply',
+        Cell: cell => (<Text textAlign='right'>{numeral(cell.value).format('0,000')}</Text>),
+      }, {
+        Header: 'Free float',
+        accessor: 'totalCoinsFreeFloat',
+      },
+    ]
+  );
+
   renderCoinsList() {
-    const { coins: { all: allCoins } } = this.props;
+    const { coins: { all: allCoins }, onFilter, columns = this.columns } = this.props;
     const rows = Object.keys(allCoins)
-      // .filter(key => (allCoins[key].General && allCoins[key].General.Twitter))
-      .sort((a, b) => {
-        const aVal = a.toUpperCase();
-        const bVal = b.toUpperCase();
-        if (aVal > bVal) {
-          return 1;
-        } else if (aVal < bVal) {
-          return -1;
-        }
-        return 0;
-      })
-      .map((key) => {
-        const coin = allCoins[key];
-        // console.log(coin);
-        return (
-          <tr key={coin.id} >
-            <td><Anchor href={coin.url} target='_blank'><Image src={coin.imageUrl} style={{ width: '24px', height: '24px' }} /></Anchor></td>
-            <td><RoutedAnchor path={`/coins/general/${coin.symbol}/USD/Bitstamp`}>{`${coin.coinName} (${coin.symbol})`}</RoutedAnchor></td>
-            <td>{coin.algorithm}</td>
-            <td>{coin.proofType}</td>
-            <td>{coin.fullyPremined === '0' ? 'Yes' : ''}</td>
-            <td>{coin.preMinedValue}</td>
-            <td style={{ textAlign: 'right' }}>{numeral(coin.totalCoinSupply).format('0,000')}</td>
-            <td>{coin.totalCoinsFreeFloat}</td>
-            <td>{coin.sponsored ? 'Yes' : ''}</td>
-          </tr>
-        );
-      });
+      .filter(key => (onFilter ? onFilter(allCoins[key]) : true))
+      .map(key => allCoins[key]);
+    console.log(rows);
     return (
-      <Table>
-        <thead>
-          <tr>
-            <th />
-            <th>Name</th>
-            <th>Algorithm</th>
-            <th>Proof</th>
-            <th>Fully Premined</th>
-            <th>Pre-Mined Value</th>
-            <th>Total Coin Supply</th>
-            <th>Free Float</th>
-            <th>Sponsor</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </Table>
+      <Table
+        filterable={true}
+        data={rows}
+        columns={columns(this.props)}
+        defaultSorted={[{ id: 'symbol' }]}
+      />
     );
   }
   render() {
+    const { title = 'Coins' } = this.props;
     return (
-      <Page name='Coins'>
+      <Page name={title}>
         <Box
           align='center'
           direction='row'
@@ -81,6 +81,15 @@ class CoinsList extends Component {
 
 const mapStateToProps = state => ({
   coins: state.coins,
+  defaultCurrency: state.settings.defaultCurrency,
+  defaultExchange: state.settings.defaultExchange,
 });
+
+CoinsList.defaultProps = {
+  onFilter: undefined,
+};
+CoinsList.propTypes = {
+  onFilter: PropTypes.func,
+};
 
 export default connect(mapStateToProps)(CoinsList);

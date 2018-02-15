@@ -26,27 +26,6 @@ function yesNoIcon(value) {
   return value ? <Checkmark theme={greenIcon} /> : <Close theme={redIcon} />;
 }
 
-function tableOfTiers(tiers, key) {
-  if (!tiers) {
-    return null;
-  }
-  return (
-    <Table>
-      <tbody>
-        {tiers.map((item, index) => (
-          <tr key={`${key}_${index}`}>
-            <td>{item[0]}</td>
-            <td>
-              {numeral(item[1]).format('0,0.0000')}
-            </td>
-          </tr>
-        ))
-        }
-      </tbody>
-    </Table>
-  );
-}
-
 class ExchangeFees extends Component {
   componentDidMount() {
     this.props.requestExchangeInfo(this.props.match.params.exchange);
@@ -58,122 +37,145 @@ class ExchangeFees extends Component {
     }
   }
 
-  tableOfFees(fees, key) {
-    const { exchange, defaultCurrency } = this.props;
-    if (!fees) {
-      return null;
-    }
-    return (
-      <Table>
-        <tbody>
-          {Object.keys(fees).map(k => (
-            <tr key={`${key}_${k}`}>
-              <td>
+  renderFundingFees() {
+    const { exchangeObj, exchange, defaultCurrency } = this.props;
+
+    if (exchangeObj && exchangeObj.fees && exchangeObj.fees.funding) {
+      const funding = exchangeObj.fees.funding;
+      const fees = funding.deposit ? Object.keys(funding.deposit).map(k => (
+        { symbol: k, deposit: funding.deposit[k] }
+      )) : [];
+      if (funding.withdraw) {
+        Object.keys(funding.withdraw).forEach((k) => {
+          console.log(funding.withdraw[k]);
+          const deposit = fees.find(item => (item.symbol === k));
+          if (deposit) {
+            deposit.withdraw = funding.withdraw[k];
+          } else {
+            fees.push({ symbol: k, withdraw: funding.withdraw[k] });
+          }
+        });
+      }
+      const table = (
+        <Table
+          defaultPageSize={50}
+          data={fees}
+          columns={[
+            {
+              Header: 'Symbol',
+              accessor: 'symbol',
+              Cell: props => (
                 <Coin
-                  symbol={k}
+                  symbol={props.value}
                   toSymbol={defaultCurrency}
                   exchange={exchange}
                   level={4}
                   border={null}
-                />
-              </td>
-              <td>{numeral(fees[k])
-                .format('0,0.0000')}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    );
-  }
-
-  render() {
-    const { exchange, exchangeObj } = this.props;
-
-    let fundingFees = null;
-    if (exchangeObj && exchangeObj.fees && exchangeObj.fees.funding) {
-      fundingFees = (
+                />),
+            }, {
+              Header: 'Deposit',
+              accessor: 'deposit',
+              Cell: props => (numeral(props.value).format('0,0.0000')),
+            }, {
+              Header: 'Withdraw',
+              accessor: 'withdraw',
+              Cell: props => (numeral(props.value).format('0,0.0000')),
+            },
+          ]}
+        />);
+      return (
         <Card
           title='Funding fees'
           subTitle={(
             <Box direction='row' justify='between' pad={{ vertical: 'small' }}>
-              <Box
-                direction='row'
-                align='center'
-              >
+              <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
                 <Text>Percentage:</Text>{yesNoIcon(exchangeObj.fees.funding.percentage)}
               </Box>
-              <Box direction='row' justify='between'>
+              <Box direction='row' justify='between' margin={{ horizontal: 'small' }}>
                 <Text>Tier based:</Text>{yesNoIcon(exchangeObj.fees.funding.tierBased)}
               </Box>
             </Box>)}
         >
-          <Box direction='row'>
-            <Box basis='1/2' align='center'>
-              <strong>Deposit</strong>
-              {this.tableOfFees(exchangeObj.fees.funding.deposit, 'f_d')}
-            </Box>
-            <Box basis='1/2' align='center'>
-              <strong>Withdrawal</strong>
-              {this.tableOfFees(exchangeObj.fees.funding.withdraw, 'f_w')}
-            </Box>
-          </Box>
+          {table}
         </Card>
       );
     }
-    let tradingFees = null;
+    return null;
+  }
+
+  renderTradingFees() {
+    const { exchangeObj } = this.props;
     if (exchangeObj && exchangeObj.fees && exchangeObj.fees.trading) {
-      let tiers = null;
-      if (exchangeObj.fees.trading.tiers) {
-        tiers = (
-          <Box direction='row'>
-            <Box basis='1/2' align='center'>
-              <strong>Maker</strong>
-              {tableOfTiers(exchangeObj.fees.trading.tiers.maker, 't_m')}
-            </Box>
-            <Box basis='1/2' align='center'>
-              <strong>Taker</strong>
-              {tableOfTiers(exchangeObj.fees.trading.tiers.taker, 't_t')}
-            </Box>
-          </Box>
-        );
+      const tiers = exchangeObj.fees.trading.tiers;
+      let table;
+      if (tiers) {
+        const data = tiers.maker ? [...tiers.maker] : [];
+        if (tiers.taker) {
+          tiers.taker.forEach((item, index) => {
+            if (data.length < index) {
+              data.push([undefined, undefined]);
+            }
+            data[index][2] = item[0];
+            data[index][3] = item[1];
+          });
+        }
+        table = (
+          <Table
+            data={data}
+            columns={[
+              {
+                Header: 'Maker',
+                columns: [
+                  { Header: 'Tier', accessor: '0' },
+                  { Header: 'Fee', accessor: '1', Cell: props => (numeral(props.value).format('0,0.0000')) },
+                ],
+              },
+              {
+                Header: 'Taker',
+                columns: [
+                  { Header: 'Tier', accessor: '2' },
+                  { Header: 'Fee', accessor: '3', Cell: props => (numeral(props.value).format('0,0.0000')) },
+                ],
+              },
+            ]}
+          />);
       }
-      tradingFees = (
+      return (
         <Card
           title='Trading fees'
           subTitle={(
             <Box>
               <Box direction='row' full='' pad={{ vertical: 'small' }}>
-                <Box direction='row' align='center'>
+                <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
                   <Text>Percentage:</Text>
                   {yesNoIcon(exchangeObj.fees.trading.percentage)}
                 </Box>
-                <Box direction='row' align='center'>
+                <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
                   <Text>Tier based:</Text>
                   {yesNoIcon(exchangeObj.fees.trading.tierBased)}
-                </Box>
-              </Box>
-              <Box direction='row' justify='between' pad={{ vertical: 'small' }}>
-                <Box direction='row' align='center'>
-                  <Text>Maker:</Text>
-                  <Text>{exchangeObj.fees.trading.maker}</Text>
-                </Box>
-                <Box direction='row' align='center'>
-                  <Text>Taker:</Text>
-                  <Text>{exchangeObj.fees.trading.taker}</Text>
                 </Box>
               </Box>
             </Box>
           )}
         >
-          {tiers}
+          {table}
         </Card>
       );
     }
+    return null;
+  }
+
+  render() {
+    const { exchange } = this.props;
     return (
       <ExchangePage exchange={exchange}>
-        <Box direction='row' >
-          {fundingFees}
-          {tradingFees}
+        <Box direction='row' full='horizontal'>
+          <Box basis='2/3'>
+            {this.renderFundingFees()}
+          </Box>
+          <Box basis='1/3'>
+            {this.renderTradingFees()}
+          </Box>
         </Box>
       </ExchangePage>
     );

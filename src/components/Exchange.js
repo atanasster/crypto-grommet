@@ -4,19 +4,36 @@ import { connect } from 'react-redux';
 import Flag from 'react-world-flags';
 import { Box, Image, Heading, RoutedAnchor } from 'grommet';
 
+export const CountryFlag = ({ code, height = 12 }) => (
+  <Flag
+    code={code}
+    height={height}
+  />
+);
+
+
+export const Country = ({ code, name = 'all countries', level = 4 }) => (
+  <Box direction='row' align='center' >
+    <CountryFlag code={code} />
+    <Box pad={{ horizontal: 'small' }}>
+      <Heading margin='xsmall' level={level}>{name}</Heading>
+    </Box>
+  </Box>
+);
+
 export const ExchangeCountries = ({ countries }) => (
   countries.map(code => (
     <Box key={`country_${code}`} margin={{ right: 'xsmall' }} border='all' alignSelf='center'>
-      <Flag
-        code={code}
-        height={12}
-      />
+      <CountryFlag code={code} />
     </Box>
   ))
 );
 
 
 const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) => {
+  if (!exchange) {
+    return null;
+  }
   const exchangeName = exchange === aggregatedExchange ? 'Aggregated' : exchange;
   let image;
   if (exchangeObj) {
@@ -52,10 +69,11 @@ const ConnectedExchange = connect(mapStateToProps)(Exchange);
 Exchange.defaultProps = {
   level: 4,
   border: undefined,
+  exchange: undefined,
 };
 
 Exchange.propTypes = {
-  exchange: PropTypes.string.isRequired,
+  exchange: PropTypes.string,
   level: PropTypes.number,
   border: PropTypes.string,
 };

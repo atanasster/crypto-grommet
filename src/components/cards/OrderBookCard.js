@@ -13,25 +13,25 @@ import { CoinToCoin } from '../Coin';
 import Exchange from '../Exchange';
 import * as ActionTypes from '../../actions/price_stream/constants';
 
-function renderAskBidTable(data, key) {
-  const rows = data.slice(0, 10).map((item, index) => (
-    <tr key={`${key}_table_${index}`}>
-      <td>{numeral(item[0]).format('$0,0.00')}</td>
-      <td>{numeral(item[1]).format('0,0.0000')}</td>
-    </tr>
-  ));
+function renderAskBidTable(data) {
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th>Price</th>
-          <th>Qty</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows}
-      </tbody>
-    </Table>
+    <Table
+      columns={[
+        {
+          Header: 'Price',
+          Cell: props => (
+            numeral(props.original[0])
+              .format('$0,0.00')
+          ),
+        }, {
+          Header: 'Qty',
+          Cell: props => (
+            numeral(props.original[2]).format('$0,0.00')
+          ),
+        },
+      ]}
+      data={data.slice(0, 10)}
+    />
   );
 }
 
@@ -149,11 +149,11 @@ class OrderBookCard extends Component {
         <Box direction='row' pad=' small'>
           <Box basis='1/2' align='center'>
             <Text size='medium'><strong>Bid</strong></Text>
-            {renderAskBidTable(data.bids, 'bids')}
+            {renderAskBidTable(data.bids)}
           </Box>
           <Box basis='1/2' align='center'>
             <Text size='medium'><strong>Ask</strong></Text>
-            {renderAskBidTable(data.asks, 'asks')}
+            {renderAskBidTable(data.asks)}
           </Box>
         </Box>
       </Card>

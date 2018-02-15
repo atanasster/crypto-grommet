@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Box, Text, RoutedAnchor } from 'grommet';
 import { Bitcoin as GrommetIcon } from 'grommet-icons';
 
-export const NavAnchor = ({ path, label }) => (
+export const NavAnchor = props => (
   <Box pad={{ horizontal: 'small' }}>
-    <RoutedAnchor path={path} label={label} />
+    <RoutedAnchor {...props} />
   </Box>
 );
 
@@ -20,10 +20,11 @@ const TopMenu = ({ defaultExchange }) => (
       </Box>
     </RoutedAnchor>
     <Box direction='row' align='center'>
-      <NavAnchor path='/exchanges' label='exchanges' />
-      <NavAnchor path='/coins' label='coins' />
-      <NavAnchor path={`/coins/general/BTC/USD/${defaultExchange}`} label='bitcoin' />
-      <NavAnchor path={`/coins/general/ETH/USD/${defaultExchange}`} label='ethereum' />
+      <NavAnchor path='/exchanges' label='exchanges' a11yTitle='List of exchanges' />
+      <NavAnchor path='/coins' label='coins' a11yTitle='List of coins' />
+      <NavAnchor path='/icos' label='ICOs' a11yTitle='List of ative and upcoming initial coin offerings' />
+      <NavAnchor path={`/coins/general/BTC/USD/${defaultExchange}`} label='bitcoin' a11yTitle='Information about BitCoin' />
+      <NavAnchor path={`/coins/general/ETH/USD/${defaultExchange}`} label='ethereum' a11yTitle='Information about Ethereum' />
     </Box>
   </Box>
 );

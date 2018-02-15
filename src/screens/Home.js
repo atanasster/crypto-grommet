@@ -92,25 +92,36 @@ class Home extends Component {
     const { aggregatedExchange } = this.props;
     let layer;
     if (continentExchanges) {
-      const exchanges = continentExchanges.map(exchange => (
-        <tr key={`e_l_${exchange.id}`}>
-          <td><RoutedAnchor path={`/exchanges/prices/${exchange.name}`}><Image src={exchange.logo} /></RoutedAnchor></td>
-          <td><RoutedAnchor path={`/exchanges/prices/${exchange.name}`}>{exchange.name}</RoutedAnchor></td>
-          <td><Box direction='row'>
-            <ExchangeCountries countries={exchange.countries} />
-          </Box></td>
-        </tr>
-      ));
       layer = (
-        <SideLayer onClose={() => this.setState({ continentExchanges: undefined })}>
-          <Heading level={3}>
-            <strong>{continent.name}</strong>
-          </Heading>
-          <Table>
-            <tbody>
-              {exchanges}
-            </tbody>
-          </Table>
+        <SideLayer
+          onClose={() => this.setState({ continentExchanges: undefined })}
+          heading={continent.name}
+        >
+          <Box basis='large'>
+            <Table
+              defaultPageSize={50}
+              data={continentExchanges}
+              columns={[
+                {
+                  Cell: props => (
+                    <RoutedAnchor path={`/exchanges/prices/${props.original.name}`}>
+                      <Image src={props.original.logo} />
+                    </RoutedAnchor>),
+                }, {
+                  accessor: 'name',
+                  Cell: props => (
+                    <RoutedAnchor path={`/exchanges/prices/${props.original.name}`}>
+                      {props.original.name}
+                    </RoutedAnchor>),
+                }, {
+                  Cell: props => (
+                    <Box direction='row'>
+                      <ExchangeCountries countries={props.original.countries} />
+                    </Box>),
+                },
+              ]}
+            />
+          </Box>
         </SideLayer>
       );
     }
@@ -156,6 +167,7 @@ const mapStateToProps = state => ({
   exchanges: state.exchanges.all,
   countries: state.countries.all,
   aggregatedExchange: state.settings.aggregatedExchange,
+  defaultExchange: state.settings.defaultExchange,
 });
 
 export default connect(mapStateToProps)(Home);

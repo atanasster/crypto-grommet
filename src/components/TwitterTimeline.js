@@ -11,7 +11,7 @@ export default ({ user }) => (
       }}
       options={{
         username: user,
-        height: '400',
+        height: '700',
       }}
     />
   </Card>
