@@ -118,16 +118,7 @@ const StyledTable = styled(GrommetTable)`
 
 
   & .rt-thead .rt-tr {
-    font-weight:300;
-    font-size:1.2em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  }
-
-  & .rt-thead .rt-th, .rt-thead .rt-td {
-    padding: 5px 5px;
-    line-height: normal;
-    position: relative;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   & .rt-thead .rt-th.-cursor-pointer, .rt-thead .rt-td.-cursor-pointer {

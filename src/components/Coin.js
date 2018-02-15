@@ -65,12 +65,14 @@ const ConnectedCoin = connect(mapStateToProps)(Coin);
 Coin.defaultProps = {
   level: 3,
   border: 'bottom',
+  toSymbol: undefined,
+  exchange: undefined,
 };
 
 Coin.propTypes = {
   symbol: PropTypes.string.isRequired,
-  toSymbol: PropTypes.string.isRequired,
-  exchange: PropTypes.string.isRequired,
+  toSymbol: PropTypes.string,
+  exchange: PropTypes.string,
   level: PropTypes.number,
   border: PropTypes.string,
 };

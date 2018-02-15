@@ -223,6 +223,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 const mapStateToProps = (state, props) => ({
   priceStream: state.priceStream[ActionTypes.actionToKey(props)],
   priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
+  exchange: props.exchange || state.settings.aggregatedExchange,
+  toSymbol: props.toSymbol || state.settings.defaultCurrency,
 });
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);
@@ -231,8 +233,6 @@ ConnectedPriceCard.defaultProps = {
   color: undefined,
   period: 'day',
   points: 60,
-  exchange: 'CCCAGG',
-  toSymbol: 'USD',
 };
 
 ConnectedPriceCard.propTypes = {

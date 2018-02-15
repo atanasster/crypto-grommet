@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 import { Box, Button, Select, TextInput, Text } from 'grommet';
-import { Blank, Previous, Next } from 'grommet-icons';
+import { Previous, Next } from 'grommet-icons';
 
 const defaultButton = ({ disabled, Icon, onClick, label, ...other }) => (
   <Button
@@ -23,9 +23,8 @@ const StyledPageInput = styled(TextInput)`
 `;
 
 const StyledSelect = styled(Select)`
-  max-width: 80px;
+  max-width: 90px;
 `;
-const Spacing = ({ size }) => (<Blank size={size || 'small'} />);
 
 export default class ReactTablePagination extends Component {
   constructor(props) {
@@ -91,7 +90,6 @@ export default class ReactTablePagination extends Component {
         <Text>{`${pageText} `}</Text>
         {pageJump}
         <span style={{ whiteSpace: 'nowrap' }}>{`${ofText} ${pages || 1}`}</span>
-        <Spacing size='large' />
       </Box>
     );
   }
@@ -107,7 +105,6 @@ export default class ReactTablePagination extends Component {
             value={`${pageSize} ${this.props.rowsText}`}
             options={pageSizeOptions.map(option => (`${option} ${this.props.rowsText}`))}
           />
-          <Spacing size='large' />
         </Box>
       );
     }
@@ -125,35 +122,31 @@ export default class ReactTablePagination extends Component {
           onClick={canPrevious ? () => this.changePage(page - 1) : null}
           disabled={!canPrevious}
         />
-        <Spacing size='large' />
       </Box>
     );
   }
 
   renderNext() {
     const { page, canNext, NextComponent = StyledButton } = this.props;
-    if (canNext) {
-      return (
-        <Box direction='row' >
-          <NextComponent
-            aria-label='Move to next page'
-            reverse={true}
-            Icon={Next}
-            label={this.props.nextText}
-            onClick={canNext ? () => this.changePage(page + 1) : null}
-            disabled={!canNext}
-          />
-        </Box>
-      );
-    }
-    return null;
+    return (
+      <Box direction='row' >
+        <NextComponent
+          aria-label='Move to next page'
+          reverse={true}
+          Icon={Next}
+          label={this.props.nextText}
+          onClick={canNext ? () => this.changePage(page + 1) : null}
+          disabled={!canNext}
+        />
+      </Box>
+    );
   }
 
   render() {
     const { className } = this.props;
     return (
       <Box align='center' className={classnames(className, '-pagination')} pad='small'>
-        <Box direction='row' align='center' style={this.props.style} >
+        <Box direction='row' align='center' style={this.props.style} gap='large'>
           {this.renderPrevious()}
           {this.renderPaging()}
           {this.renderPageSize()}

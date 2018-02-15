@@ -164,14 +164,26 @@ class OrderBookCard extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators({ requestOrderBook }, dispatch);
 
-const mapStateToProps = (state, props) => ({
-  orderBook: state.orderBook.data[ActionTypes.actionToKey(props)],
-});
+const mapStateToProps = (state, props) => {
+  const exchange = props.exchange || state.settings.defaultExchange;
+  const toSymbol = props.toSymbol || state.settings.defaultCurrency;
+  return {
+    orderBook: state.orderBook.data[ActionTypes.actionToKey(
+      { symbol: props.symbol, exchange, toSymbol })],
+    exchange,
+    toSymbol,
+  };
+};
+
+OrderBookCard.defaultProps = {
+  toSymbol: undefined,
+  exchange: undefined,
+};
 
 OrderBookCard.propTypes = {
   symbol: PropTypes.string.isRequired,
-  toSymbol: PropTypes.string.isRequired,
-  exchange: PropTypes.string.isRequired,
+  toSymbol: PropTypes.string,
+  exchange: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderBookCard);

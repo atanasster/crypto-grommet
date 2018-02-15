@@ -30,6 +30,9 @@ class ExchangesList extends Component {
             Header: 'Exchange',
             accessor: 'name',
             Cell: cell => <Exchange exchange={cell.value} />,
+            Footer: cell => (
+              <Text >{`${cell.data.length} of ${all.length} exchanges`}</Text>
+            ),
           }, {
             Header: 'Countries',
             accessor: 'countries',

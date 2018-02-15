@@ -30,7 +30,7 @@ const TrComponent = ({ children, className, ...rest }) => (
   </div>
 );
 
-const ThComponent = ({ toggleSort, className, children, ...rest }) => {
+const StyledThComponent = ({ toggleSort, className, children, ...rest }) => {
   const sortAsc = className.indexOf('-sort-asc') !== -1;
   const sortDesc = className.indexOf('-sort-desc') !== -1;
   let content;
@@ -47,16 +47,25 @@ const ThComponent = ({ toggleSort, className, children, ...rest }) => {
   }
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus
-    <div
+    <Box
       className={classnames('rt-th', className)}
       onClick={e => (toggleSort && toggleSort(e))}
       role='columnheader'
+      direction='row'
+      pad='xsmall'
       {...rest}
     >
       {content}
-    </div>
+    </Box>
   );
 };
+
+const ThComponent = styled(StyledThComponent)`
+  position: relative;
+  font-weight:300;
+  font-size:1.2em;
+  color: rgba(0, 0, 0, 0.45);   
+`;
 
 const NoDataComponent = ({ children, ...rest }) => (
   <Box {...rest} align='center' pad='small'>
