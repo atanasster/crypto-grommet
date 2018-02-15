@@ -37,7 +37,6 @@ class ExchangesList extends Component {
               (!filter.value || row.countries.indexOf(filter.value) !== -1),
             Filter: cell => (
               <Select
-                tabindex='-1'
                 a11yTitle='Open countries filter'
                 onSearch={this.filterCountries}
                 onClose={() => this.setState({ searchCountries: undefined })}
@@ -69,7 +68,11 @@ class ExchangesList extends Component {
               const urls = typeof cell.value === 'string' ? [cell.value] : cell.value;
               return urls.map(href => (
                 <Box key={`www_${href}`} pad={{ horizontal: 'small' }}>
-                  <Anchor href={href} target='_blank'>
+                  <Anchor
+                    a11yTitle={`Visit the exchange ${cell.original.name} web site`}
+                    href={href}
+                    target='_blank'
+                  >
                     <Text truncate={true}>{href}</Text>
                   </Anchor>
                 </Box>
