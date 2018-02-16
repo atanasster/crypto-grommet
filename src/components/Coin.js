@@ -4,16 +4,55 @@ import { connect } from 'react-redux';
 import { Box, Image, Text, RoutedAnchor, Heading } from 'grommet';
 import numeral from 'numeral';
 
-export const FormattedCoinValue = ({ value, toSymbol }) => (
-  <Box direction='row' align='baseline'>
-    <Text>
-      {numeral(value).format('0,0.00')}
-    </Text>
-    <Text size='xsmall'>
-      {toSymbol}
-    </Text>
+const FormattedValue = ({ value, toSymbol, coin, large }) => {
+  let format = (coin && !large) ? '0,0.00000000' : '0,0.00';
+  if (large) {
+    format = `${format}a`;
+  }
+  return (
+    <Box direction='row' align='baseline' gap='xsmall' justify='end'>
+      <Text>
+        {numeral(value).format(format)}
+      </Text>
+      <Text size='xsmall'>
+        {toSymbol}
+      </Text>
 
-  </Box>
+    </Box>
+  );
+};
+
+FormattedValue.defaultProps = {
+  large: false,
+};
+
+FormattedValue.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  toSymbol: PropTypes.string.isRequired,
+  large: PropTypes.bool,
+};
+const mapValueStateToProps = (state, props) => ({
+  coin: state.coins.all[props.toSymbol],
+});
+
+
+export const FormattedCoinValue = connect(mapValueStateToProps)(FormattedValue);
+
+export const valueToColor = (value) => {
+  if (value > 0) {
+    return 'status-ok';
+    // eslint-disable-next-line no-bitwise
+  } else if (value < 0) {
+    return 'status-critical';
+  }
+  return 'status-warning';
+};
+
+
+export const ColoredPercentChange = ({ value, size = 'medium' }) => (
+  <Text size={size} color={valueToColor(value)} >
+    {numeral(value).format('0,0.00%')}
+  </Text>
 );
 
 const Coin = (

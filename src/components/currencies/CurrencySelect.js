@@ -5,8 +5,8 @@ import { Box, Select } from 'grommet';
 import { changeDefaultCurrency } from '../../actions/settings/actions';
 
 const availableCurrencies = [
-  'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF',
-  'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN',
+  'USD', 'EUR', 'KRW', 'GBP', 'JPY', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 'HKD', 'HUF',
+  'IDR', 'ILS', 'INR', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN',
   'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'ZAR',
 ];
 

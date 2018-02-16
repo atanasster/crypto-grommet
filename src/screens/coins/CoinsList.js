@@ -102,7 +102,6 @@ class CoinsList extends Component {
         <Box
           align='center'
           direction='row'
-          tag='header'
           pad={{ horizontal: 'medium' }}
         >
           {this.renderCoinsList()}

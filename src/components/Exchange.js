@@ -30,7 +30,7 @@ export const ExchangeCountries = ({ countries }) => (
 );
 
 
-const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) => {
+const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border, justify }) => {
   if (!exchange) {
     return null;
   }
@@ -38,14 +38,12 @@ const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) 
   let image;
   if (exchangeObj) {
     image = (
-      <Box margin={{ horizontal: 'small' }}>
-        <Image
-          src={exchangeObj.logo}
-          style={{
-            height: level > 2 ? '24px' : '34px',
-          }}
-        />
-      </Box>
+      <Image
+        src={exchangeObj.logo}
+        style={{
+          height: level > 2 ? '24px' : '34px',
+        }}
+      />
     );
   }
   return (
@@ -54,6 +52,8 @@ const Exchange = ({ exchangeObj, level, exchange, aggregatedExchange, border }) 
       border={border}
       direction='row'
       align='center'
+      justify={justify}
+      gap='xsmall'
     >
       {image}
       <RoutedAnchor path={`/exchanges/prices/${exchange}`}>

@@ -11,7 +11,7 @@ import * as ActionTypes from '../../actions/price_stream/constants';
 import Card from './Card';
 import Exchange from '../Exchange';
 import Table from '../table/Table';
-import { FormattedCoinValue, CoinToCoin } from '../Coin';
+import { FormattedCoinValue, CoinToCoin, valueToColor } from '../Coin';
 
 const optionDuration = [
   { label: 'Daily', value: 'day' },
@@ -27,15 +27,6 @@ const optionLimit = [
   { label: '2000 points', value: 2000 },
 ];
 
-const valueToColor = (value) => {
-  if (value > 0) {
-    return 'status-ok';
-    // eslint-disable-next-line no-bitwise
-  } else if (value < 0) {
-    return 'status-critical';
-  }
-  return 'status-warning';
-};
 
 class PriceCard extends Component {
   constructor(props) {
@@ -73,7 +64,7 @@ class PriceCard extends Component {
   }
 
   renderLastPrice() {
-    const { priceStream, toSymbol } = this.props;
+    const { priceStream, toSymbol, symbol } = this.props;
 
     if (priceStream) {
       const { data } = priceStream;
@@ -93,7 +84,7 @@ class PriceCard extends Component {
         {
           label: '24hr change',
           value: (
-            <Box direction='row'>
+            <Box direction='row' justify='end'>
               <Text color={valueToColor(change24h)}>
                 <strong>
                   {numeral(change24h).format('0,0.00')}
@@ -119,19 +110,23 @@ class PriceCard extends Component {
           value: <FormattedCoinValue value={data.LOW24HOUR} toSymbol={toSymbol} />,
         }, {
           label: 'Last exchange',
-          value: <Exchange exchange={data.LASTMARKET} />,
+          value: <Exchange exchange={data.LASTMARKET} justify='end' />,
         }, {
           label: 'Last trade volume',
-          value: numeral(data.LASTVOLUME).format('0,0.00000000'),
+          value: (<FormattedCoinValue value={data.LASTVOLUME} toSymbol={symbol} />),
         }, {
           label: 'Last trade value',
           value: <FormattedCoinValue value={data.LASTVOLUMETO} toSymbol={toSymbol} />,
         }, {
           label: '24hr volume',
-          value: numeral(data.VOLUME24HOUR).format('0,0'),
+          value: (
+            <FormattedCoinValue value={data.VOLUME24HOUR} toSymbol={symbol} large={true} />
+          ),
         }, {
           label: '24hr value',
-          value: <FormattedCoinValue value={data.VOLUME24HOURTO} toSymbol={toSymbol} />,
+          value: (
+            <FormattedCoinValue value={data.VOLUME24HOURTO} toSymbol={toSymbol} large={true} />
+          ),
         },
       ];
       return (
@@ -220,12 +215,17 @@ class PriceCard extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(
   { subscribeLastPrices, unSubscribeLastPrices, requestPriceHistory }, dispatch);
 
-const mapStateToProps = (state, props) => ({
-  priceStream: state.priceStream[ActionTypes.actionToKey(props)],
-  priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
-  exchange: props.exchange || state.settings.aggregatedExchange,
-  toSymbol: props.toSymbol || state.settings.defaultCurrency,
-});
+const mapStateToProps = (state, props) => {
+  const toSymbol = props.toSymbol || state.settings.defaultCurrency;
+  const exchange = props.exchange || state.settings.aggregatedExchange;
+  const key = { symbol: props.symbol, exchange, toSymbol };
+  return {
+    priceStream: state.priceStream[ActionTypes.actionToKey(key)],
+    priceHistory: state.priceHistory[ActionTypes.actionToKey(key)],
+    exchange,
+    toSymbol,
+  };
+};
 
 const ConnectedPriceCard = connect(mapStateToProps, mapDispatchToProps)(PriceCard);
 

@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import { apiMiddleware } from 'redux-api-middleware';
-import rootReducer from './reducers';
+import rootReducer from './actions/index';
 
 const middlewareBuilder = (history) => {
   const universalMiddleware = [routerMiddleware(history), thunk, apiMiddleware];
@@ -32,7 +32,7 @@ export default function configureStore(initialState, history) {
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducers', () => {
+    module.hot.accept('./actions/index.js', () => {
       store.replaceReducer(rootReducer);
     });
   }

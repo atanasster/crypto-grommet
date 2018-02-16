@@ -21,6 +21,7 @@ const TopMenu = ({ defaultExchange, defaultCurrency }) => (
       </Box>
     </RoutedAnchor>
     <Box direction='row' align='center' justify='end'>
+      <NavAnchor path='/markets' label='markets' a11yTitle='Market cap table of crypto coins' />
       <NavAnchor path='/exchanges' label='exchanges' a11yTitle='List of exchanges' />
       <NavAnchor path='/coins' label='coins' a11yTitle='List of coins' />
       <NavAnchor path='/icos' label='ICOs' a11yTitle='List of ative and upcoming initial coin offerings' />
