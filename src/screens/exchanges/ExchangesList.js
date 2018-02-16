@@ -17,7 +17,7 @@ class ExchangesList extends Component {
     });
   }
   renderExchanges() {
-    const { exchanges, countries: allCountries } = this.props;
+    const { exchanges: { all: exchanges, loading }, countries: allCountries } = this.props;
     const { searchCountries } = this.state;
     const countries = searchCountries || allCountries;
     const all = Object.keys(exchanges).map(key => exchanges[key]);
@@ -25,6 +25,7 @@ class ExchangesList extends Component {
       <Table
         filterable={true}
         data={all}
+        loading={loading}
         columns={[
           {
             Header: 'Exchange',
@@ -97,7 +98,7 @@ class ExchangesList extends Component {
 }
 
 const mapStateToProps = state => ({
-  exchanges: state.exchanges.all,
+  exchanges: state.exchanges,
   countries: state.countries.all,
 });
 

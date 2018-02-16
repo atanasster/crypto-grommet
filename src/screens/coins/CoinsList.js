@@ -78,7 +78,7 @@ class CoinsList extends Component {
     );
   };
   renderCoinsList() {
-    const { coins: { all: allCoins },
+    const { coins: { all: allCoins, loading },
       onFilter, onExpand = this.onExpand,
       columns = this.columns,
     } = this.props;
@@ -87,6 +87,7 @@ class CoinsList extends Component {
       .map(key => allCoins[key]);
     return (
       <Table
+        loading={loading}
         filterable={true}
         data={rows}
         SubComponent={onExpand}
