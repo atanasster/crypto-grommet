@@ -5,6 +5,7 @@ A react/redux/nodejs/babel/webpack project built with:
 * grommet v2: https://v2.grommet.io/ 
 * cctx: https://github.com/ccxt/ccxt
 * CryptoCompare: https://www.cryptocompare.com/api/
+* CoinMarketCap: https://coinmarketcap.com/api/
 * Highcharts: http://www.highcharts.com
 
 Live site: https://crypto-grommet.herokuapp.com
