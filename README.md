@@ -47,7 +47,7 @@ To run this application, execute the following commands:
   * Build client package
 
   ```
-  $ npm run heroku-postbuild
+  $ npm run build
   ```
 
   * Start production server

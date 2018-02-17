@@ -15,7 +15,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "start": "cross-env NODE_ENV=development grommet pack",
-    "heroku-postbuild": "cross-env NODE_ENV=production grommet pack",
+    "build": "cross-env NODE_ENV=production grommet pack",
+    "heroku-postbuild": "npm run build",
     "check": "cross-env NODE_ENV=test grommet check",
     "server": "node dist/dev.js",
     "start-server": "cross-env NODE_ENV=development $NODE_DEBUG_OPTION node ./public/dev.js",
