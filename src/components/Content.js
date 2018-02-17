@@ -28,10 +28,10 @@ export default () => (
     <Route exact={true} path='/exchanges/currencies/:exchange' component={ExchangeCurrencies} />
     <Route exact={true} path='/exchanges/fees/:exchange' component={ExchangeFees} />
     <Route exact={true} path='/exchanges' component={ExchangesList} />
-    <Route exact={true} path='/coins/order_book/:symbol/:toSymbol/:exchange' component={CoinOrderBook} />
-    <Route exact={true} path='/coins/social/:symbol/:toSymbol/:exchange' component={CoinSocial} />
-    <Route exact={true} path='/coins/chart/:symbol/:toSymbol/:exchange' component={CoinChartAnalysis} />
-    <Route exact={true} path='/coins/general/:symbol/:toSymbol/:exchange' component={CoinInfo} />
+    <Route exact={true} path='/coins/order_book/:symbol/:toSymbol?/:exchange?' component={CoinOrderBook} />
+    <Route exact={true} path='/coins/social/:symbol/:toSymbol?/:exchange?' component={CoinSocial} />
+    <Route exact={true} path='/coins/chart/:symbol/:toSymbol?/:exchange?' component={CoinChartAnalysis} />
+    <Route exact={true} path='/coins/general/:symbol/:toSymbol?/:exchange?' component={CoinInfo} />
     <Route exact={true} path='/coins' component={CoinsList} />
     <Route exact={true} path='/icos' component={ICOList} />
   </Switch>

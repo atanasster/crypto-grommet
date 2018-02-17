@@ -145,7 +145,7 @@ class ExchangeFees extends Component {
           title='Trading fees'
           subTitle={(
             <Box>
-              <Box direction='row' full='' pad={{ vertical: 'small' }}>
+              <Box direction='row' fill='horizontal' pad={{ vertical: 'small' }}>
                 <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
                   <Text>Percentage:</Text>
                   {yesNoIcon(exchangeObj.fees.trading.percentage)}
@@ -169,7 +169,7 @@ class ExchangeFees extends Component {
     const { exchange } = this.props;
     return (
       <ExchangePage exchange={exchange}>
-        <Box direction='row' full='horizontal'>
+        <Box direction='row' fill='horizontal'>
           <Box basis='2/3'>
             {this.renderFundingFees()}
           </Box>

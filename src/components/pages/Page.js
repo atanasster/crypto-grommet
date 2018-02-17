@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import styled from 'styled-components';
+
 import {
   Box,
   Heading,
@@ -9,20 +12,22 @@ import {
   Text,
   RoutedAnchor,
   Markdown,
+  Responsive,
 } from 'grommet';
-import TopMenu from '../TopMenu';
+import NavMenu from '../NavMenu';
+import { updateResponsive } from '../../actions/nav/actions';
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;
 `;
 
-export default class Page extends Component {
+class Page extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
 
   renderMessages = () => {
-    const { messages } = this.props;
+    const { messages = [] } = this.props;
     const colorMap = {
       error: 'status-critical',
       warning: 'status-warning',
@@ -46,7 +51,11 @@ export default class Page extends Component {
         {msg}
       </Fragment>
     );
-  }
+  };
+
+  onResponsive = (nav) => {
+    this.props.updateResponsive(nav === 'narrow');
+  };
 
   render() {
     const { children, description, name } = this.props;
@@ -69,35 +78,30 @@ export default class Page extends Component {
       );
     }
     return (
-      <Box>
+      <Responsive onChange={this.onResponsive} >
         <Box pad={{ horizontal: 'large', top: 'medium' }}>
-          <TopMenu />
+          <NavMenu />
           {this.renderMessages()}
           {header}
           {children}
-        </Box>
-
-
-        <Box
-          direction='row'
-          justify='center'
-          pad={{ top: 'xlarge' }}
-        >
           <Box
-            basis='large'
-            pad='large'
-            border='top'
+            tag='footer'
             direction='row'
             justify='center'
+            pad={{ top: 'xlarge' }}
           >
-            <Box margin={{ horizontal: 'small' }}>
+            <Box
+              basis='large'
+              border='top'
+              direction='row'
+              justify='center'
+              gap='medium'
+            >
               <RoutedAnchor
                 path='/about'
                 label='about'
                 a11yTitle='About crypto-grommet'
               />
-            </Box>
-            <Box margin={{ horizontal: 'small' }}>
               <Anchor
                 href='https://github.com/atanasster/crypto-grommet'
                 target='_blank'
@@ -105,10 +109,9 @@ export default class Page extends Component {
                 a11yTitle='Go to the github page for this project'
               />
             </Box>
-
           </Box>
         </Box>
-      </Box>
+      </Responsive>
     );
   }
 }
@@ -129,3 +132,11 @@ Page.defaultProps = {
   name: undefined,
   messages: [],
 };
+
+const mapDispatchToProps = dispatch => bindActionCreators({ updateResponsive }, dispatch);
+
+const mapStateToProps = state => ({
+  nav: state.nav,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

@@ -1,34 +1,30 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Box } from 'grommet';
 import CoinPage from '../../components/pages/CoinPage';
 import TwitterTimeline from '../../components/TwitterTimeline';
 
-class CoinSocial extends Component {
-  render() {
-    const { symbol, toSymbol, exchange } = this.props.match.params;
-    const { coin } = this.props;
-    let twitterCard;
-    console.log(coin);
-    if (coin && coin.twitter) {
-      twitterCard = (
-        <Box basis='1/3'>
-          <TwitterTimeline user={coin.twitter.replace(/^@/, '')} />
-        </Box>
-      );
-    }
+function renderTwitterCard(coinProps) {
+  const { coin } = coinProps;
+  if (coin && coin.twitter) {
     return (
-      <CoinPage symbol={symbol} toSymbol={toSymbol} exchange={exchange}>
-        <Box direction='row' full='horizontal' pad={{ vertical: 'small' }} >
-          {twitterCard}
-        </Box>
+      <Box basis='1/3'>
+        <TwitterTimeline user={coin.twitter.replace(/^@/, '')} />
+      </Box>
+    );
+  }
+  return null;
+}
+
+export default class CoinSocial extends Component {
+  render() {
+    return (
+      <CoinPage>
+        {coinProps => (
+          <Box direction='row' fill='horizontal' pad={{ vertical: 'small' }} >
+            {renderTwitterCard(coinProps)}
+          </Box>
+        )}
       </CoinPage>
     );
   }
 }
-
-const mapStateToProps = (state, props) => ({
-  coin: state.coins.all[props.match.params.symbol],
-});
-
-export default connect(mapStateToProps)(CoinSocial);

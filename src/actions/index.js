@@ -4,6 +4,7 @@ import exchanges from './exchanges/reducer';
 import exchange from './exchange/reducer';
 import countries from './countries/reducer';
 import coins from './coins/reducer';
+import nav from './nav/reducer';
 import orderBook from './order_book/reducer';
 import priceHistory from './price_history/reducer';
 import priceStream from './price_stream/reducer';
@@ -16,6 +17,7 @@ export default combineReducers({
   coins,
   countries,
   marketCap,
+  nav,
   orderBook,
   priceHistory,
   priceStream,
