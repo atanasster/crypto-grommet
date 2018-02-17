@@ -4,7 +4,7 @@ import { Box } from 'grommet';
 import CardScroll from './CardScroll';
 import PriceCard from './cards/PriceCard';
 
-const FavoritePrices = ({ favCoins, exchange }) => {
+const FavoritePrices = ({ favCoins, exchange, responsive }) => {
   const cards = favCoins.map((pair, index) => {
     const colors = [
       'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
@@ -22,7 +22,7 @@ const FavoritePrices = ({ favCoins, exchange }) => {
   });
   return (
     <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-      <CardScroll>
+      <CardScroll responsive={responsive}>
         {cards}
       </CardScroll>
     </Box>
@@ -31,6 +31,7 @@ const FavoritePrices = ({ favCoins, exchange }) => {
 
 const mapStateToProps = state => ({
   favCoins: state.settings.favCoins,
+  responsive: state.nav.responsive,
 });
 
 export default connect(mapStateToProps)(FavoritePrices);

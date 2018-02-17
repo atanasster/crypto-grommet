@@ -58,7 +58,7 @@ class Page extends Component {
   };
 
   render() {
-    const { children, description, name } = this.props;
+    const { children, description, name, nav } = this.props;
     let header;
     if (name) {
       header = (
@@ -79,7 +79,7 @@ class Page extends Component {
     }
     return (
       <Responsive onChange={this.onResponsive} >
-        <Box pad={{ horizontal: 'large', top: 'medium' }}>
+        <Box pad={nav ? { horizontal: 'small', top: 'small' } : { horizontal: 'large', top: 'medium' }}>
           <NavMenu />
           {this.renderMessages()}
           {header}

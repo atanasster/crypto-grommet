@@ -34,7 +34,7 @@ const CoinPage = ({ children, symbol, toSymbol, exchange, coin }) => (
         a11yTitle={`Depth of market analysis on ${symbol}`}
       />
     </Box>
-    <Box align='center'>
+    <Box align='center' fill='horizontal'>
       {children({ coin, symbol, toSymbol, exchange }) }
     </Box>
   </Page>

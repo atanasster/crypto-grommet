@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Box, WorldMap, Heading, Image, RoutedAnchor } from 'grommet';
+import { Box, WorldMap, Image, RoutedAnchor } from 'grommet';
+import { Heading } from '../components/utils/Text';
 import Table from '../components/table/Table';
 import Page from '../components/pages/Page';
 import SideLayer from '../components/SideLayer';
@@ -89,7 +90,7 @@ class Home extends Component {
 
   render() {
     const { continentExchanges, continent, worldContinent, worldExchanges } = this.state;
-    const { aggregatedExchange } = this.props;
+    const { aggregatedExchange, responsive } = this.props;
     let layer;
     if (continentExchanges) {
       layer = (
@@ -128,9 +129,10 @@ class Home extends Component {
     const continentHover = worldContinent ? (
       `${worldExchanges} exchanges in ${worldContinent}, click to see more...`
     ) : null;
+    console.log(responsive);
     return (
       <Page>
-        <Box align='center' >
+        <Box align='center' style={{ height: responsive ? '430px' : undefined }}>
           <Heading level={1} >
             <strong>Exchanges by continent</strong>
           </Heading>
@@ -168,6 +170,7 @@ const mapStateToProps = state => ({
   countries: state.countries.all,
   aggregatedExchange: state.settings.aggregatedExchange,
   defaultExchange: state.settings.defaultExchange,
+  responsive: state.nav.responsive,
 });
 
 export default connect(mapStateToProps)(Home);

@@ -3,9 +3,9 @@ import React from 'react';
 import { Box } from 'grommet';
 
 
-export default ({ children }) => (
-  <Box flex='grow' overflow='scroll'>
-    <Box pad={{ horizontal: 'medium' }}>
+export default ({ children, responsive }) => (
+  <Box flex='grow' overflow='scroll' fill='horizontal'>
+    <Box pad={{ horizontal: responsive ? undefined : 'medium' }}>
       <Box direction='row' wrap={true} justify='between'>
         {children}
       </Box>
