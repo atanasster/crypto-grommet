@@ -101,6 +101,7 @@ const mapStateToProps = (state, props) => ({
   coin: state.coins.all[props.symbol],
   defaultExchange: state.settings.defaultExchange,
   aggregatedExchange: state.settings.aggregatedExchange,
+  exchange: props.exchange || state.settings.defaultExchange,
 });
 
 
