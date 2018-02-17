@@ -8,7 +8,7 @@ A react/redux/nodejs/babel/webpack project built with:
 * CoinMarketCap: https://coinmarketcap.com/api/
 * Highcharts: http://www.highcharts.com
 
-Live site: https://crypto-grommet.herokuapp.com
+Live site: http://crypto-grommet.com
 
 To run this application, execute the following commands:
 
