@@ -14,6 +14,18 @@ export const requestMarketCapTable = ({ currency, start = 0, limit = 60 }) => ({
   },
 });
 
+export const requestMarketCapDistribution = ({ currency, start = 0, limit = 25 }) => ({
+  [RSAA]: {
+    endpoint: () => (`https://api.coinmarketcap.com/v1/ticker/?convert=${currency}&start=${start}&limit=${limit}`),
+    method: 'GET',
+    types: [
+      ActionTypes.REQUEST_MARKET_CAP_DUSTRIBUTION,
+      ActionTypes.SUCCESS_MARKET_CAP_DUSTRIBUTION,
+      ActionTypes.FAILURE_MARKET_CAP_DUSTRIBUTION,
+    ],
+  },
+});
+
 
 export const requestMarketCapGlobal = currency => ({
   [RSAA]: {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Box } from 'grommet';
-import Page from '../../components/pages/Page';
+import MarketPage from './MarketPage';
 import Table from '../../components/table/Table';
 import Coin, { FormattedCoinValue, ColoredPercentChange } from '../../components/Coin';
 import PriceCard from '../../components/cards/PriceCard';
@@ -44,7 +44,7 @@ class MarketCapList extends Component {
     this.requestMarketCapTable(defaultCurrency);
   };
 
-  renderCoinsList() {
+  renderMarketTable() {
     const { pagingTable: { loading, tickers }, defaultCurrency, defaultExchange } = this.props;
     const columns = [
       {
@@ -70,7 +70,7 @@ class MarketCapList extends Component {
         accessor: `price_${defaultCurrency.toLowerCase()}`,
         Cell: cell => (
           <FormattedCoinValue
-            value={cell.value * cell.original.available_supply}
+            value={(cell.value || cell.original.price_usd) * cell.original.available_supply}
             toSymbol={defaultCurrency}
             large={true}
           />
@@ -139,16 +139,9 @@ class MarketCapList extends Component {
   }
   render() {
     return (
-      <Page name='Market cap'>
-        <Box
-          align='center'
-          direction='row'
-          tag='header'
-          pad={{ horizontal: 'medium' }}
-        >
-          {this.renderCoinsList()}
-        </Box>
-      </Page>
+      <MarketPage name='Market cap distribution'>
+        {this.renderMarketTable()}
+      </MarketPage>
     );
   }
 }

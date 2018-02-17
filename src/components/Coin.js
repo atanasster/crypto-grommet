@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import { Box, Image, Text, RoutedAnchor, Heading } from 'grommet';
 import numeral from 'numeral';
 
-const FormattedValue = ({ value, toSymbol, coin, large }) => {
+const FormattedValue = ({ value, toSymbol, coin, large, justify, level }) => {
   let format = (coin && !large) ? '0,0.00000000' : '0,0.00';
   if (large) {
     format = `${format}a`;
   }
   return (
-    <Box direction='row' align='baseline' gap='xsmall' justify='end'>
-      <Text>
+    <Box direction='row' align='baseline' gap='xsmall' justify={justify}>
+      <Heading margin='none' level={level}>
         {numeral(value).format(format)}
-      </Text>
+      </Heading>
       <Text size='xsmall'>
         {toSymbol}
       </Text>
@@ -24,12 +24,16 @@ const FormattedValue = ({ value, toSymbol, coin, large }) => {
 
 FormattedValue.defaultProps = {
   large: false,
+  justify: 'end',
+  level: 4,
 };
 
 FormattedValue.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   toSymbol: PropTypes.string.isRequired,
   large: PropTypes.bool,
+  justify: PropTypes.string,
+  level: PropTypes.number,
 };
 const mapValueStateToProps = (state, props) => ({
   coin: state.coins.all[props.toSymbol],
@@ -56,10 +60,11 @@ export const ColoredPercentChange = ({ value, size = 'medium' }) => (
 );
 
 const Coin = (
-  { coin, exchange, defaultExchange, symbol, toSymbol, level, border, aggregatedExchange }
+  { coin, exchange, defaultExchange, symbol, toSymbol, level, border, aggregatedExchange, short }
 ) => {
-  const coinName = coin ? coin.fullName : symbol;
-  const title = <Heading level={level} margin='none'>{coinName}</Heading>;
+  const coinName = (coin && !short) ? coin.fullName : symbol;
+  const textLevel = short ? 4 : level;
+  const title = <Heading level={textLevel} margin='none'>{coinName}</Heading>;
   const link = coin ? (
     <RoutedAnchor
       path={`/coins/general/${symbol}/${toSymbol}/${exchange === aggregatedExchange ? defaultExchange : exchange}`}
@@ -68,12 +73,12 @@ const Coin = (
     </RoutedAnchor>
   ) : title;
   let image;
-  if (coin) {
+  if (coin && !short) {
     image = (
       <Box margin={{ right: 'small' }}>
         <Image
           src={coin.imageUrl}
-          style={{ width: level > 2 ? '24px' : '34px', height: level > 2 ? '24px' : '34px' }}
+          style={{ width: textLevel > 2 ? '24px' : '34px', height: textLevel > 2 ? '24px' : '34px' }}
         />
       </Box>
     );
@@ -106,6 +111,7 @@ Coin.defaultProps = {
   border: 'bottom',
   toSymbol: undefined,
   exchange: undefined,
+  short: false,
 };
 
 Coin.propTypes = {
@@ -114,6 +120,7 @@ Coin.propTypes = {
   exchange: PropTypes.string,
   level: PropTypes.number,
   border: PropTypes.string,
+  short: PropTypes.bool,
 };
 
 export default ConnectedCoin;

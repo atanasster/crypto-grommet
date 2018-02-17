@@ -9,7 +9,8 @@ import ExchangeCurrencies from '../screens/exchanges/ExchangeCurrencies';
 import ExchangeFees from '../screens/exchanges/ExchangeFees';
 import CoinsList from '../screens/coins/CoinsList';
 import ICOList from '../screens/coins/ICOList';
-import MarketCapList from '../screens/coins/MarketCapList';
+import MarketCapList from '../screens/markets/MarketCapList';
+import MarketCapDistribution from '../screens/markets/MarketCapDistribution';
 import CoinInfo from '../screens/coins/CoinInfo';
 import CoinSocial from '../screens/coins/CoinSocial';
 import CoinChartAnalysis from '../screens/coins/CoinChartAnalysis';
@@ -20,6 +21,7 @@ export default () => (
   <Switch>
     <Route exact={true} path='/' component={Home} />
     <Route exact={true} path='/about' component={About} />
+    <Route exact={true} path='/markets/distribution' component={MarketCapDistribution} />
     <Route exact={true} path='/markets' component={MarketCapList} />
     <Route exact={true} path='/exchanges/prices/:exchange' component={ExchangePrices} />
     <Route exact={true} path='/exchanges/order_books/:exchange' component={ExchangeOrderBooks} />
