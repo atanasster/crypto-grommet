@@ -12,7 +12,7 @@ const availableCurrencies = [
 ];
 
 class CurrencySelect extends Component {
-  onChange = (option) => {
+  onChange = ({ option }) => {
     this.props.changeDefaultCurrency(option);
   };
 
