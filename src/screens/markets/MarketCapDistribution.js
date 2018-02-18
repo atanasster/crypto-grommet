@@ -64,7 +64,7 @@ class MarketCapDistribution extends Component {
   }
   render() {
     return (
-      <MarketPage name='Market cap table' >
+      <MarketPage name='Market cap distribution' >
         <Box fill={true} basis='xlarge'>
           {this.renderMarket()}
         </Box>

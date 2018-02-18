@@ -139,7 +139,7 @@ class MarketCapList extends Component {
   }
   render() {
     return (
-      <MarketPage name='Market cap distribution'>
+      <MarketPage name='Market cap table'>
         {this.renderMarketTable()}
       </MarketPage>
     );
