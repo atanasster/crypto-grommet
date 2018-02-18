@@ -1,5 +1,5 @@
 import React from 'react';
-import FavoritePrices from '../../components/FavoritePrices';
+import FavoritePrices from '../coins/components/FavoritePrices';
 
 export default ({ exchange }) => (
   <FavoritePrices exchange={exchange} />

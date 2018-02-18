@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import numeral from 'numeral';
 import { Box, Text, Markdown } from 'grommet';
-import Page from '../../components/pages/Page';
+import Page from '../../components/Page';
 import Table from '../../components/table/Table';
 import Coin from '../../components/Coin';
-import PriceCard from '../../components/cards/PriceCard';
-import ICOCard from '../../components/cards/ICOCard';
-import OrderBookCard from '../../components/cards/OrderBookCard';
+import PriceCard from './components/PriceCard';
+import ICOCard from './components/ICOCard';
+import OrderBookCard from './components/OrderBookCard';
 
 class CoinsList extends Component {
   // eslint-disable-next-line no-undef

@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import ReactHighstock from 'react-highcharts/ReactHighstock';
 import moment from 'moment';
 import { Box } from 'grommet';
-import * as ActionTypes from '../actions/price_stream/constants';
-import requestPriceHistory from '../actions/price_history/actions';
+import { actionToKey } from '../../../actions/api/api';
+import requestPriceHistory from '../../../actions/price_history/actions';
 
 class PriceChart extends Component {
   componentDidMount() {
@@ -131,7 +131,7 @@ class PriceChart extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators({ requestPriceHistory }, dispatch);
 
 const mapStateToProps = (state, props) => ({
-  priceHistory: state.priceHistory[ActionTypes.actionToKey(props)],
+  priceHistory: state.priceHistory[actionToKey(props)],
   coin: state.coins.all[props.symbol],
 });
 

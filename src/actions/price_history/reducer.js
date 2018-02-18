@@ -1,5 +1,5 @@
 import * as ActionTypes from './constants';
-import { actionToKey } from '../price_stream/constants';
+import { actionToKey } from '../api/api';
 
 const initialState = {};
 

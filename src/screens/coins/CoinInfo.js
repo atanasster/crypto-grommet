@@ -1,7 +1,7 @@
 import React from 'react';
 import CardScroll from '../../components/CardScroll';
-import PriceCard from '../../components/cards/PriceCard';
-import OrderBookCard from '../../components/cards/OrderBookCard';
+import PriceCard from './components/PriceCard';
+import OrderBookCard from './components/OrderBookCard';
 
 export default ({ symbol, toSymbol, exchange }) => (
   <CardScroll>

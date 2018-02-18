@@ -14,8 +14,8 @@ import {
   Markdown,
   Responsive,
 } from 'grommet';
-import NavMenu from '../NavMenu';
-import { updateResponsive } from '../../actions/nav/actions';
+import NavMenu from './NavMenu';
+import { updateResponsive } from '../actions/nav/actions';
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;

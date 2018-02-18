@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Box } from 'grommet';
-import CardScroll from './CardScroll';
-import PriceCard from './cards/PriceCard';
+import CardScroll from '../../../components/CardScroll';
+import PriceCard from './PriceCard';
 
 const FavoritePrices = ({ favCoins, exchange, responsive }) => {
   const cards = favCoins.map((pair, index) => {

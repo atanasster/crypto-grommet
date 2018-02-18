@@ -5,8 +5,8 @@ import { Box } from 'grommet';
 import MarketPage from './MarketPage';
 import Table from '../../components/table/Table';
 import Coin, { FormattedCoinValue, ColoredPercentChange } from '../../components/Coin';
-import PriceCard from '../../components/cards/PriceCard';
-import OrderBookCard from '../../components/cards/OrderBookCard';
+import PriceCard from '../coins/components/PriceCard';
+import OrderBookCard from '../coins/components/OrderBookCard';
 import { requestMarketCapTable } from '../../actions/market_cap/actions';
 
 class MarketCapList extends Component {

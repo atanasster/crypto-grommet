@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CardScroll from '../../components/CardScroll';
-import OrderBookCard from '../../components/cards/OrderBookCard';
-import { actionToKey } from '../../actions/price_stream/constants';
+import OrderBookCard from './components/OrderBookCard';
+import { actionToKey } from '../../actions/api/api';
 
 class OrderBookAnalysis extends Component {
   state = { cards: [] };

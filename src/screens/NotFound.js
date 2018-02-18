@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { RoutedAnchor, Heading, Paragraph } from 'grommet';
-import Page from '../components/pages/Page';
+import Page from '../components/Page';
 
 export default class NotFoundPage extends Component {
   render() {

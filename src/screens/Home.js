@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Box, WorldMap, Image, RoutedAnchor } from 'grommet';
 import { Heading } from '../components/utils/Text';
 import Table from '../components/table/Table';
-import Page from '../components/pages/Page';
+import Page from '../components/Page';
 import SideLayer from '../components/SideLayer';
-import { ExchangeCountries } from '../components/Exchange';
-import FavoritePrices from '../components/FavoritePrices';
+import { ExchangeCountries } from './exchanges/components/Exchange';
+import FavoritePrices from './coins/components/FavoritePrices';
 
 const continents = [
   {

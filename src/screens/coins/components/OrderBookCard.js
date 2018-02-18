@@ -6,12 +6,13 @@ import ReactHighcharts from 'react-highcharts';
 import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
-import requestOrderBook from '../../actions/order_book/actions';
-import Table from '../table/Table';
-import Card from './Card';
-import { CoinToCoin } from '../Coin';
-import Exchange from '../Exchange';
-import * as ActionTypes from '../../actions/price_stream/constants';
+import requestOrderBook from '../../../actions/order_book/actions';
+import Table from '../../../components/table/Table';
+import Card from '../../../components/Card';
+import { CoinToCoin } from '../../../components/Coin';
+import Exchange from '../../exchanges/components/Exchange';
+import { actionToKey } from '../../../actions/api/api';
+
 
 function renderAskBidTable(data) {
   return (
@@ -168,7 +169,7 @@ const mapStateToProps = (state, props) => {
   const exchange = props.exchange || state.settings.defaultExchange;
   const toSymbol = props.toSymbol || state.settings.defaultCurrency;
   return {
-    orderBook: state.orderBook.data[ActionTypes.actionToKey(
+    orderBook: state.orderBook.data[actionToKey(
       { symbol: props.symbol, exchange, toSymbol })],
     exchange,
     toSymbol,

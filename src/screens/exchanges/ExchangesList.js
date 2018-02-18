@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Box, Text, Anchor, Select } from 'grommet';
 import Table from '../../components/table/Table';
-import Page from '../../components/pages/Page';
-import Exchange, { ExchangeCountries, Country } from '../../components/Exchange';
+import Page from '../../components/Page';
+import Exchange, { ExchangeCountries, Country } from './components/Exchange';
 
 class ExchangesList extends Component {
   state = { searchCountries: undefined };

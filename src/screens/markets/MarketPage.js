@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from 'grommet';
-import Page from '../../components/pages/Page';
+import Page from '../../components/Page';
 import { NavAnchor } from '../../components/utils/Links';
 
 export default ({ children, name }) => (

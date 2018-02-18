@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Box } from 'grommet';
 import CardScroll from '../../components/CardScroll';
-import TwitterTimeline from '../../components/TwitterTimeline';
+import TwitterTimeline from './components/TwitterTimeline';
 
 function renderTwitterCard(coinProps) {
   const { coin } = coinProps;

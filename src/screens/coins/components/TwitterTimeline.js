@@ -1,6 +1,6 @@
 import React from 'react';
 import { Timeline } from 'react-twitter-widgets';
-import Card from './cards/Card';
+import Card from '../../../components/Card';
 
 export default ({ user }) => (
   <Card title={`@${user}`}>

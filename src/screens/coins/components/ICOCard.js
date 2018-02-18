@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Anchor, Text } from 'grommet';
-import Card from './Card';
-import Table from '../table/Table';
-import Coin from '../Coin';
+import Card from '../../../components/Card';
+import Table from '../../../components/table/Table';
+import Coin from '../../../components/Coin';
 
 
 class ICOCard extends Component {

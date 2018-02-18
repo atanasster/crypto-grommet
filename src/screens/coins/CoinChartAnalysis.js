@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from 'grommet';
-import PriceChart from '../../components/PriceChart';
+import PriceChart from './components/PriceChart';
 
 export default ({ symbol, toSymbol, exchange }) => (
   <Box fill='horizontal' basis='medium' margin={{ vertical: 'medium' }}>

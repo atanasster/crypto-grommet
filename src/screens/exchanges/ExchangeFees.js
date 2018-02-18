@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import numeral from 'numeral';
 import { Close, Checkmark } from 'grommet-icons';
 import { Box, Text } from 'grommet';
-import Card from '../../components/cards/Card';
+import Card from '../../components/Card';
 import Coin from '../../components/Coin';
 import CardScroll from '../../components/CardScroll';
 import requestExchangeInfo from '../../actions/exchange/actions';

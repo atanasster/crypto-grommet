@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Box, Text, RoutedAnchor } from 'grommet';
 import CardScroll from '../../components/CardScroll';
 import Coin from '../../components/Coin';
-import Card from '../../components/cards/Card';
+import Card from '../../components/Card';
 import Table from '../../components/table/Table';
 import requestExchangeInfo from '../../actions/exchange/actions';
 

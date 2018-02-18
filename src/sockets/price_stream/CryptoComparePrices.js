@@ -1,19 +1,4 @@
-import openSocket from 'socket.io-client';
-import * as ActionTypes from './constants';
-
-const socket = openSocket('https://streamer.cryptocompare.com/');
-
-export const appendPricePair = (symbol, toSymbol, exchange, data) => ({
-  type: ActionTypes.APPEND_PRICE_PAIR,
-  exchange,
-  symbol,
-  toSymbol,
-  data,
-});
-
-export const clearPricePair = ({ symbol, toSymbol, exchange }) => (
-  { type: ActionTypes.CLEAR_PRICE_PAIR, symbol, toSymbol, exchange }
-);
+import SocketSub from '../socket_sub/SocketSub';
 
 
 const currentFields = {
@@ -69,24 +54,42 @@ function currentUnpack(value) {
   return unpackedCurrent;
 }
 
-export function subscribeLastPrices({ symbol, toSymbol, exchange = 'CCCAGG' }) {
-  return (dispatch) => {
-    socket.on('m', (message) => {
-      const messageType = message.substring(0, message.indexOf('~'));
-      if (messageType === '5' || messageType === '2') {
-        const data = currentUnpack(message);
-        if (data.PRICE) {
-          dispatch(appendPricePair(data.FROMSYMBOL, data.TOSYMBOL, data.MARKET, data));
-        }
+class CryptoComparePrice extends SocketSub {
+  unpack = (message) => {
+    const messageType = message.substring(0, message.indexOf('~'));
+    if (messageType === '5' || messageType === '2') {
+      const data = currentUnpack(message);
+      if (data.PRICE) {
+        return { symbol: data.FROMSYMBOL, toSymbol: data.TOSYMBOL, exchange: data.MARKET, data };
       }
-    });
-    const code = exchange === 'CCCAGG' ? 5 : 2;
-    socket.emit('SubAdd', { subs: [`${code}~${exchange}~${symbol}~${toSymbol}`] });
+    }
+    return null;
   };
+  subKey = data => `${data.symbol}-${data.toSymbol}${data.exchange}`;
+}
+const socketSub = new CryptoComparePrice('https://streamer.cryptocompare.com/');
+
+const code = exchange => (exchange === 'CCCAGG' ? 5 : 2);
+
+export function subscribeLastPrices(sub) {
+  const { symbol, toSymbol, callback, exchange = 'CCCAGG' } = sub;
+  socketSub.subscribe(
+    {
+      name: 'SubAdd',
+      payload: { subs: [`${code(exchange)}~${exchange}~${symbol}~${toSymbol}`] },
+      data: sub,
+    },
+    'm', callback);
 }
 
-export function unSubscribeLastPrices({ symbol, toSymbol, exchange = 'CCCAGG' }) {
-  return () => {
-    socket.emit('SubRemove', { subs: [`5~${exchange}~${symbol}~${toSymbol}`] });
-  };
+export function unSubscribeLastPrices(sub) {
+  const { symbol, toSymbol, callback, exchange = 'CCCAGG' } = sub;
+  socketSub.unSubscribe('SubRemove',
+    {
+      name: 'SubAdd',
+      payload: { subs: [`${code(exchange)}~${exchange}~${symbol}~${toSymbol}`] },
+      data: sub,
+    },
+    callback
+  );
 }
