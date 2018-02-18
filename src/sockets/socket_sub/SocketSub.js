@@ -46,6 +46,7 @@ export default class SocketSub {
 
   unSubscribe(remove, emit, callback) {
     const key = this.subKey(emit.data);
+    this.socket.emit(remove, emit.payload);
     if (this.subscriptions[emit.name] !== undefined &&
       this.subscriptions[emit.name][key] !== undefined) {
       const index = this.subscriptions[emit.name][key].indexOf(callback);
@@ -62,6 +63,5 @@ export default class SocketSub {
         this.disConnectServer();
       }
     }
-    this.socket.emit(remove, emit.payload);
   }
 }
