@@ -5,18 +5,17 @@ import { Box, Text, RoutedAnchor } from 'grommet';
 import CardScroll from '../../components/CardScroll';
 import Coin from '../../components/Coin';
 import Card from '../../components/cards/Card';
-import ExchangePage from '../../components/pages/ExchangePage';
 import Table from '../../components/table/Table';
 import requestExchangeInfo from '../../actions/exchange/actions';
 
 class ExchangeCurrencies extends Component {
   componentDidMount() {
-    this.props.requestExchangeInfo(this.props.match.params.exchange);
+    this.props.requestExchangeInfo(this.props.exchange);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.exchange !== this.props.match.params.exchange) {
-      this.props.requestExchangeInfo(nextProps.match.params.exchange);
+    if (nextProps.exchange !== this.props.exchange) {
+      this.props.requestExchangeInfo(nextProps.exchange);
     }
   }
   renderItem = (label, value) => (
@@ -33,7 +32,7 @@ class ExchangeCurrencies extends Component {
     return this.renderItem('Countries', countries.join());
   };
   renderCurrencyPairs(currency) {
-    const { exchange: { markets, name: exchanegName } } = this.props;
+    const { exchangeObj: { markets, name: exchanegName } } = this.props;
     const pairs = Object.keys(markets).filter(key =>
       key.startsWith(`${currency}/`)).map(key => (markets[key]));
     return (
@@ -62,11 +61,11 @@ class ExchangeCurrencies extends Component {
     );
   }
   render() {
-    const { exchange, defaultCurrency } = this.props;
+    const { exchangeObj, defaultCurrency } = this.props;
     let currencies;
-    if (exchange.currencies) {
-      currencies = Object.keys(exchange.currencies).map((key) => {
-        const currency = exchange.currencies[key];
+    if (exchangeObj && exchangeObj.currencies) {
+      currencies = Object.keys(exchangeObj.currencies).map((key) => {
+        const currency = exchangeObj.currencies[key];
         return (
           <Card
             key={`curr${currency.code}`}
@@ -74,7 +73,7 @@ class ExchangeCurrencies extends Component {
               <Coin
                 symbol={currency.code}
                 toSymbol={defaultCurrency}
-                exchange={exchange.name}
+                exchange={exchangeObj.name}
               />
             )}
             subTitle={`precision: ${currency.precision}`}
@@ -85,11 +84,9 @@ class ExchangeCurrencies extends Component {
       });
     }
     return (
-      <ExchangePage exchange={exchange.name} >
-        <CardScroll>
-          {currencies}
-        </CardScroll>
-      </ExchangePage>
+      <CardScroll>
+        {currencies}
+      </CardScroll>
     );
   }
 }
@@ -98,8 +95,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({ requestExchangeInfo 
 
 const mapStateToProps = (state, props) =>
   ({
-    exchange: state.exchange[props.match.params.exchange] ||
-  { id: props.match.params.exchange, name: props.match.params.exchange },
+    exchangeObj: state.exchange[props.exchange],
     defaultCurrency: state.settings.defaultCurrency,
   });
 

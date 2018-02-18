@@ -5,7 +5,7 @@ import Page from '../components/pages/Page';
 export default class About extends Component {
   render() {
     return (
-      <Page name='About crypto-grommet'>
+      <Page name='About'>
         <Box gap='small'>
           <Box>
             <Heading level={1}>

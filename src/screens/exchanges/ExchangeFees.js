@@ -6,7 +6,7 @@ import { Close, Checkmark } from 'grommet-icons';
 import { Box, Text } from 'grommet';
 import Card from '../../components/cards/Card';
 import Coin from '../../components/Coin';
-import ExchangePage from '../../components/pages/ExchangePage';
+import CardScroll from '../../components/CardScroll';
 import requestExchangeInfo from '../../actions/exchange/actions';
 import Table from '../../components/table/Table';
 
@@ -28,12 +28,12 @@ function yesNoIcon(value) {
 
 class ExchangeFees extends Component {
   componentDidMount() {
-    this.props.requestExchangeInfo(this.props.match.params.exchange);
+    this.props.requestExchangeInfo(this.props.exchange);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.exchange !== this.props.match.params.exchange) {
-      this.props.requestExchangeInfo(nextProps.match.params.exchange);
+    if (nextProps.exchange !== this.props.exchange) {
+      this.props.requestExchangeInfo(nextProps.exchange);
     }
   }
 
@@ -165,18 +165,15 @@ class ExchangeFees extends Component {
   }
 
   render() {
-    const { exchange } = this.props;
     return (
-      <ExchangePage exchange={exchange}>
-        <Box direction='row' fill='horizontal'>
-          <Box basis='2/3'>
-            {this.renderFundingFees()}
-          </Box>
-          <Box basis='1/3'>
-            {this.renderTradingFees()}
-          </Box>
+      <CardScroll >
+        <Box basis='2/3'>
+          {this.renderFundingFees()}
         </Box>
-      </ExchangePage>
+        <Box basis='1/3'>
+          {this.renderTradingFees()}
+        </Box>
+      </CardScroll>
     );
   }
 }
@@ -185,8 +182,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({ requestExchangeInfo 
 
 const mapStateToProps = (state, props) => (
   {
-    exchange: props.match.params.exchange,
-    exchangeObj: state.exchange[props.match.params.exchange],
+    exchangeObj: state.exchange[props.exchange],
     defaultCurrency: state.settings.defaultCurrency,
   }
 );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Box } from 'grommet';
 import CardScroll from '../../components/CardScroll';
-import CoinPage from '../../components/pages/CoinPage';
 import TwitterTimeline from '../../components/TwitterTimeline';
 
 function renderTwitterCard(coinProps) {
@@ -19,13 +18,9 @@ function renderTwitterCard(coinProps) {
 export default class CoinSocial extends Component {
   render() {
     return (
-      <CoinPage>
-        {coinProps => (
-          <CardScroll >
-            {renderTwitterCard(coinProps)}
-          </CardScroll>
-        )}
-      </CoinPage>
+      <CardScroll >
+        {renderTwitterCard(this.props)}
+      </CardScroll>
     );
   }
 }

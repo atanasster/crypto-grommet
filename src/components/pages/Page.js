@@ -79,7 +79,9 @@ class Page extends Component {
     }
     return (
       <Responsive onChange={this.onResponsive} >
-        <Box pad={nav ? { horizontal: 'small', top: 'small' } : { horizontal: 'large', top: 'medium' }}>
+        <Box
+          pad={nav.responsive ? { horizontal: 'small', top: 'small' } : { horizontal: 'large', top: 'medium' }}
+        >
           <NavMenu />
           {this.renderMessages()}
           {header}

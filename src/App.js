@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
-import { Grommet, Box, Stack } from 'grommet';
+import { Grommet, Box } from 'grommet';
 import Content from './components/Content';
 import configureStore from './store';
 import requestExchanges from './actions/exchanges/actions';
@@ -37,11 +37,9 @@ export default class App extends Component {
       <Provider store={store}>
         <Router history={history}>
           <Grommet theme={theme}>
-            <Stack guidingChild='last' style={{ minHeight: '100vh' }}>
-              <Box>
-                <Content />
-              </Box>
-            </Stack>
+            <Box style={{ minHeight: '100vh' }}>
+              <Content />
+            </Box>
           </Grommet>
         </Router>
       </Provider>

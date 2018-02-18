@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { Box } from 'grommet';
-import Page from './Page';
-import { NavAnchor } from '../utils/Links';
-import Coin from '../Coin';
+import Page from '../../components/pages/Page';
+import { NavAnchor } from '../../components/utils/Links';
+import Coin from '../../components/Coin';
+import CoinInfo from './CoinInfo';
+import CoinOrderBook from './CoinOrderBook';
+import CoinChartAnalysis from './CoinChartAnalysis';
+import CoinSocial from './CoinSocial';
 
-const CoinPage = ({ children, symbol, toSymbol, exchange, coin }) => (
+const CoinPage = ({ symbol, toSymbol, exchange, coin }) => (
   <Page
     name={<Coin symbol={symbol} toSymbol={toSymbol} exchange={exchange} border={null} level={2} />}
     messages={coin ? coin.messages : undefined}
@@ -35,7 +39,12 @@ const CoinPage = ({ children, symbol, toSymbol, exchange, coin }) => (
       />
     </Box>
     <Box align='center' fill='horizontal'>
-      {children({ coin, symbol, toSymbol, exchange }) }
+      <Switch>
+        <Route exact={true} path='/coins/social/:symbol/:toSymbol?/:exchange?' render={() => <CoinSocial {...{ coin, symbol, toSymbol, exchange }} />} />
+        <Route exact={true} path='/coins/chart/:symbol/:toSymbol?/:exchange?' render={() => <CoinChartAnalysis {...{ coin, symbol, toSymbol, exchange }} />} />
+        <Route exact={true} path='/coins/order_book/:symbol/:toSymbol?/:exchange?' render={() => <CoinOrderBook {...{ coin, symbol, toSymbol, exchange }} />} />
+        <Route exact={true} path='/coins/general/:symbol/:toSymbol?/:exchange?' render={() => (<CoinInfo {...{ coin, symbol, toSymbol, exchange }} />)} />
+      </Switch>
     </Box>
   </Page>
 );

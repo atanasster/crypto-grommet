@@ -1,20 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import ExchangePage from '../../components/pages/ExchangePage';
+import React from 'react';
 import FavoriteOrderBooks from '../../components/FavoriteOrderBooks';
 
-class ExchangePrices extends Component {
-  render() {
-    const { exchange } = this.props;
-    return (
-      <ExchangePage exchange={exchange} >
-        <FavoriteOrderBooks exchange={exchange} />
-      </ExchangePage>
-    );
-  }
-}
-
-
-const mapStateToProps = (state, props) => ({ exchange: props.match.params.exchange });
-
-export default connect(mapStateToProps)(ExchangePrices);
+export default ({ exchange }) => (
+  <FavoriteOrderBooks exchange={exchange} />
+);
