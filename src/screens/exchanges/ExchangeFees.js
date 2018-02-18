@@ -47,7 +47,6 @@ class ExchangeFees extends Component {
       )) : [];
       if (funding.withdraw) {
         Object.keys(funding.withdraw).forEach((k) => {
-          console.log(funding.withdraw[k]);
           const deposit = fees.find(item => (item.symbol === k));
           if (deposit) {
             deposit.withdraw = funding.withdraw[k];

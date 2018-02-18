@@ -129,7 +129,6 @@ class Home extends Component {
     const continentHover = worldContinent ? (
       `${worldExchanges} exchanges in ${worldContinent}, click to see more...`
     ) : null;
-    console.log(responsive);
     return (
       <Page>
         <Box align='center' style={{ height: responsive ? '430px' : undefined }}>

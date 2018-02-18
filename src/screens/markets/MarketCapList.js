@@ -38,7 +38,7 @@ class MarketCapList extends Component {
 
   fetchData = ({ pageSize, page }) => {
     const { defaultCurrency } = this.props;
-    console.log('request FETCH', pageSize, page);
+    // console.log('request FETCH', pageSize, page);
     this.start = pageSize * page;
     this.limit = this.start + pageSize;
     this.requestMarketCapTable(defaultCurrency);
