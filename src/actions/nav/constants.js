@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
+
 export const UPDATE_RESPONSIVE = 'UPDATE_RESPONSIVE';
+export const NAV_ACTIVE = 'NAV_ACTIVE';

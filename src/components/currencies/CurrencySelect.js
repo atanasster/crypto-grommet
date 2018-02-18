@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Box, Select } from 'grommet';
@@ -11,14 +12,14 @@ const availableCurrencies = [
 ];
 
 class CurrencySelect extends Component {
-  onChange = ({ option }) => {
+  onChange = (option) => {
     this.props.changeDefaultCurrency(option);
   };
 
   render() {
-    const { defaultCurrency } = this.props;
+    const { defaultCurrency, basis } = this.props;
     return (
-      <Box basis='small'>
+      <Box basis={basis} >
         <Select
           a11yTitle='Change default currency'
           value={defaultCurrency}
@@ -29,6 +30,13 @@ class CurrencySelect extends Component {
     );
   }
 }
+
+CurrencySelect.defaultProps = {
+  basis: undefined,
+};
+CurrencySelect.propTypes = {
+  basis: PropTypes.string,
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators({ changeDefaultCurrency }, dispatch);
 

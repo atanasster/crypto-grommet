@@ -4,6 +4,7 @@ import * as ActionTypes from './constants';
 const initialState = {
   responsive: false,
   active: false,
+  manual_active: false,
   items: [
     { path: '/markets', label: 'markets', a11yTitle: 'Market cap table of crypto coins' },
     { path: '/exchanges', label: 'exchanges', a11yTitle: 'List of exchanges' },
@@ -16,13 +17,18 @@ const initialState = {
 
 export default function reduce(state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.UPDATE_RESPONSIVE: {
+    case ActionTypes.UPDATE_RESPONSIVE:
       return {
         ...state,
         responsive: action.responsive,
-        active: action.responsive,
+        active: action.responsive ? state.manual_active : false,
       };
-    }
+    case ActionTypes.NAV_ACTIVE:
+      return {
+        ...state,
+        manual_active: action.active,
+        active: action.active,
+      };
     default:
       return state;
   }

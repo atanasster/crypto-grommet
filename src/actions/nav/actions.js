@@ -1,6 +1,10 @@
 import * as ActionTypes from './constants';
 
-// eslint-disable-next-line import/prefer-default-export
+export const navActivate = active => (
+  { type: ActionTypes.NAV_ACTIVE, active }
+);
+
+
 export const updateResponsive = responsive => (
   { type: ActionTypes.UPDATE_RESPONSIVE, responsive }
 );

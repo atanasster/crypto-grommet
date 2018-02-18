@@ -12,7 +12,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 HeadingInternal.propTypes = {
-  level: PropTypes.isRequired,
+  level: PropTypes.number.isRequired,
 };
 
 // eslint-disable-next-line import/prefer-default-export
