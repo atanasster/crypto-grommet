@@ -8,6 +8,7 @@ const Card = ({ title, subTitle, children, basis = undefined }) => (
     pad='small'
     elevation='small'
     border='all'
+    round='xsmall'
     margin={{ vertical: 'small' }}
     align='center'
     basis={basis}
