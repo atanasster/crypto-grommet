@@ -101,10 +101,22 @@ export default class GrommetResponsive extends Component {
             },
           },
         },
+        text: {
+          medium: { size: `${baseSpacing * 0.7}px`, height: 1.375 },
+          xsmall: { size: `${baseSpacing * 0.5}px`, height: 1.5 },
+          small: { size: `${baseSpacing * 0.6}px`, height: 1.43 },
+          large: { size: `${baseSpacing}px`, height: 1.167 },
+          xlarge: { size: `${baseSpacing * 1.5}px`, height: 1.1875 },
+          xxlarge: { size: `${baseSpacing * 2}px`, height: 1.125 },
+        },
         button: {
           ...theme.button,
           minWidth: `${baseSpacing * 4}px`,
           maxWidth: `${baseSpacing * 16}px`,
+          border: {
+            ...(theme.button ? theme.button.border : {}),
+            width: `${borderWidth}px`,
+          },
           padding: {
             ...(theme.button ? theme.button.padding : {}),
             vertical: `${(baseSpacing / 2) - borderWidth}px`,
@@ -133,6 +145,7 @@ export default class GrommetResponsive extends Component {
         },
       },
     });
+    console.log(mobile, this.state);
   }
 
   onResponsive = (nav) => {
