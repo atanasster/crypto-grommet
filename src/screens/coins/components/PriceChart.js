@@ -107,6 +107,7 @@ class PriceChart extends Component {
     };
     return (
       <ReactHighstock
+        isPureConfig={true}
         config={config}
         domProps={{ style: { width: '100%' } }}
       />
