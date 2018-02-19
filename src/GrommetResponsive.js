@@ -13,7 +13,7 @@ export default class GrommetResponsive extends Component {
     const baseSpacing = mobile ? 16 : 24;
     this.setState({
       theme: {
-        ...theme.theme,
+        ...theme,
         global: {
           ...theme.global,
           edgeSize: {
