@@ -9,19 +9,12 @@ import requestExchanges from './actions/exchanges/actions';
 import requestCoins from './actions/coins/actions';
 import { updateResponsive } from './actions/nav/actions';
 import GrommetResponsive from './GrommetResponsive';
+import theme from './theme';
+
 // eslint-disable-next-line no-underscore-dangle
 const preloadedState = window.__PRELOADED_STATE__;
 const history = createHistory();
 const store = configureStore(preloadedState, history);
-
-
-const theme = {
-  global: {
-    colors: {
-      brand: '#336699',
-    },
-  },
-};
 
 export default class App extends Component {
   componentDidMount() {
