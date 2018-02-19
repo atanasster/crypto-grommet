@@ -90,13 +90,14 @@ class Page extends Component {
             tag='footer'
             direction='row'
             justify='center'
-            pad={{ top: 'xlarge' }}
+            pad={{ top: 'large' }}
           >
             <Box
               basis='large'
               border='top'
               direction='row'
               justify='center'
+              pad='medium'
               gap='medium'
             >
               <RoutedAnchor
