@@ -71,7 +71,7 @@ const StyledTable = styled(GrommetTable)`
   width: 100%;
   color: ${props =>
     (props.grommet && props.grommet.dark ? props.theme.global.colors.darkBackground.text
-      : props.theme.table.color)};
+      : (props.theme.table && props.theme.table.color))};
   & .rt-table {
     align-items: stretch;
     width: 100%;
@@ -353,5 +353,5 @@ const StyledTable = styled(GrommetTable)`
 `;
 
 export default StyledTable.extend`
-  ${props => props.theme.table.extend}
+  ${props => (props.theme.table ? props.theme.table.extend : {})}
 `;

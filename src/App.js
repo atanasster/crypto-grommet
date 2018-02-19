@@ -21,7 +21,6 @@ const theme = {
       brand: '#336699',
     },
   },
-  table: {},
 };
 
 export default class App extends Component {
@@ -39,7 +38,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <GrommetResponsive theme={theme} onResponsive={this.onResponsive}>
+          <GrommetResponsive onResponsive={this.onResponsive} theme={theme}>
             <Box style={{ minHeight: '100vh' }}>
               <Content />
             </Box>
