@@ -37,17 +37,45 @@ export default class App extends Component {
   onResponsive = (nav) => {
     const mobile = nav === 'narrow';
     store.dispatch(updateResponsive(mobile));
-    const baseSpacing = 24;
+    const baseSpacing = mobile ? 16 : 24;
     this.setState({
       theme: {
         ...this.state.theme,
-        edgeSize: {
-          none: '0',
-          xsmall: `${baseSpacing / (mobile ? 8 : 4)}px`,
-          small: `${baseSpacing / (mobile ? 6 : 2)}px`,
-          medium: `${baseSpacing / (mobile ? 4 : 1)}px`,
-          large: `${baseSpacing / (mobile ? 2 : 0.5)}px`,
-          xlarge: `${baseSpacing / (mobile ? 1 : 0.25)}px`,
+        global: {
+          ...this.state.theme.global,
+          edgeSize: {
+            none: '0',
+            xsmall: `${baseSpacing / 4}px`,
+            small: `${baseSpacing / 2}px`,
+            medium: `${baseSpacing}px`,
+            large: `${baseSpacing * 2}px`,
+            xlarge: `${baseSpacing * 4}px`,
+          },
+        },
+        heading: {
+          ...this.state.theme.heading,
+          level: {
+            1: {
+              medium: { size: `${baseSpacing * 2}px`, height: 1.125, maxWidth: `${baseSpacing * 48}px` },
+              small: { size: `${baseSpacing}px`, height: 1.333, maxWidth: `${baseSpacing * 24}px` },
+              large: { size: `${baseSpacing * 1.5}px`, height: 1.125, maxWidth: `${baseSpacing * 96}px` },
+            },
+            2: {
+              medium: { size: `${baseSpacing * 1.5}px`, height: 1.23, maxWidth: `${baseSpacing * 36}px` },
+              small: { size: `${baseSpacing * 0.8}px`, height: 1.333, maxWidth: `${baseSpacing * 18}px` },
+              large: { size: `${baseSpacing * 2}px`, height: 1.125, maxWidth: `${baseSpacing * 48}px` },
+            },
+            3: {
+              medium: { size: `${baseSpacing}px`, height: 1.333, maxWidth: `${baseSpacing * 24}px` },
+              small: { size: `${baseSpacing * 0.8}px`, height: 1.333, maxWidth: `${baseSpacing * 18}px` },
+              large: { size: `${baseSpacing * 1.5}px`, height: 1.23, maxWidth: `${baseSpacing * 36}px` },
+            },
+            4: {
+              medium: { size: `${baseSpacing * 0.8}px`, height: 1.333, maxWidth: `${baseSpacing * 18}px` },
+              small: { size: `${baseSpacing * 0.6}px`, height: 1.375, maxWidth: `${baseSpacing * 16}px` },
+              large: { size: `${baseSpacing}px`, height: 1.333, maxWidth: `${baseSpacing * 24}px` },
+            },
+          },
         },
       },
     });
