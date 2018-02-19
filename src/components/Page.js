@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 
 import {
@@ -12,10 +11,8 @@ import {
   Text,
   RoutedAnchor,
   Markdown,
-  Responsive,
 } from 'grommet';
 import NavMenu from './NavMenu';
-import { updateResponsive } from '../actions/nav/actions';
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;
@@ -53,10 +50,6 @@ class Page extends Component {
     );
   };
 
-  onResponsive = (nav) => {
-    this.props.updateResponsive(nav === 'narrow');
-  };
-
   render() {
     const { children, description, name, nav } = this.props;
     let header;
@@ -78,43 +71,41 @@ class Page extends Component {
       );
     }
     return (
-      <Responsive onChange={this.onResponsive} >
+      <Box
+        pad={nav.responsive ? { horizontal: 'small', top: 'small' } : { horizontal: 'large', top: 'medium' }}
+      >
+        <NavMenu />
+        {this.renderMessages()}
+        {header}
+        {children}
         <Box
-          pad={nav.responsive ? { horizontal: 'small', top: 'small' } : { horizontal: 'large', top: 'medium' }}
+          tag='footer'
+          direction='row'
+          justify='center'
+          pad={{ top: 'large' }}
         >
-          <NavMenu />
-          {this.renderMessages()}
-          {header}
-          {children}
           <Box
-            tag='footer'
+            basis='large'
+            border='top'
             direction='row'
             justify='center'
-            pad={{ top: 'large' }}
+            pad='medium'
+            gap='medium'
           >
-            <Box
-              basis='large'
-              border='top'
-              direction='row'
-              justify='center'
-              pad='medium'
-              gap='medium'
-            >
-              <RoutedAnchor
-                path='/about'
-                label='about'
-                a11yTitle='About crypto-grommet'
-              />
-              <Anchor
-                href='https://github.com/atanasster/crypto-grommet'
-                target='_blank'
-                label='git'
-                a11yTitle='Go to the github page for this project'
-              />
-            </Box>
+            <RoutedAnchor
+              path='/about'
+              label='about'
+              a11yTitle='About crypto-grommet'
+            />
+            <Anchor
+              href='https://github.com/atanasster/crypto-grommet'
+              target='_blank'
+              label='git'
+              a11yTitle='Go to the github page for this project'
+            />
           </Box>
         </Box>
-      </Responsive>
+      </Box>
     );
   }
 }
@@ -136,10 +127,8 @@ Page.defaultProps = {
   messages: [],
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({ updateResponsive }, dispatch);
-
 const mapStateToProps = state => ({
   nav: state.nav,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page);
+export default connect(mapStateToProps)(Page);

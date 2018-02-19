@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Box, WorldMap, Image, RoutedAnchor } from 'grommet';
-import { Heading } from '../components/utils/Text';
+import { Box, WorldMap, Image, RoutedAnchor, Heading } from 'grommet';
 import Table from '../components/table/Table';
 import Page from '../components/Page';
 import SideLayer from '../components/SideLayer';

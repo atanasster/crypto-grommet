@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Box, RoutedAnchor, Layer } from 'grommet';
-import { Bitcoin as AppIcon, Menu } from 'grommet-icons';
+import { Box, Anchor, Layer } from 'grommet';
+import { Bitcoin as AppIcon, Menu, User } from 'grommet-icons';
 import { bindActionCreators } from 'redux';
+import Login from '../screens/auth/Login';
 import CurrencySelect from './currencies/CurrencySelect';
 import { NavAnchor } from './utils/Links';
 import { navActivate } from '../actions/nav/actions';
 
 class NavMenu extends Component {
+  state = { loginForm: false };
   onResponsiveMenu = () => {
     const { nav: { active } } = this.props;
     this.props.navActivate(!active);
@@ -41,6 +43,7 @@ class NavMenu extends Component {
         <Box direction='row' align='center' justify='end' gap='small' tag='nav'>
           {items}
           <CurrencySelect basis='small' />
+          <Anchor icon={<User />} a11yTitle='Open login form' onClick={() => this.setState({ loginForm: true })} />
         </Box>
       );
     }
@@ -48,6 +51,11 @@ class NavMenu extends Component {
   }
   render() {
     const { nav } = this.props;
+    const { loginForm } = this.state;
+    let layer;
+    if (loginForm) {
+      layer = <Login onClose={() => this.setState({ loginForm: false })} />;
+    }
     return (
       <Box
         tag='header'
@@ -59,9 +67,10 @@ class NavMenu extends Component {
       >
         <Box direction='row' align='center' gap='small'>
           {nav.responsive ? <Menu onClick={this.onResponsiveMenu} /> : <AppIcon color='plain' /> }
-          <RoutedAnchor path='/' label='crypto-grommet' />
+          <NavAnchor path='/' label='crypto-grommet' a11yTitle='Go to home page' />
         </Box>
         {this.renderMenu()}
+        {layer}
       </Box>
     );
   }
