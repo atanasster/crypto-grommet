@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const env = process.env.NODE_ENV || 'production';
@@ -19,6 +20,9 @@ let alias;
 const devConfig = {};
 if (env === 'production') {
   loaderOptionsConfig.minimize = true;
+  plugins.push(new ManifestPlugin());
+  // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  // plugins.push(new BundleAnalyzerPlugin());
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false,
@@ -76,7 +80,7 @@ module.exports = Object.assign({
   },
   resolve: {
     alias,
-    extensions: ['.js', '.scss', '.css', '.json'],
+    extensions: ['.js', '.json'],
   },
   plugins,
   node: {

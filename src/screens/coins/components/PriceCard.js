@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment';
 import { Box, Chart, Menu, RoutedButton } from 'grommet';
+import { longDate } from '../../../components/utils/moment';
 import requestPriceHistory from '../../../actions/price_history/actions';
 import { actionToKey } from '../../../actions/api/api';
 import Card from '../../../components/Card';
@@ -96,8 +96,7 @@ class PriceCard extends Component {
                 style={{ cursor: 'pointer' }}
                 values={priceHistory ? priceHistory.data.map((price, index) => ({
                   value: [index, price.close],
-                  label: moment(price.time)
-                    .format('LLL'),
+                  label: longDate(price.time),
                 })) : []}
               />
             </RoutedButton>

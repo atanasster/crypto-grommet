@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactHighcharts from 'react-highcharts';
-import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
+import { longDate } from '../../../components/utils/moment';
 import requestOrderBook from '../../../actions/order_book/actions';
 import Table from '../../../components/table/Table';
 import Card from '../../../components/Card';
@@ -63,7 +63,7 @@ class OrderBookCard extends Component {
         type: 'area',
       },
       title: {
-        text: moment(data.timestamp).format('LLL'),
+        text: longDate(data.timestamp),
       },
       credits: {
         enabled: false,

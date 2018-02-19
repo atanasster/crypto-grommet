@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Flag from 'react-world-flags';
 import { Box, Image, Heading, RoutedAnchor } from 'grommet';
+import Flag from '../../../components/utils/Flag';
 
 export const CountryFlag = ({ code, height = 12 }) => (
   <Flag

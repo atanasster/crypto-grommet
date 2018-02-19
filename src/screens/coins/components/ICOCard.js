@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import numeral from 'numeral';
 import { Box, Anchor, Text } from 'grommet';
+import { shortDate } from '../../../components/utils/moment';
 import Card from '../../../components/Card';
 import Table from '../../../components/table/Table';
 import Coin from '../../../components/Coin';
@@ -33,7 +33,7 @@ class ICOCard extends Component {
           ),
         }, {
           label: 'Date',
-          value: moment(ICO.date).format('LL'),
+          value: shortDate(ICO.date),
         }, {
           label: 'Features',
           value: (

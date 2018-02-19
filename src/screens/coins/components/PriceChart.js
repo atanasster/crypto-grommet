@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactHighstock from 'react-highcharts/ReactHighstock';
-import moment from 'moment';
 import { Box } from 'grommet';
 import { actionToKey } from '../../../actions/api/api';
 import requestPriceHistory from '../../../actions/price_history/actions';
@@ -24,10 +23,10 @@ class PriceChart extends Component {
       [1, 2, 3, 4, 6],
     ]];
     const ohlc = priceHistory.data.map(item => (
-      [moment.unix(item.time).valueOf(), item.open, item.high, item.low, item.close])
+      [item.time * 1000, item.open, item.high, item.low, item.close])
     );
     const volumeTo = priceHistory.data.map(item => (
-      [moment.unix(item.time).valueOf(), item.volumeto]
+      [item.time * 1000, item.volumeto]
     ));
     const config = {
       chart: {

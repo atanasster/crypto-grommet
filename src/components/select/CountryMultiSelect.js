@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Anchor, Box, Button, DropButton, Heading, Text } from 'grommet';
 import { FormAdd, FormClose } from 'grommet-icons';
-import Flag from 'react-world-flags';
+import Flag from '../utils/Flag';
 import {
   addSelectedCoutry,
   removeSelectedCoutry,

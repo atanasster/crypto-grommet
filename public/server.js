@@ -1,5 +1,3 @@
-// (C) Copyright 2014-2016 Hewlett Packard Enterprise Development Company, L.P.
-
 /* eslint-disable import/no-unresolved */
 import compression from 'compression';
 import express from 'express';
@@ -31,7 +29,7 @@ initializeDb((db) => {
   const dir = path.resolve(__dirname);
   app.use(express.static(dir));
   app.get('*', (req, res) => {
-    res.sendfile(path.resolve(dir, 'index.html'));
+    res.sendFile(path.resolve(dir, 'index.html'));
   });
   app.server.listen(port, () => {
     console.log(`Started on port ${app.server.address().port}`);
