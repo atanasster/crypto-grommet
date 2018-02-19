@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Box, Heading, Text } from 'grommet';
 
 
-const Card = ({ title, subTitle, children, basis = undefined }) => (
+const Card = ({ title, subTitle, children, responsive, basis = undefined }) => (
   <Box
     pad='small'
     elevation='small'
     border='all'
     round='xsmall'
+    fill={responsive && 'horizontal'}
     margin={{ vertical: 'small' }}
     align='center'
     basis={basis}
@@ -40,4 +42,5 @@ Card.propTypes = {
   subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
-export default Card;
+const mapStateToProps = state => ({ responsive: state.nav.responsive });
+export default connect(mapStateToProps)(Card);
