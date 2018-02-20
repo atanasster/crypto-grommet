@@ -38,7 +38,7 @@ const CoinPage = ({ symbol, toSymbol, exchange, coin }) => (
         a11yTitle={`Depth of market analysis on ${symbol}`}
       />
     </Box>
-    <Box align='center' fill='horizontal'>
+    <Box align='center' fill='horizontal' margin={{ vertical: 'medium' }}>
       <Switch>
         <Route exact={true} path='/coins/social/:symbol/:toSymbol?/:exchange?' render={() => <CoinSocial {...{ coin, symbol, toSymbol, exchange }} />} />
         <Route exact={true} path='/coins/chart/:symbol/:toSymbol?/:exchange?' render={() => <CoinChartAnalysis {...{ coin, symbol, toSymbol, exchange }} />} />

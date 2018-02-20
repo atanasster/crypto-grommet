@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Box, Distribution } from 'grommet';
 import MarketPage from './MarketPage';
-import Coin, { FormattedCoinValue } from '../../components/Coin';
+import Coin, { FormattedCoinValue, coinPath } from '../../components/Coin';
 import { requestMarketCapDistribution } from '../../actions/market_cap/actions';
 
 class MarketCapDistribution extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+  };
+
   requestMarketCap(defaultCurrency) {
     this.props.requestMarketCapDistribution({
       currency: defaultCurrency,
@@ -25,6 +30,20 @@ class MarketCapDistribution extends Component {
     }
   }
 
+  onClickBackground = (e, item) => {
+    const { defaultCurrency, defaultExchange } = this.props;
+    const { router } = this.context;
+    if (router) {
+      e.preventDefault();
+      (router.history || router).push(coinPath({
+        symbol: item.symbol,
+        toSymbol: defaultCurrency,
+        exchange: defaultExchange,
+
+      }));
+    }
+  };
+
   renderMarket() {
     const { distribution: { tickers }, defaultCurrency, responsive } = this.props;
     const values = tickers.map((item, index) => (
@@ -41,7 +60,13 @@ class MarketCapDistribution extends Component {
           const colorIdx = item.index % colors.length;
           const smallCap = responsive || item.index > 4;
           return (
-            <Box background={colors[colorIdx]} border='all' fill={true} pad={smallCap ? null : 'small'}>
+            <Box
+              background={colors[colorIdx]}
+              border='all'
+              fill={true}
+              pad={smallCap ? null : 'small'}
+              onClick={e => this.onClickBackground(e, item)}
+            >
               <Coin
                 level={3}
                 symbol={item.symbol}

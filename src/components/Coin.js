@@ -60,6 +60,10 @@ export const ColoredPercentChange = ({ value, size = 'medium' }) => (
   </Text>
 );
 
+export const coinPath = ({ symbol, toSymbol, exchange }) => (
+  `/coins/general/${symbol}/${toSymbol}/${exchange}`
+);
+
 const Coin = (
   { coin, exchange, defaultExchange, symbol, toSymbol, level, border, aggregatedExchange, short }
 ) => {
@@ -68,7 +72,11 @@ const Coin = (
   const title = <Heading level={textLevel} margin='none'>{coinName}</Heading>;
   const link = coin ? (
     <RoutedAnchor
-      path={`/coins/general/${symbol}/${toSymbol}/${exchange === aggregatedExchange ? defaultExchange : exchange}`}
+      path={coinPath({
+        symbol,
+        toSymbol,
+        exchange: exchange === aggregatedExchange ? defaultExchange : exchange })
+      }
     >
       {title}
     </RoutedAnchor>

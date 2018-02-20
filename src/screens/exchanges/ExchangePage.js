@@ -35,7 +35,7 @@ const ExchangePage = ({ exchange }) => (
         a11yTitle={`Funding and trading fees on ${exchange}`}
       />
     </Box>
-    <Box align='center' fill='horizontal'>
+    <Box align='center' fill='horizontal' margin={{ vertical: 'medium' }}>
       <Switch>
         <Route exact={true} path='/exchanges/prices/:exchange' render={() => <ExchangePrices exchange={exchange} />} />
         <Route exact={true} path='/exchanges/order_books/:exchange' render={() => <ExchangeOrderBooks exchange={exchange} />} />

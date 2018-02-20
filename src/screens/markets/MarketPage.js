@@ -17,7 +17,7 @@ export default ({ children, name }) => (
         a11yTitle={'Distribution chart by market capitalization'}
       />
     </Box>
-    <Box align='center'>
+    <Box align='center' fill='horizontal' margin={{ vertical: 'medium' }}>
       {children}
     </Box>
   </Page>
