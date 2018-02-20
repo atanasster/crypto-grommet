@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
+import sslRedirect from 'heroku-ssl-redirect';
 import config from '../server/config';
 import initializeDb from '../server/db/index';
 import middleware from '../server/middleware/index';
@@ -18,6 +19,8 @@ app.use(compression());
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 // 3rd party middleware
+// enable ssl redirect
+app.use(sslRedirect());
 app.use(cors());
 // connect to db
 initializeDb((db) => {
