@@ -29,12 +29,12 @@ const continents = [
     code: 'EU',
   },
   {
-    name: 'NorthAmerica',
+    name: 'North America',
     color: 'neutral-3',
     code: 'NA',
   },
   {
-    name: 'SouthAmerica',
+    name: 'South America',
     color: 'status-warning',
     code: 'SA',
   },
