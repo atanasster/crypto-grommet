@@ -1,22 +1,5 @@
-function filterByFocusable(elements) {
-  return Array.prototype.filter.call(elements || [], (element) => {
-    if (!element.tagName) {
-      return false;
-    }
-    const currentTag = element.tagName.toLowerCase();
-    const validTags = /(svg|a|area|input|select|textarea|button|iframe|div)$/;
-    const isValidTag = currentTag.match(validTags) && element.focus;
+import { filterByFocusable } from 'grommet/utils/DOM';
 
-    if (currentTag === 'a') {
-      return isValidTag && element.childNodes.length > 0 &&
-        element.getAttribute('href');
-    } else if (currentTag === 'svg' || currentTag === 'div') {
-      return isValidTag && element.hasAttribute('tabindex');
-    }
-
-    return isValidTag;
-  });
-}
 
 function focusNode(nodes, index) {
   if (index >= 0 && index < nodes.length) {
