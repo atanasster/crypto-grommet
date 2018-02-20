@@ -61,9 +61,9 @@ class CoinsList extends Component {
       return (
         <Box direction='row' pad='small' justify='between'>
           <Box>
-            <Markdown
-              content={row.original.ICO.description}
-            />
+            <Markdown >
+              {row.original.ICO.description}
+            </Markdown>
           </Box>
           <ICOCard symbol={row.original.symbol} />
         </Box>

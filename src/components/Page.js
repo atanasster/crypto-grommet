@@ -38,10 +38,9 @@ class Page extends Component {
         key={`message_${idx}`}
         alignContent='stretch'
       >
-        <Markdown
-          components={{ p: { component: Text, props: { size: 'large' } } }}
-          content={message.message}
-        />
+        <Markdown components={{ p: { component: Text, props: { size: 'large' } } }}>
+          {message.message}
+        </Markdown>
       </Box>
     ));
     return (
@@ -64,8 +63,9 @@ class Page extends Component {
             {description ? (
               <Markdown
                 components={{ p: { component: LargeParagraph, props: { size: 'medium' } } }}
-                content={description}
-              />
+              >
+                {description}
+              </Markdown>
             ) : null}
           </Box>
         </Box>
