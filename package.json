@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Crypto browser",
   "main": "src/index.js",
-  "homepage": "http://crypto-grommet.com",
+  "homepage": "https://crypto-grommet.com/",
   "bugs": "https://github.com/atanasster/crypto-grommet/issues",
   "repository": {
     "type": "git",
