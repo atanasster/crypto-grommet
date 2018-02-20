@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Box, Image, Heading, RoutedAnchor } from 'grommet';
+import { withTheme } from 'grommet/components/hocs';
 import Flag from '../../../components/utils/Flag';
 
 export const CountryFlag = ({ code, height = 12 }) => (
@@ -69,7 +70,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 
-const ConnectedExchange = connect(mapStateToProps)(Exchange);
+const ConnectedExchange = withTheme(connect(mapStateToProps)(Exchange));
 
 Exchange.defaultProps = {
   level: 4,

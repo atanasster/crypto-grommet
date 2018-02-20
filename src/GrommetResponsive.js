@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Grommet, Responsive } from 'grommet';
 
 export default class GrommetResponsive extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = { theme: props.theme };
   }
 
@@ -145,7 +145,6 @@ export default class GrommetResponsive extends Component {
         },
       },
     });
-    console.log(mobile, this.state);
   }
 
   onResponsive = (nav) => {

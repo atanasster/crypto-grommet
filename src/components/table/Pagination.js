@@ -27,8 +27,8 @@ const StyledSelect = styled(Select)`
 `;
 
 export default class ReactTablePagination extends Component {
-  constructor(props) {
-    super();
+  constructor(props, context) {
+    super(props, context);
     this.state = { page: props.page };
   }
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Box, Chart, Menu, RoutedButton } from 'grommet';
+import { withTheme } from 'grommet/components/hocs';
 import { longDate } from '../../../components/utils/moment';
 import requestPriceHistory from '../../../actions/price_history/actions';
 import { actionToKey } from '../../../actions/api/api';
@@ -27,8 +28,8 @@ const optionLimit = [
 
 
 class PriceCard extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = { period: props.period, points: props.points, chart: false };
   }
 
@@ -139,4 +140,4 @@ ConnectedPriceCard.propTypes = {
   color: PropTypes.string,
 };
 
-export default ConnectedPriceCard;
+export default withTheme(ConnectedPriceCard);

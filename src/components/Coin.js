@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Box, Image, Text, RoutedAnchor, Heading } from 'grommet';
+import { withTheme } from 'grommet/components/hocs';
 import numeral from 'numeral';
 
 const FormattedValue = ({ value, toSymbol, coin, large, justify, level }) => {
@@ -105,7 +106,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 
-const ConnectedCoin = connect(mapStateToProps)(Coin);
+const ConnectedCoin = withTheme(connect(mapStateToProps)(Coin));
 
 Coin.defaultProps = {
   level: 3,
@@ -127,7 +128,7 @@ Coin.propTypes = {
 export default ConnectedCoin;
 
 
-export const CoinToCoin = ({ symbol, toSymbol, exchange }) => (
+export const CoinToCoin = withTheme(({ symbol, toSymbol, exchange }) => (
   <Box align='center' border='bottom'>
     <ConnectedCoin
       symbol={symbol}
@@ -143,10 +144,11 @@ export const CoinToCoin = ({ symbol, toSymbol, exchange }) => (
       border={null}
     />
   </Box>
-);
+));
 
 CoinToCoin.propTypes = {
   symbol: PropTypes.string.isRequired,
   toSymbol: PropTypes.string.isRequired,
   exchange: PropTypes.string.isRequired,
 };
+

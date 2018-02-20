@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { withTheme } from 'grommet/components/hocs';
 
 import {
   Heading,
@@ -129,4 +130,4 @@ const mapStateToProps = state => ({
   nav: state.nav,
 });
 
-export default connect(mapStateToProps)(Page);
+export default withTheme(connect(mapStateToProps)(Page));

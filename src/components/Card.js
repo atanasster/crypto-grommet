@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Box, Heading, Text } from 'grommet';
+import { withTheme } from 'grommet/components/hocs';
 
 
 const Card = ({ title, subTitle, children, responsive, basis = undefined }) => (
@@ -10,7 +11,7 @@ const Card = ({ title, subTitle, children, responsive, basis = undefined }) => (
     elevation='small'
     border='all'
     round='xsmall'
-    fill={responsive && 'horizontal'}
+    fill={responsive ? 'horizontal' : undefined}
     margin={{ vertical: 'small' }}
     align='center'
     basis={basis}
@@ -43,4 +44,4 @@ Card.propTypes = {
 };
 
 const mapStateToProps = state => ({ responsive: state.nav.responsive });
-export default connect(mapStateToProps)(Card);
+export default withTheme(connect(mapStateToProps)(Card));

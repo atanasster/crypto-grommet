@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
-import { Box, Text } from 'grommet';
+import { Box } from 'grommet';
+import Text from '../../../components/Text/Text';
+
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../../sockets/price_stream/CryptoComparePrices';
 import Exchange from '../../exchanges/components/Exchange';
 import Table from '../../../components/table/Table';
@@ -9,8 +11,8 @@ import { FormattedCoinValue, valueToColor } from '../../../components/Coin';
 
 
 export default class PriceTableStream extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = { priceStream: null };
   }
 
