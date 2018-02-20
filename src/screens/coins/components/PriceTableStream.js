@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
-import { Box } from 'grommet';
-import Text from '../../../components/Text/Text';
-
+import { Box, Text } from 'grommet';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../../sockets/price_stream/CryptoComparePrices';
 import Exchange from '../../exchanges/components/Exchange';
 import Table from '../../../components/table/Table';
