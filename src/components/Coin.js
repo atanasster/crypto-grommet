@@ -41,7 +41,7 @@ const mapValueStateToProps = (state, props) => ({
 });
 
 
-export const FormattedCoinValue = connect(mapValueStateToProps)(FormattedValue);
+export const FormattedCoinValue = withTheme(connect(mapValueStateToProps)(FormattedValue));
 
 export const valueToColor = (value) => {
   if (value > 0) {

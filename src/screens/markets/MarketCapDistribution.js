@@ -26,7 +26,7 @@ class MarketCapDistribution extends Component {
   }
 
   renderMarket() {
-    const { distribution: { tickers }, defaultCurrency } = this.props;
+    const { distribution: { tickers }, defaultCurrency, responsive } = this.props;
     const values = tickers.map((item, index) => (
       { ...item,
         value: (item[`price_${defaultCurrency.toLowerCase()}`] || item.price_usd) * item.available_supply,
@@ -39,7 +39,7 @@ class MarketCapDistribution extends Component {
             'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
           ];
           const colorIdx = item.index % colors.length;
-          const smallCap = item.index > 4;
+          const smallCap = responsive || item.index > 4;
           return (
             <Box background={colors[colorIdx]} border='all' fill={true} pad={smallCap ? null : 'small'}>
               <Coin
@@ -81,6 +81,7 @@ const mapStateToProps = state => ({
   distribution: state.marketCap.distribution,
   defaultCurrency: state.settings.defaultCurrency,
   defaultExchange: state.settings.defaultExchange,
+  responsive: state.nav.responsive,
 });
 
 
