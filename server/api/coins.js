@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import coins from '../models/coins';
 
-export default ({ res, req, config, db }) => {
+export default (req, res) => {
   res.json({ data: coins() });
 };

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { findByName } from '../models/exchanges';
 import { symbolParities } from '../api/utils';
 
@@ -11,7 +10,7 @@ const sendResult = (res, orderBook, exchange, symbol, toSymbol, realToSymbol) =>
   }
 };
 
-export default ({ res, req, config, db }) => {
+export default (req, res) => {
   const { exchange: exchangeName, symbol, toSymbol } = req.params;
   const exchange = findByName(exchangeName);
   if (!exchange) {
@@ -31,7 +30,7 @@ export default ({ res, req, config, db }) => {
             .then((orderBook) => {
               sendResult(res, orderBook, exchangeName, symbol, toSymbol, symbolParities[toSymbol]);
             })
-            .catch((err) => {
+            .catch(() => {
               res.status(404)
                 .send(`Could not fetch ${symbolParities[toSymbol]} Order Book for ${exchangeName}`);
             });

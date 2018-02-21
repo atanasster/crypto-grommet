@@ -3,7 +3,7 @@ import { exchanges } from '../models/exchanges';
 import { symbolParities } from '../api/utils';
 
 export default ({
-  socket, symbol, toSymbol, config, db,
+  socket, symbol, toSymbol, config,
 }) => {
   exchanges.forEach((exchange) => {
     if (exchange.markets) {

@@ -1,13 +1,22 @@
 import { Router } from 'express';
+import passport from 'passport';
 import { exchangesList, exchangeInfo } from './exchanges';
 import orderBook from './order_book';
 import coins from './coins';
+import { show, signup } from './signup';
 
-export default ({ config, db }) => {
+export default () => {
   const api = Router();
-  api.use('/exchanges/:exchange', (req, res) => exchangeInfo({ config, db, req, res }));
-  api.use('/exchanges', (req, res) => exchangesList({ config, db, req, res }));
-  api.get('/order_book/:exchange/:symbol/:toSymbol', (req, res) => orderBook({ config, db, req, res }));
-  api.use('/coins', (req, res) => coins({ config, db, req, res }));
+  api.use('/exchanges/:exchange', exchangeInfo);
+  api.use('/exchanges', exchangesList);
+  api.get('/order_book/:exchange/:symbol/:toSymbol', orderBook);
+  api.use('/coins', coins);
+  api.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+  }));
+  api.get('/signup', show);
+  api.post('/signup', signup);
   return api;
 };

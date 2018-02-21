@@ -8,8 +8,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import sslRedirect from 'heroku-ssl-redirect';
 import config from '../server/config';
-import initializeDb from '../server/db/index';
-import middleware from '../server/middleware/index';
+import Passport from '../server/passport';
 import api from '../server/api/index';
 import sockets from '../server/socket/index';
 
@@ -22,21 +21,16 @@ app.use(bodyParser.json());
 // enable ssl redirect
 app.use(sslRedirect());
 app.use(cors());
-// connect to db
-initializeDb((db) => {
-  // internal middleware
-  app.use(middleware({ config, db }));
-  // api router
-  app.use('/api', api({ config, db }));
-  const port = process.env.PORT || config.port;
-  const dir = path.resolve(__dirname);
-  app.use(express.static(dir));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(dir, 'index.html'));
-  });
-  app.server.listen(port, () => {
-    console.log(`Started on port ${app.server.address().port}`);
-  });
-  sockets({ app: app.server, config, db });
+Passport(app);
+// api router
+app.use('/api', api({ config }));
+const port = process.env.PORT || config.port;
+const dir = path.resolve(__dirname);
+app.use(express.static(dir));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(dir, 'index.html'));
 });
-
+app.server.listen(port, () => {
+  console.log(`Started on port ${app.server.address().port}`);
+});
+sockets({ app: app.server, config });

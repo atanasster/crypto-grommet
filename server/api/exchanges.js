@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
 import list, { exchangeByName } from '../models/exchanges';
 
-export const exchangesList = ({ res, req, config, db }) => {
+export const exchangesList = (req, res) => {
   res.json({ data: list });
 };
 
 
-export const exchangeInfo = ({ res, req, config, db }) => {
+export const exchangeInfo = (req, res) => {
   const { exchange: exchangeName } = req.params;
   const exchange = exchangeByName(exchangeName);
   if (!exchange) {
