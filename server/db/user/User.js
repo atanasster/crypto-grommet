@@ -11,6 +11,7 @@ export const attributes = {
   },
   email: {
     type: Sequelize.STRING,
+    allowNull: false,
     validate: {
       isEmail: true,
     },
@@ -32,3 +33,12 @@ export const attributes = {
 export const options = {
   freezeTableName: true,
 };
+
+export const serializeUser = user => (
+  {
+    username: user.username,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+  }
+);

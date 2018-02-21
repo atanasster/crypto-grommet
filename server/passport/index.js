@@ -1,13 +1,16 @@
 import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import bcrypt from 'bcrypt';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import bcrypt from 'bcrypt-nodejs';
 import { User } from '../db/models';
+import { serializeUser } from '../db/user/User';
 
-export default (app) => {
+export default (app, config) => {
   app.use(passport.initialize());
-  app.use(passport.session());
-
-  passport.use(new LocalStrategy(
+  const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+    secretOrKey: config.JWT_SECRET_KEY,
+  };
+  passport.use(new JwtStrategy(opts,
     (username, password, done) => {
       User.findOne({
         where: {
@@ -30,7 +33,7 @@ export default (app) => {
   ));
 
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, serializeUser(user));
   });
 
   passport.deserializeUser((id, done) => {
