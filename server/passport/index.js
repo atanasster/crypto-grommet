@@ -2,7 +2,6 @@ import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcrypt-nodejs';
 import { User } from '../db/models';
-import { serializeUser } from '../db/user/User';
 
 export default (app, config) => {
   app.use(passport.initialize());
@@ -31,22 +30,6 @@ export default (app, config) => {
       });
     }
   ));
-
-  passport.serializeUser((user, done) => {
-    done(null, serializeUser(user));
-  });
-
-  passport.deserializeUser((id, done) => {
-    User.findOne({
-      where: {
-        'id': id,
-      },
-    }).then((user) => {
-      if (user == null) {
-        done(new Error('Wrong user id.'));
-      }
-
-      done(null, user);
-    });
-  });
 };
+
+export const authenticated = () => passport.authenticate('jwt', { session: false });

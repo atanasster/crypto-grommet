@@ -8,23 +8,23 @@ export const signup = (req, res) => {
   const { username, password, password2, email } = req.body;
 
   if (!username || !password || !password2) {
-    return res.json({ success: false, msg: 'Please pass username and password.' });
+    return res.json({ success: false, message: 'Please pass username and password.' });
   }
   if (!email) {
-    return res.json({ success: false, msg: 'Email is a required field.' });
+    return res.json({ success: false, message: 'Email is a required field.' });
   }
 
   if (password !== password2) {
-    return res.json({ success: false, msg: 'Please, enter the same password twice.' });
+    return res.json({ success: false, message: 'Please, enter the same password twice.' });
   }
 
   bcrypt.genSalt(10, (err, salt) => {
     if (err) {
-      return res.json({ success: false, msg: 'Salt generate error.' });
+      return res.json({ success: false, message: 'Salt generate error.' });
     }
     bcrypt.hash(password, salt, null, (_err, hashedPassword) => {
       if (err) {
-        return res.json({ success: false, msg: 'Encryption error.' });
+        return res.json({ success: false, message: 'Encryption error.' });
       }
       const newUser = {
         username,
@@ -34,7 +34,7 @@ export const signup = (req, res) => {
       };
       User.create(newUser)
         .then(() => res.json({ success: true, user: serializeUser(newUser) }))
-        .catch(e => res.json({ success: false, msg: e }));
+        .catch(e => res.json({ success: false, message: e }));
       return null;
     });
     return null;
@@ -51,7 +51,7 @@ export const login = (req, res, config) => {
   }).then((user) => {
     if (user == null) {
       return res.status(401)
-        .send({ success: false, msg: 'Authentication failed. User not found.' });
+        .send({ success: false, message: 'Authentication failed. User not found.' });
     }
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (isMatch && !err) {
@@ -61,7 +61,7 @@ export const login = (req, res, config) => {
         res.json({ success: true, token: `JWT ${token}`, user: serializeUser(user) });
       } else {
         res.status(401)
-          .send({ success: false, msg: 'Authentication failed. Wrong password.' });
+          .send({ success: false, message: 'Authentication failed. Wrong password.' });
       }
     });
     return null;

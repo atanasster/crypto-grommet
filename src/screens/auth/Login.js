@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { Box, Text, Anchor, TextInput } from 'grommet';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Box, Text, Anchor, TextInput, Button } from 'grommet';
 import { Facebook, Google, Linkedin, Twitter } from 'grommet-icons';
+import FormField from '../../components/grommet/Form/FormField';
 import SideLayer from '../../components/SideLayer';
+import { requestLogin } from '../../actions/session/actions';
 
 const RECOVER_PASSWORD = 'RECOVER_PASSWORD';
 const LOGIN = 'LOGIN';
@@ -20,8 +24,8 @@ function screenToState(screen) {
   }
 }
 
-export default class Login extends Component {
-  state = screenToState(LOGIN);
+class Login extends Component {
+  state = { ...screenToState(LOGIN), username: '', password: '' };
 
   switchNewAccount = () => {
     this.setState(screenToState(REGISTER));
@@ -35,9 +39,18 @@ export default class Login extends Component {
     this.setState(screenToState(RECOVER_PASSWORD));
   };
 
+  onSubmitLogin = (e) => {
+    const { username, password } = this.state;
+    e.preventDefault();
+    this.props.requestLogin({ username, password });
+  };
+
   renderLogin() {
+    const { username, password } = this.props;
+    const onChangeName = ({ target: { value } }) => this.setState({ username: value });
+    const onChangePassword = ({ target: { value } }) => this.setState({ password: value });
     return (
-      <Box gap='small'>
+      <Box gap='small' overflow='scroll'>
         <Box direction='row'>
           <Text color='#888888' size='small'>
             New user? Signup for a <Anchor label='free account' onClick={this.switchNewAccount} />
@@ -62,18 +75,28 @@ export default class Login extends Component {
             </Box>
           </Box>
         </Box>
-        <Box>
-          <Text>Or with an e-mail and password:</Text>
-          <TextInput
-            type='email'
-            label='E-mail'
-            name='email'
-          />
-          <TextInput
-            type='password'
-            label='Password'
-            name='password'
-          />
+        <Box border='horizontal' pad={{ vertical: 'small' }}>
+          <Text>Or with a user name and password:</Text>
+          <form onSubmit={this.onSubmitLogin} >
+            <FormField
+              label='User name'
+            >
+              <TextInput
+                value={username}
+                onChange={onChangeName}
+              />
+            </FormField>
+            <FormField label='Password'>
+              <TextInput
+                type='password'
+                vale={password}
+                onChange={onChangePassword}
+              />
+            </FormField>
+            <Box margin={{ top: 'medium' }} align='center'>
+              <Button primary={true} type='submit' label='Log in' />
+            </Box>
+          </form>
         </Box>
         <Text color='#888888' size='small'>
           <Anchor label='forgot password?' onClick={this.switchRecoverPasswor} />
@@ -129,3 +152,9 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => bindActionCreators({ requestLogin }, dispatch);
+
+const mapStateToProps = state => ({ session: state.session });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
