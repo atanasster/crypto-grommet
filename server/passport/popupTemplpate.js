@@ -13,13 +13,15 @@ export default ({ title, status, payload }) => ({
     <h1>${status}</h1>
   </body>
   <script>
-    window.opener.postMessage(
-      {
-        payload: ${JSON.stringify(payload)},
-        status: '${JSON.stringify(status)}'
-      },
-      window.opener.location
-    );
+    document.body.onload = function() {
+      window.opener.postMessage(
+        {
+          payload: ${JSON.stringify(payload)},
+          status: '${JSON.stringify(status)}'
+        },
+        window.opener.location
+      );
+    };
   </script>
   </html>`,
 });
