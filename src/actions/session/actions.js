@@ -4,7 +4,7 @@ import { apiServer } from '../api/api';
 
 export const requestLogin = ({ username, password }) => ({
   [RSAA]: {
-    endpoint: `${apiServer}/login`,
+    endpoint: `${apiServer}/auth/login`,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
     method: 'POST',
@@ -18,7 +18,7 @@ export const requestLogin = ({ username, password }) => ({
 
 export const requestSignup = ({ username, email, password, password2 }) => ({
   [RSAA]: {
-    endpoint: `${apiServer}/signup`,
+    endpoint: `${apiServer}/auth/signup`,
     body: { username, email, password, password2 },
     method: 'POST',
     types: [

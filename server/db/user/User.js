@@ -6,12 +6,13 @@ export const attributes = {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^[a-z0-9]+$/i,
+      is: /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/,
     },
   },
   email: {
     type: Sequelize.STRING,
     allowNull: false,
+    unique: true,
     validate: {
       isEmail: true,
     },
@@ -26,6 +27,12 @@ export const attributes = {
     type: Sequelize.STRING,
   },
   salt: {
+    type: Sequelize.STRING,
+  },
+  social_id: {
+    type: Sequelize.STRING,
+  },
+  social_provider: {
     type: Sequelize.STRING,
   },
 };

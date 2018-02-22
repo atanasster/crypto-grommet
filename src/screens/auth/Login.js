@@ -6,6 +6,8 @@ import { Facebook, Google, Linkedin, Twitter } from 'grommet-icons';
 import FormField from '../../components/grommet/Form/FormField';
 import SideLayer from '../../components/SideLayer';
 import { requestLogin } from '../../actions/session/actions';
+import popupWindow from '../../components/auth/openWindow';
+import { apiServer } from '../../actions/api/api';
 
 const RECOVER_PASSWORD = 'RECOVER_PASSWORD';
 const LOGIN = 'LOGIN';
@@ -45,6 +47,12 @@ class Login extends Component {
     this.props.requestLogin({ username, password });
   };
 
+  openOAutPopup = (provider) => {
+    popupWindow(`${apiServer}/auth/${provider}/start`)
+      .then(data => console.log(data))
+      .catch(err => (console.log(err)));
+  };
+
   renderLogin() {
     const { username, password } = this.props;
     const onChangeName = ({ target: { value } }) => this.setState({ username: value });
@@ -60,22 +68,38 @@ class Login extends Component {
           <Text margin='none'>Signup with one of your social accounts:</Text>
           <Box direction='row' pad='small' justify='between'>
             <Box size='small'>
-              <Anchor icon={<Facebook color='plain' />} label='Facebook' />
+              <Anchor
+                icon={<Facebook color='plain' />}
+                label='Facebook'
+                onClick={() => this.openOAutPopup('facebook')}
+              />
             </Box>
             <Box size='small'>
-              <Anchor icon={<Twitter color='plain' />} label='Twitter' />
+              <Anchor
+                icon={<Twitter color='plain' />}
+                label='Twitter'
+                onClick={() => this.openOAutPopup('twitter')}
+              />
             </Box>
           </Box>
           <Box direction='row' pad='small' justify='between'>
             <Box size='small'>
-              <Anchor icon={<Linkedin color='plain' />} label='LinkedIn' />
+              <Anchor
+                icon={<Linkedin color='plain' />}
+                label='LinkedIn'
+                onClick={() => this.openOAutPopup('linkedin')}
+              />
             </Box>
             <Box size='small'>
-              <Anchor icon={<Google color='plain' />} label='Google' />
+              <Anchor
+                icon={<Google color='plain' />}
+                label='Google'
+                onClick={() => this.openOAutPopup('google')}
+              />
             </Box>
           </Box>
         </Box>
-        <Box border='horizontal' pad={{ vertical: 'small' }}>
+        <Box border='top' pad={{ vertical: 'small' }}>
           <Text>Or with a user name and password:</Text>
           <form onSubmit={this.onSubmitLogin} >
             <FormField

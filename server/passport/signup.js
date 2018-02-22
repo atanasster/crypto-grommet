@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt-nodejs';
-import jwt from 'jsonwebtoken';
 import { User } from '../db/models';
 import { serializeUser } from '../db/user/User';
-
+import { generateToken } from './jwt';
 
 export const signup = (req, res) => {
   const { username, password, password2, email } = req.body;
@@ -56,9 +55,9 @@ export const login = (req, res, config) => {
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (isMatch && !err) {
         // if user is found and password is right create a token
-        const token = jwt.sign(user.dataValues, config.JWT_SECRET_KEY);
-        // return the information including token as JSON
-        res.json({ success: true, token: `JWT ${token}`, user: serializeUser(user) });
+        const token = generateToken(user.id, config);
+        // return the user information including token as JSON
+        res.json({ success: true, token, user: serializeUser(user) });
       } else {
         res.status(401)
           .send({ success: false, message: 'Authentication failed. Wrong password.' });

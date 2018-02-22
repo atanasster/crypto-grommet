@@ -39,6 +39,7 @@
     "copy-webpack-plugin": "^4.4.1",
     "cors": "^2.7.1",
     "express": "^4.16.2",
+    "express-api-error-handler": "^1.1.0",
     "grommet": "https://github.com/grommet/grommet/tarball/NEXT-stable",
     "grommet-cli": "^5.1.2",
     "grommet-icons": "^0.15.0",
