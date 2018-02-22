@@ -6,7 +6,7 @@ export default (config) => {
   const passportConfig = {
     clientID: config.FACEBOOK_APP_ID,
     clientSecret: config.FACEBOOK_APP_SECRET,
-    callbackURL: `http://localhost:${config.PORT}/api/auth/facebook/redirect`,
+    callbackURL: config.FACEBOOK_LOGIN_REDIRECT,
     profileFields: ['id', 'emails', 'name', 'displayName', 'picture.type(normal)',
       'profileUrl', 'gender'],
   };

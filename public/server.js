@@ -28,6 +28,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 Object.keys(config).forEach((key) => {
   config[key] = process.env[key] || config[key];
 });
+if (config.NODE_ENV === 'production') {
+  config.FACEBOOK_LOGIN_REDIRECT = `${config.APP_DOMAIN}/api/auth/facebook/redirect`;
+} else {
+  config.FACEBOOK_LOGIN_REDIRECT = `http://localhost:${config.PORT}/api/auth/facebook/redirect`;
+}
+
 Passport(app, config);
 // api router
 app.use('/api', api(config));
