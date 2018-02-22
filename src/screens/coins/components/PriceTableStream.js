@@ -108,7 +108,7 @@ export default class PriceTableStream extends Component {
       ];
       priceTable = (
         <Box align='center'>
-          <Box border='bottom' margin='small' >
+          <Box margin={{ top: 'small' }}>
             <strong>
               <Text size='xlarge' color={priceColor} >
                 {numeral(data.PRICE).format('0,0.00')}
