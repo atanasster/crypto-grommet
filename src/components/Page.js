@@ -1,18 +1,17 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { withTheme } from 'grommet/components/hocs';
-
 import {
   Heading,
   Paragraph,
   Anchor,
-  Text,
   RoutedAnchor,
   Markdown,
   Box,
 } from 'grommet';
+import Notifications from '../components/Notifications';
 import NavMenu from './NavMenu';
 
 const LargeParagraph = styled(Paragraph)`
@@ -23,32 +22,6 @@ class Page extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
-
-  renderMessages = () => {
-    const { messages = [] } = this.props;
-    const colorMap = {
-      error: 'status-critical',
-      warning: 'status-warning',
-      info: 'status-disabled',
-    };
-    const msg = messages.map((message, idx) => (
-      <Box
-        background={colorMap[message.type]}
-        pad='small'
-        key={`message_${idx}`}
-        alignContent='stretch'
-      >
-        <Markdown components={{ p: { component: Text, props: { size: 'large' } } }}>
-          {message.message}
-        </Markdown>
-      </Box>
-    ));
-    return (
-      <Fragment>
-        {msg}
-      </Fragment>
-    );
-  };
 
   render() {
     const { children, description, name } = this.props;
@@ -74,7 +47,7 @@ class Page extends Component {
     return (
       <Box pad={{ horizontal: 'large', top: 'medium' }}>
         <NavMenu />
-        {this.renderMessages()}
+        <Notifications />
         {header}
         {children}
         <Box
@@ -111,19 +84,12 @@ class Page extends Component {
 
 Page.propTypes = {
   description: PropTypes.string,
-  messages: PropTypes.arrayOf(
-    PropTypes.shape({
-      message: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(['error', 'warning', 'info']),
-    }),
-  ),
   name: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 Page.defaultProps = {
   description: undefined,
   name: undefined,
-  messages: [],
 };
 
 const mapStateToProps = state => ({
