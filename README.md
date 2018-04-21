@@ -30,21 +30,13 @@ To run this application, execute the following commands:
   ```
 ## Local deployment
 
-  * Start the back-end dev server:
-
   ```
-  $ npm run start-server
-  ```
-
-  * Start the front-end dev server:
-
-  ```
-  $ npm run start
+  $ npm run dev
   ```
 
 ## Production deployment
 
-  * Build client package
+  * Build package
 
   ```
   $ npm run build
@@ -53,13 +45,19 @@ To run this application, execute the following commands:
   * Start production server
 
   ```
-  $ npm run server
+  $ npm run start
   ```
 
 ## Testing
  
- * Run linters:
+ * Run eslint:
 
   ```
-  $ npm check
+  $ npm run check
+  ```
+ 
+ * Analyze packages:
+
+  ```
+  $ npm run analyze
   ```
