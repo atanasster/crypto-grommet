@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import Head from 'next/head';
 import { bindActionCreators } from 'redux';
 import { graphql } from 'react-apollo';
@@ -20,6 +21,7 @@ import RoutedAnchor from './RoutedAnchor';
 import NavMenu from './NavMenu';
 import { navActivate, updateResponsive } from '../redux/nav/actions';
 import { signIn } from '../redux/auth/actions';
+import { selectTheme } from '../redux/themes/actions';
 import CURRENT_USER_QUERY from './auth/graphql/CurrentUserQuery.graphql';
 
 const LargeParagraph = styled(Paragraph)`
@@ -27,6 +29,15 @@ const LargeParagraph = styled(Paragraph)`
 `;
 
 class App extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = { theme: props.router.query.theme };
+  }
+
+  changeTheme(themeName) {
+    this.props.selectTheme(themeName);
+  }
+
   componentDidMount() {
     this.props.navActivate(false);
   }
@@ -48,13 +59,24 @@ class App extends Component {
     if (nextProps.user && nextProps.user !== this.props.user) {
       this.props.signIn({ user: nextProps.user });
     }
+    if (nextProps.router.query.theme !== this.state.theme) {
+      this.setState({ theme: nextProps.router.query.theme });
+    }
   }
+  onThemeChange = ({ option: theme }) => {
+    const { router } = this.props;
+    const path = { pathname: router.pathname, query: { ...router.query, theme } };
+    this.changeTheme(theme);
+    router.replace(path, path, { shallow: true });
+  };
 
 
   render() {
     const {
-      children, description, title, visibleTitle, notifications, menu, showLogin,
+      children, description, title, visibleTitle,
+      notifications, menu, showLogin, themes: { themes },
     } = this.props;
+    const { theme = 'grommet' } = this.state;
     const keywords = ['grommet', 'grommet 2', 'react', 'next.js', 'crypto', 'cryptocurrencies'];
     if (title) {
       keywords.push(title);
@@ -96,7 +118,7 @@ class App extends Component {
           }
           <meta name='keywords' content={keywords.join(',')} />
         </Head>
-        <Grommet>
+        <Grommet theme={themes[theme] || {}}>
           <Responsive onChange={this.onResponsive}>
             <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small'>
               <NavMenu showLogin={showLogin} />
@@ -161,16 +183,19 @@ App.defaultProps = {
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ signIn, navActivate, updateResponsive }, dispatch);
+  bindActionCreators({
+    signIn, navActivate, updateResponsive, selectTheme,
+  }, dispatch);
 
 const mapStateToProps = state => ({
   nav: state.nav,
+  themes: state.themes,
   accessToken: state.auth.accessToken,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(graphql(CURRENT_USER_QUERY, {
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(graphql(CURRENT_USER_QUERY, {
   skip: ({ accessToken }) => !accessToken,
   props({ data: { loading, currentUser, refetch } }) {
     return { userLoading: loading, user: currentUser, refetchCurrentUser: refetch };
   },
-})(App));
+})(App)));
