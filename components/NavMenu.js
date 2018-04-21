@@ -86,6 +86,7 @@ class NavMenu extends Component {
         align='center'
         pad={{ bottom: 'medium' }}
         border='bottom'
+        background='brand'
       >
         <Box direction='row' align='center' gap='small'>
           <AppIcon color='plain' />
