@@ -1,6 +1,6 @@
 # crypto-grommet
 
-A react/redux/nodejs/babel/webpack project built with: 
+A react/redux/nodejs/express/passport/nextjs/graphql/apollo project built with: 
 
 * grommet v2: https://v2.grommet.io/ 
 * cctx: https://github.com/ccxt/ccxt
