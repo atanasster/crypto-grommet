@@ -85,7 +85,7 @@ class App extends Component {
     let header;
     if (title) {
       header = (
-        <Box direction='row' responsive={true} tag='header'>
+        <Box direction='row' responsive={true}>
           <Box margin={{ vertical: 'medium' }} align='start'>
             {visibleTitle !== undefined ? visibleTitle : (
               <Heading margin='none' level={1}>
@@ -118,7 +118,7 @@ class App extends Component {
           }
           <meta name='keywords' content={keywords.join(',')} />
         </Head>
-        <Grommet theme={themes[theme] || {}}>
+        <Grommet theme={themes[theme] || {}} style={{ height: 'auto', minHeight: '100vh' }}>
           <Responsive onChange={this.onResponsive}>
             <Box>
               <NavMenu showLogin={showLogin} />
@@ -136,6 +136,7 @@ class App extends Component {
                   direction='row'
                   justify='center'
                   pad={{ top: 'large' }}
+                  justifySelf='end'
                 >
                   <Box
                     basis='large'
