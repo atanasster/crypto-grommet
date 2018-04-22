@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Anchor, Menu } from 'grommet';
+import { Box, Anchor, Menu, Text } from 'grommet';
 import { Bitcoin as AppIcon, Menu as MenuIcon, User } from 'grommet-icons';
 import { bindActionCreators } from 'redux';
 import connect from '../redux/index';
@@ -84,13 +84,15 @@ class NavMenu extends Component {
         direction='row'
         justify='between'
         align='center'
-        pad={{ bottom: 'medium', horizontal: 'small' }}
+        pad='small'
         border='bottom'
         background='brand'
       >
         <Box direction='row' align='center' gap='small'>
           <AppIcon color='plain' />
-          <RoutedAnchor route='home' label='crypto-grommet' a11yTitle='Go to home page' />
+          <RoutedAnchor route='home' a11yTitle='Go to home page' >
+            <Text size='large'>crypto-grommet</Text>
+          </RoutedAnchor>
         </Box>
         {this.renderMenu()}
         {layer}
