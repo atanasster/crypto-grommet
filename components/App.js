@@ -120,8 +120,8 @@ class App extends Component {
         </Head>
         <Grommet theme={themes[theme] || {}}>
           <Responsive onChange={this.onResponsive}>
+            <NavMenu showLogin={showLogin} />
             <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small'>
-              <NavMenu showLogin={showLogin} />
               {menu && menu}
               <Notifications />
               {notifications && notifications.map(
