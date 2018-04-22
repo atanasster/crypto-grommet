@@ -118,11 +118,11 @@ class App extends Component {
           }
           <meta name='keywords' content={keywords.join(',')} />
         </Head>
-        <Grommet theme={themes[theme] || {}} style={{ height: 'auto', minHeight: '100vh' }}>
+        <Grommet theme={themes[theme] || {}} >
           <Responsive onChange={this.onResponsive}>
-            <Box>
+            <Box style={{ height: 'auto', minHeight: '100vh' }}>
               <NavMenu showLogin={showLogin} />
-              <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small'>
+              <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small' flex={true}>
                 {menu && menu}
                 <Notifications />
                 {notifications && notifications.map(
@@ -130,34 +130,36 @@ class App extends Component {
                 )}
 
                 {header}
-                {children}
+                <Box >
+                  {children}
+                </Box>
+              </Box>
+              <Box
+                tag='footer'
+                direction='row'
+                justify='center'
+                pad={{ top: 'large' }}
+                justifySelf='end'
+              >
                 <Box
-                  tag='footer'
+                  basis='large'
+                  border='top'
                   direction='row'
                   justify='center'
-                  pad={{ top: 'large' }}
-                  justifySelf='end'
+                  pad='medium'
+                  gap='medium'
                 >
-                  <Box
-                    basis='large'
-                    border='top'
-                    direction='row'
-                    justify='center'
-                    pad='medium'
-                    gap='medium'
-                  >
-                    <RoutedAnchor
-                      route='about'
-                      label='about'
-                      a11yTitle='About crypto-grommet'
-                    />
-                    <Anchor
-                      href='https://github.com/atanasster/crypto-grommet'
-                      target='_blank'
-                      label='git'
-                      a11yTitle='Go to the github page for this project'
-                    />
-                  </Box>
+                  <RoutedAnchor
+                    route='about'
+                    label='about'
+                    a11yTitle='About crypto-grommet'
+                  />
+                  <Anchor
+                    href='https://github.com/atanasster/crypto-grommet'
+                    target='_blank'
+                    label='git'
+                    a11yTitle='Go to the github page for this project'
+                  />
                 </Box>
               </Box>
             </Box>
