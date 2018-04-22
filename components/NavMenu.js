@@ -84,7 +84,7 @@ class NavMenu extends Component {
         direction='row'
         justify='between'
         align='center'
-        pad={{ bottom: 'medium' }}
+        pad={{ bottom: 'medium', horizontal: 'small' }}
         border='bottom'
         background='brand'
       >
