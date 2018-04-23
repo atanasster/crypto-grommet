@@ -23,6 +23,7 @@ import { navActivate, updateResponsive } from '../redux/nav/actions';
 import { signIn } from '../redux/auth/actions';
 import { selectTheme } from '../redux/themes/actions';
 import CURRENT_USER_QUERY from './auth/graphql/CurrentUserQuery.graphql';
+import { initGA, logPageView } from './utils/analytics';
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;
@@ -40,6 +41,11 @@ class App extends Component {
 
   componentDidMount() {
     this.props.navActivate(false);
+    if (!window.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
   }
 
   onResponsiveMenu = () => {
