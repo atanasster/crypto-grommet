@@ -1,26 +1,26 @@
 import { ApolloLink, Observable } from 'apollo-link';
 import initApollo from '../../apollo/initApollo';
 import { store } from '../../redux';
-import { setTokens, signOut } from '../../redux/auth/actions';
-import REFRESH_TOKENS_MUTATION from './graphql/RefreshTokens.graphql';
+import { setToken, signOut } from '../../redux/auth/actions';
+import REFRESH_TOKENS_MUTATION from './graphql/RefreshToken.graphql';
 
 const setJWTContext = async (operation) => {
-  const { accessToken } = store.getState().auth;
-  if (!accessToken) {
+  const { token } = store.getState().auth;
+  if (!token) {
     return null;
   }
   return operation.setContext(context => ({
     ...context,
     headers: {
-      Authorization: accessToken ? `Bearer ${accessToken}` : null,
+      Authorization: token ? `JWT ${token}` : null,
     },
   }));
 };
 
 const isTokenRefreshNeeded = async (operation, result) => {
   let needRefresh = false;
-  const { refreshToken } = store.getState().auth;
-  if (refreshToken && operation.operationName !== 'refreshTokens') {
+  const { token } = store.getState().auth;
+  if (token && operation.operationName !== 'refreshToken') {
     if (result.errors) {
       needRefresh = result.errors.find(error => (error.message && error.message.indexOf('Not Authenticated') >= 0));
     } else if (operation.operationName === 'currentUser' && result.data.currentUser === null) {
@@ -36,7 +36,7 @@ const JWTLink = new ApolloLink((operation, forward) => new Observable((observer)
   let sub;
   let retrySub;
   (async () => {
-    if (['login', 'refreshTokens'].indexOf(operation.operationName) < 0) {
+    if (['login', 'refreshToken'].indexOf(operation.operationName) < 0) {
       await setJWTContext(operation);
     }
     try {
@@ -46,13 +46,13 @@ const JWTLink = new ApolloLink((operation, forward) => new Observable((observer)
           if (operation.operationName !== 'login' && await isTokenRefreshNeeded(operation, result)) {
             try {
               const client = initApollo();
-              const { data: { refreshTokens: { accessToken, refreshToken } } } =
+              const { data: { token } } =
                 await client.mutate({
                   mutation: REFRESH_TOKENS_MUTATION,
-                  variables: { refreshToken: store.getState().auth.refreshToken },
+                  variables: { token: store.getState().auth.token },
                 });
-              console.log('DID REFRESH', accessToken, refreshToken);
-              store.dispatch(setTokens({ accessToken, refreshToken }));
+              console.log('DID REFRESH', token);
+              store.dispatch(setToken(token));
               // Retry current operation
               await setJWTContext(operation);
               retrySub = forward(operation).subscribe(observer);

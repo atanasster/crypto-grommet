@@ -8,9 +8,9 @@ import { priceHistoryQuery } from '../graphql/coins';
 
 class TechnicalAnalysis extends Component {
   renderChart() {
-    const { priceHistory: { priceHistory } } = this.props;
+    const { data: { coinPriceHistory } } = this.props;
     const { symbol, toSymbol, exchange } = this.props;
-    const data = priceHistory || [];
+    const data = coinPriceHistory || [];
     const groupingUnits = [[
       'week',
       [1],
@@ -135,7 +135,6 @@ TechnicalAnalysis.propTypes = {
 
 
 export default graphql(priceHistoryQuery, {
-  name: 'priceHistory',
   options: props => ({
     variables: {
       symbol: props.symbol,

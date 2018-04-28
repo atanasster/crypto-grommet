@@ -23,8 +23,8 @@ class ExchangeCurrencies extends Component {
     return this.renderItem('Countries', countries.join());
   };
   renderCurrencyPairs(currency) {
-    const { data: { exchange } } = this.props;
-    const pairs = exchange.markets.filter(market => market.base === currency);
+    const { data: { coinExchangeCurrency } } = this.props;
+    const pairs = coinExchangeCurrency.markets.filter(market => market.base === currency);
     return (
       <PagingTable
         data={pairs}
@@ -33,7 +33,11 @@ class ExchangeCurrencies extends Component {
             accessor: 'quote',
             Header: 'Symbol',
             Cell: props => (
-              <CoinPath symbol={currency} toSymbol={props.value} exchange={exchange.name}>
+              <CoinPath
+                symbol={currency}
+                toSymbol={props.value}
+                exchange={coinExchangeCurrency.name}
+              >
                 {props.value}
               </CoinPath>),
           }, {
@@ -58,23 +62,23 @@ class ExchangeCurrencies extends Component {
     );
   }
   render() {
-    const { data: { exchange }, defaultCurrency } = this.props;
+    const { data: { coinExchangeCurrency }, defaultCurrency } = this.props;
     let currencies;
-    if (exchange && exchange.currencies) {
-      currencies = exchange.currencies.map(currency => (
-        <Card key={`curr${currency.code}`}>
+    if (coinExchangeCurrency && coinExchangeCurrency.currencies) {
+      currencies = coinExchangeCurrency.currencies.map((currency, index) => (
+        <Card key={`curr_${index}`}>
           <CardTitle border='bottom'>
             <Coin
-              coin={currency.coin}
+              coin={currency.coin || { symbol: currency.symbol }}
               toCoin={{ symbol: defaultCurrency }}
-              exchange={exchange.name}
+              exchange={coinExchangeCurrency.name}
             />
           </CardTitle>
           <CardSubTitle>
             {`precision: ${currency.precision}`}
           </CardSubTitle>
           <CardContent>
-            {this.renderCurrencyPairs(currency.code)}
+            {this.renderCurrencyPairs(currency.symbol)}
           </CardContent>
         </Card>
       ));

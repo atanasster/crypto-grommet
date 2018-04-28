@@ -2,6 +2,7 @@ import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import fetch from 'isomorphic-unfetch';
+import env from './env';
 import JWTLink from '../components/auth/jwLink';
 
 let apolloClient = null;
@@ -13,7 +14,7 @@ if (!process.browser) {
 
 function create(initialState) {
   const httpLink = createHttpLink({
-    uri: `${process.browser ? '' : process.env.WEBSITE_URL}/graphql`, // Server URL (must be absolute)
+    uri: env.GRAPHQL_SERVER,
     credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
   });
   const link = JWTLink.concat(httpLink);

@@ -201,11 +201,11 @@ const mapDispatchToProps = dispatch =>
 const mapStateToProps = state => ({
   nav: state.nav,
   themes: state.themes,
-  accessToken: state.auth.accessToken,
+  token: state.auth.token,
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(graphql(CURRENT_USER_QUERY, {
-  skip: ({ accessToken }) => !accessToken,
+  skip: ({ token }) => !token,
   props({ data: { loading, currentUser, refetch } }) {
     return { userLoading: loading, user: currentUser, refetchCurrentUser: refetch };
   },

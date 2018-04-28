@@ -1,6 +1,10 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+import htmlescape from 'htmlescape';
+
+const { GRAPHQL_SERVER } = process.env;
+const env = { GRAPHQL_SERVER };
 
 export default class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
@@ -23,6 +27,9 @@ export default class MyDocument extends Document {
         </Head>
         <body style={{ margin: 0 }} >
           <Main />
+          <script
+            dangerouslySetInnerHTML={{ __html: `__ENV__ = ${htmlescape(env)}` }}
+          />
           <NextScript />
         </body>
       </html>

@@ -3,9 +3,9 @@ import gql from 'graphql-tag';
 export const allExchangesQuery = gql`
   query getExchanges {
     allExchanges {
-      id
+      symbol
       name
-      logo
+      image
       countries
       url
       hasOrderBook
@@ -16,32 +16,31 @@ export const allExchangesQuery = gql`
 
 export const exchangeInfoQuery = gql`
   query getExchange($exchange : String!) {
-    exchange(exchange: $exchange) {
-      id
+    coinExchange(name: $exchange) {
+      symbol
       name
-      logo
+      image
     }
   }
 `;
 
 export const exchangeMarketsQuery = gql`
   query getExchange($exchange : String!) {
-    exchange(exchange: $exchange) {
-      id
+    coinExchangeCurrency(name: $exchange) {
+      symbol
       name
       currencies {
-        code
+        symbol
         precision
         coin {
           symbol
-          imageUrl
-          fullName
+          image
+          name
         }
       }
       markets {
         base
         quote
-        darkpool
         maker
         taker
       }
@@ -51,67 +50,60 @@ export const exchangeMarketsQuery = gql`
 
 export const exchangeFeesQuery = gql`
   query getExchange($exchange : String!) {
-    exchange(exchange: $exchange) {
-      id
+    coinExchangeFees(name: $exchange) {
+      symbol
       name
-      fees {
-        funding {
-          tierBased
-          percentage
-          withdraw {
+      fundingFees {
+        tierBased
+        percentage
+        withdraw {
+          fee
+          coin {
             symbol
-            fee
-            coin {
-              symbol
-              fullName
-              imageUrl
-            }
-          }
-          deposit {
-            symbol
-            fee
-            coin {
-              symbol
-              fullName
-              imageUrl
-            }
+            name
+            image
           }
         }
-        trading {
-          tierBased
-          percentage
-          tiers{
-            taker {
-              tier
-              fee
-            }
-            maker {
-              tier
-              fee
-            }
-            
+        deposit {
+          fee
+          coin {
+            symbol
+            name
+            image
           }
         }
       }
-    }      
+      tradingFees {
+        tierBased
+        percentage
+        taker {
+          tier
+          fee
+        }
+        maker {
+          tier
+          fee
+        }
+      }
+    }
   }
 `;
 
 export const orderBookQuery = gql`
-  query getOrderBook($exchange : String!, $symbol: String, $toSymbol: String, $start: Int, $limit: Int) {
-    orderBook(exchange: $exchange, symbol: $symbol, toSymbol: $toSymbol, start: $start, limit: $limit) {
+  query getOrderBook($exchange : String!, $symbol: String!, $toSymbol: String!, $start: Int, $limit: Int) {
+    coinOrderBook(name: $exchange, symbol: $symbol, toSymbol: $toSymbol, start: $start, limit: $limit) {
       symbol
       exchange {
-        id
+        symbol
         name
-        logo
+        image
       }
       coin {
         symbol
-        fullName
-        imageUrl
+        name
+        image
       } 
-      last_updated
+      lastUpdated
       asks {
         price
         qty

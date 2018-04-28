@@ -51,7 +51,7 @@ class CoinsList extends Component {
     const columns = [
       {
         Header: 'Coin',
-        accessor: 'fullName',
+        accessor: 'name',
         Cell: cell => (
           <Coin
             coin={cell.original}

@@ -81,7 +81,7 @@ class MarketCapList extends React.Component {
         ),
       }, {
         Header: 'Market cap',
-        accessor: 'market_cap',
+        accessor: 'marketCap',
         Cell: cell => (
           <FormattedCoinValue
             value={cell.value}
@@ -98,39 +98,39 @@ class MarketCapList extends React.Component {
         getProps: () => ({ align: 'end' }),
       }, {
         Header: '24hr vol',
-        accessor: 'volume_24h',
+        accessor: 'volume24h',
         Cell: cell => (
           <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
         ),
         getProps: () => ({ textAlign: 'end' }),
       }, {
         Header: '%1hr',
-        accessor: 'percent_change_1h',
+        accessor: 'percentChange1h',
         maxWidth: 100,
         Cell: cell => (<ColoredPercentChange value={cell.value / 100} />),
         getProps: () => ({ textAlign: 'end' }),
       }, {
         Header: '%24hr',
-        accessor: 'percent_change_24h',
+        accessor: 'percentChange24h',
         maxWidth: 120,
         Cell: cell => (<ColoredPercentChange value={cell.value / 100} />),
         getProps: () => ({ textAlign: 'end' }),
       }, {
         Header: '%7d',
-        accessor: 'percent_change_7d',
+        accessor: 'percentChange7d',
         maxWidth: 120,
         Cell: cell => (<ColoredPercentChange value={cell.value / 100} />),
         getProps: () => ({ textAlign: 'end' }),
       }, {
         Header: 'Circulation',
-        accessor: 'available_supply',
+        accessor: 'availableSupply',
         Cell: cell => (
           <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
         ),
         getProps: () => ({ textAlign: 'end' }),
       }, {
         Header: 'Total',
-        accessor: 'total_supply',
+        accessor: 'totalSupply',
         Cell: cell => (
           <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
         ),

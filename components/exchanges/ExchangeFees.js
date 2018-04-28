@@ -28,19 +28,19 @@ function yesNoIcon(value) {
 
 class ExchangeFees extends Component {
   renderFundingFees() {
-    const { data: { exchange }, exchange: exchangeName, defaultCurrency } = this.props;
+    const { data: { coinExchangeFees }, exchange: exchangeName, defaultCurrency } = this.props;
 
-    if (exchange && exchange.fees && exchange.fees.funding) {
-      const { funding } = exchange.fees;
-      const fees = funding.deposit.map(fee =>
-        ({ symbol: fee.symbol, coin: fee.coin, deposit: fee.fee }));
-      if (funding.withdraw) {
-        funding.withdraw.forEach((fee) => {
+    if (coinExchangeFees && coinExchangeFees.fundingFees) {
+      const { fundingFees } = coinExchangeFees;
+      const fees = fundingFees.deposit.map(fee =>
+        ({ symbol: fee.coin.symbol, coin: fee.coin, deposit: fee.fee }));
+      if (fundingFees.withdraw) {
+        fundingFees.withdraw.forEach((fee) => {
           const deposit = fees.find(item => (item.symbol === fee.symbol));
           if (deposit) {
             deposit.withdraw = fee.fee;
           } else {
-            fees.push({ symbol: fee.symbol, withdraw: fee.fee, coin: fee.coin });
+            fees.push({ symbol: fee.coin.symbol, withdraw: fee.fee, coin: fee.coin });
           }
         });
       }
@@ -56,7 +56,7 @@ class ExchangeFees extends Component {
           columns={[
             {
               Header: 'Symbol',
-              accessor: 'symbol',
+              accessor: 'coin.symbol',
               minWidth: 300,
               decorations: {
                 cell: {
@@ -92,10 +92,10 @@ class ExchangeFees extends Component {
           </CardTitle>
           <CardSubTitle>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
-              <Text>Percentage:</Text>{yesNoIcon(exchange.fees.funding.percentage)}
+              <Text>Percentage:</Text>{yesNoIcon(fundingFees.percentage)}
             </Box>
             <Box direction='row' justify='between' margin={{ horizontal: 'small' }}>
-              <Text>Tier based:</Text>{yesNoIcon(exchange.fees.funding.tierBased)}
+              <Text>Tier based:</Text>{yesNoIcon(fundingFees.tierBased)}
             </Box>
           </CardSubTitle>
           <CardContent>
@@ -108,19 +108,19 @@ class ExchangeFees extends Component {
   }
 
   renderTradingFees() {
-    const { data: { exchange } } = this.props;
-    if (exchange && exchange.fees && exchange.fees.trading) {
-      const { tiers } = exchange.fees.trading;
+    const { data: { coinExchangeFees } } = this.props;
+    if (coinExchangeFees && coinExchangeFees.tradingFees) {
+      const { maker, taker } = coinExchangeFees.tradingFees;
       let table;
-      if (tiers) {
-        const data = tiers.maker ? tiers.maker.map(fee =>
-          ({ maker_tier: fee.tier, maker_fee: fee.fee })) : [];
-        if (tiers.taker) {
-          tiers.taker.forEach((item, index) => {
+      if (maker || taker) {
+        const data = maker ? maker.map(fee =>
+          ({ maker_tier: fee.tier === null ? '*' : fee.tier, maker_fee: fee.fee })) : [];
+        if (taker) {
+          taker.forEach((item, index) => {
             if (data.length < index) {
               data[index].push({});
             }
-            data[index].taker_tier = item.tier;
+            data[index].taker_tier = item.tier === null ? '*' : item.tier;
             data[index].taker_fee = item.fee;
           });
         }
@@ -158,11 +158,11 @@ class ExchangeFees extends Component {
           <CardSubTitle>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
               <Text>Percentage:</Text>
-              {yesNoIcon(exchange.fees.trading.percentage)}
+              {yesNoIcon(coinExchangeFees.tradingFees.percentage)}
             </Box>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
               <Text>Tier based:</Text>
-              {yesNoIcon(exchange.fees.trading.tierBased)}
+              {yesNoIcon(coinExchangeFees.tradingFeestierBased)}
             </Box>
           </CardSubTitle>
           <CardContent>

@@ -1,15 +1,15 @@
 import * as ActionTypes from './constants';
 
-export const signIn = ({ user, tokens }) => (
+export const signIn = ({ user, token }) => (
   {
     type: ActionTypes.AUTH_USER,
     user,
-    tokens,
+    token,
   }
 );
 
-export const setTokens = ({ accessToken, refreshToken }) => (
-  { type: ActionTypes.AUTH_SET_TOKENS, accessToken, refreshToken }
+export const setToken = token => (
+  { type: ActionTypes.AUTH_SET_TOKEN, token }
 );
 
 export const signOut = () => (

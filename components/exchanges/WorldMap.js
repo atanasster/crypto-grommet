@@ -62,7 +62,7 @@ class WorldMap extends React.Component {
           exchanges.filter(e => e.countries.findIndex(
             ec => (ec === c.code)
           ) !== -1).forEach((e) => {
-            if (continentExchanges.findIndex(ex => ex.id === e.id) === -1) {
+            if (continentExchanges.findIndex(ex => ex.symbol === e.symbol) === -1) {
               continentExchanges.push(e);
             }
           });
@@ -125,7 +125,7 @@ class WorldMap extends React.Component {
                 {
                   Cell: props => (
                     <RoutedAnchor path={`/exchanges/prices/${props.original.name}`}>
-                      <Image src={props.original.logo} />
+                      <Image src={props.original.image} />
                     </RoutedAnchor>),
                 }, {
                   accessor: 'name',

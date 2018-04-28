@@ -11,28 +11,51 @@ import { ConnectedPriceCard } from '../../components/coins/PriceCard';
 import OrderBookCard from '../../components/coins/OrderBookCard';
 import CoinsPageMenu from '../../components/coins/CoinsPageMenu';
 
-const CoinInfo = ({
-  symbol, toSymbol, exchange, coin: { coin }, toCoin: { coin: toCoin },
-}) => (
-  <App
-    title={`${symbol}/${toSymbol}/${exchange}`}
-    notifications={coin && coin.messages && coin.messages.map(
-      msg => ({ message: msg.message, status: msg.type })
-    )}
-    description={coin && (coin.ICO && coin.ICO.status !== 'Finished' ? coin.ICO.description : coin.description)}
-    visibleTitle={coin && <Coin coin={coin} toCoin={toCoin} exchange={exchange} />}
-    menu={<CoinsPageMenu activeItem={0} symbol={symbol} toSymbol={toSymbol} exchange={exchange} />}
-  >
-    {coin && toCoin && (
-      <CardScroll>
-        {coin.ICO && coin.ICO.status !== 'Finished' && <ICOCard coin={coin} />}
-        <ConnectedPriceCard coin={coin} toCoin={toCoin} exchange='CCCAGG' />
-        <ConnectedPriceCard coin={coin} toCoin={toCoin} exchange={exchange} />
-        <OrderBookCard symbol={symbol} toSymbol={toSymbol} exchange={exchange} />
-      </CardScroll>
-    )}
-  </App>
-);
+class CoinInfo extends React.Component {
+  render() {
+    const {
+      symbol, toSymbol, exchange, coin: { coin }, toCoin: { coin: toCoin },
+    } = this.props;
+    const notifications = [];
+    if (coin) {
+      if (coin.infoMessage) {
+        notifications.push({ message: coin.infoMessage, status: 'info' });
+      }
+      if (coin.dangerMessage) {
+        notifications.push({ message: coin.dangerMessage, status: 'error' });
+      }
+      if (coin.warningMessage) {
+        notifications.push({ message: coin.warningMessage, status: 'warning' });
+      }
+    }
+    return (
+      <App
+        title={`${symbol}/${toSymbol}/${exchange}`}
+        notifications={notifications}
+        description={coin && (coin.ICO && coin.ICO.status !== 'Finished' ? coin.ICO.description : coin.description)}
+        visibleTitle={coin && <Coin coin={coin} toCoin={toCoin} exchange={exchange} />}
+        menu={
+          <CoinsPageMenu
+            activeItem={0}
+            symbol={symbol}
+            toSymbol={toSymbol}
+            exchange={exchange}
+          />
+        }
+      >
+        {coin && toCoin && (
+          <CardScroll>
+            {coin.ICO && coin.ICO.status !== 'Finished' && <ICOCard coin={coin} />}
+            <ConnectedPriceCard coin={coin} toCoin={toCoin} exchange='CCCAGG' />
+            <ConnectedPriceCard coin={coin} toCoin={toCoin} exchange={exchange} />
+            <OrderBookCard symbol={symbol} toSymbol={toSymbol} exchange={exchange} />
+          </CardScroll>
+        )}
+      </App>
+    );
+  }
+}
+
 
 const mapStateToProps = (state, props) => {
   const exchange = props.url.query.exchange || state.settings.defaultExchange;

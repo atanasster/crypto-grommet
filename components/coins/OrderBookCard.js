@@ -179,12 +179,12 @@ ConnectedOrderBook.propTypes = {
 
 
 const OrderBookCard = ({
-  data: { orderBook }, toSymbol,
-}) => (orderBook ?
+  data: { coinOrderBook }, toSymbol,
+}) => (coinOrderBook ?
   <ConnectedOrderBook
-    orderBook={orderBook}
+    orderBook={coinOrderBook}
     toSymbol={toSymbol}
-    exchange={orderBook.exchange}
+    exchange={coinOrderBook.exchange}
   /> : null
 );
 

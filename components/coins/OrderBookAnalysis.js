@@ -31,8 +31,8 @@ class OrderBookAnalysis extends Component {
           start: 0, limit: 100, symbol, toSymbol, exchange: exchange.name,
         },
       });
-      if (data.orderBook.coin) {
-        cards.push({ orderBook: data.orderBook, exchange: exchange.name });
+      if (data.coinOrderBook.coin) {
+        cards.push({ orderBook: data.coinOrderBook, exchange: exchange.name });
         this.setState({ cards });
       }
     });

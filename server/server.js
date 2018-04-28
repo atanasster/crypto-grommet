@@ -5,13 +5,9 @@ const next = require('next');
 const compression = require('compression');
 const path = require('path');
 const cors = require('cors');
-const { graphiqlExpress } = require('apollo-server-express');
-const { ApolloEngine } = require('apollo-engine');
-const bodyParser = require('body-parser');
 const staticFiles = require('./static');
 const routes = require('./routes');
 const logger = require('./logger');
-const graphql = require('./graphql/root');
 const modules = require('./graphql');
 require('dotenv').config();
 
@@ -73,8 +69,6 @@ app.prepare()
       server.use(compression({ threshold: 0 }));
     }
     server.use(cors());
-    server.use('/graphql', bodyParser.json(), graphql);
-    server.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
     modules.middleware(server);
     server.get('/sw.js', (req, res) =>
       app.serveStatic(req, res, path.resolve('./.next/sw.js')));
@@ -93,26 +87,10 @@ app.prepare()
     server.use('/', staticFiles());
 
     server.get('*', (req, res) => handle(req, res));
-    if (process.env.ENGINE_API_KEY) {
-      console.log('Starting GraphQL Engine');
-      const engine = new ApolloEngine({
-        apiKey: process.env.ENGINE_API_KEY,
-      });
-      engine.listen({
-        port,
-        expressApp: server,
-      }, (err) => {
-        if (err) {
-          return logger.error(err.message);
-        }
-        return logger.appStarted(port, 'localhost');
-      });
-    } else {
-      server.listen(port, (err) => {
-        if (err) {
-          return logger.error(err.message);
-        }
-        return logger.appStarted(port, 'localhost');
-      });
-    }
+    server.listen(port, (err) => {
+      if (err) {
+        return logger.error(err.message);
+      }
+      return logger.appStarted(port, 'localhost');
+    });
   });

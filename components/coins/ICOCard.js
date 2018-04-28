@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
-import { Box, Anchor, Text } from 'grommet';
+import { Box, Anchor } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
 import { shortDate } from 'grommet-controls/utils/moment';
 import Coin from './Coin';
@@ -11,96 +11,88 @@ export default class ICOCard extends Component {
   renderTable() {
     const { coin } = this.props;
     if (coin) {
-      const { ICO } = coin;
-      console.log(ICO.date);
       const rows = [
         {
           label: 'Blog',
           value: (
-            <Anchor href={ICO.blogLink} target='_blank' label={ICO.blogLink} />
+            <Anchor href={coin.icoBlogURL} target='_blank' label={coin.icoBlogURL} />
           ),
         }, {
           label: 'Web site',
           value: (
-            <Anchor href={ICO.websiteURL} target='_blank' label={ICO.websiteURL} />
+            <Anchor href={coin.icoWebsiteURL} target='_blank' label={coin.icoWebsiteURL} />
           ),
         }, {
           label: 'White paper',
           value: (
-            <Anchor href={ICO.whitePaperLink} target='_blank' label={ICO.whitePaperLink} />
+            <Anchor href={coin.icoWhitePaperURL} target='_blank' label={coin.icoWhitePaperURL} />
           ),
         }, {
           label: 'Date',
-          value: shortDate(ICO.date),
+          value: shortDate(coin.icoDate),
         }, {
           label: 'End date',
-          value: ICO.endDate ? shortDate(ICO.endDate) : 'N/A',
+          value: coin.icoEndDate ? shortDate(coin.icoEndDate) : 'N/A',
         }, {
           label: 'Features',
           value: (
             <Box>
-              {ICO.features.map((item, index) => (
-                <Text key={`feature_${index}`} >{item}</Text>
-              ))}
+              {coin.icoFeatures}
             </Box>
           ),
         }, {
           label: 'Token type',
-          value: ICO.tokenType,
+          value: coin.icoTokenType,
         }, {
           label: 'Funding target',
-          value: ICO.fundingTarget,
+          value: coin.icoFundingTarget,
         }, {
           label: 'Payment',
           value: (
-            <Box gap='small'>
-              {ICO.paymentMethod.map((item, index) => (
-                <Coin key={`payment_${index}`} level={4} symbol={item.symbol} border={null} />
-              ))}
+            <Box >
+              {coin.icoPaymentMethod}
             </Box>
           ),
         }, {
           label: 'Start price',
-          value: ICO.startPrice,
+          value: coin.icoStartPrice,
         }, {
           label: 'Start crypto',
-          value: ICO.startPriceCurrency,
+          value: coin.icoStartPriceCurrency,
         }, {
           label: 'Funds raised',
-          value: ICO.fundsRaisedList,
+          value: coin.icoFundsRaisedList,
         }, {
           label: '% for investors',
-          value: ICO.tokenPercentageForInvestors,
+          value: coin.icoTokenPercentageForInvestors,
         }, {
           label: 'Reserve split',
           value: (
             <Box>
-              {ICO.tokenReserveSplit.map((item, index) => (
-                <Text key={`reserve_${index}`} >{item}</Text>
-              ))}
+              {coin.icoTokenReserveSplit}
             </Box>
           ),
         }, {
           label: 'Token supply',
-          value: ICO.tokenSupply,
+          value: coin.icoTokenSupply,
         }, {
           label: 'Supply post ICO',
-          value: ICO.tokenSupplyPostICO,
+          value: coin.icoTokenSupplyPostICO,
         }, {
           label: 'Funding cap',
-          value: ICO.fundingCap,
+          value: coin.icoFundingCap,
         }, {
           label: 'Funds raised (USD)',
-          value: numeral(ICO.fundsRaisedUSD).format('$0,0.00'),
+          value: numeral(coin.icoFundsRaisedUSD).format('$0,0.00'),
         }, {
           label: 'Jurisdiction',
-          value: ICO.jurisdiction,
+          value: coin.icoJurisdiction,
         }, {
           label: 'Legal advisers',
-          value: ICO.legalAdvisers,
+          value: coin.icoLegalAdvisers,
         }, {
           label: 'Legal form',
-          value: ICO.legalForm,
+          value: coin.icoLegalForm,
         },
       ];
       return (
@@ -109,6 +101,7 @@ export default class ICOCard extends Component {
             data={rows}
             sortable={false}
             resizable={false}
+            showPagination={false}
             columns={[
               { accessor: 'label', width: 200 },
               { accessor: 'value' },

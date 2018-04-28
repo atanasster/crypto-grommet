@@ -38,7 +38,7 @@ export const ConnectedExchange = ({
   if (exchange) {
     image = (
       <Image
-        src={exchange.logo}
+        src={exchange.image}
         style={{
           height: level > 2 ? '24px' : '34px',
         }}
@@ -73,8 +73,8 @@ ConnectedExchange.propTypes = {
 
 
 // eslint-disable-next-line no-unused-vars
-const Exchange = ({ exchange: sExchange, data: { exchange }, rest }) => (
-  <ConnectedExchange exchange={exchange} {...rest} />
+const Exchange = ({ exchange: sExchange, data: { coinExchange }, rest }) => (
+  <ConnectedExchange exchange={coinExchange} {...rest} />
 );
 
 Exchange.propTypes = {

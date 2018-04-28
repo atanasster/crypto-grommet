@@ -14,9 +14,9 @@ class ICOList extends Component {
   onExpand = row => (
     <Box direction='row' pad='small' gap='medium'>
       <Box>
-        {row.original.ICO.description && (
+        {row.original.icoDescription && (
           <Markdown >
-            {row.original.ICO.description}
+            {row.original.icoDescription}
           </Markdown>
         )}
       </Box>
@@ -27,12 +27,12 @@ class ICOList extends Component {
   );
   render() {
     const {
-      data: { allICO, loading },
+      data: { allIcos, loading },
     } = this.props;
     const columns = [
       {
         Header: 'Coin',
-        accessor: 'fullName',
+        accessor: 'name',
         Cell: cell => (
           <Coin
             coin={cell.original}
@@ -42,28 +42,28 @@ class ICOList extends Component {
             border={null}
           />
         ),
-        Footer: cell => (<Text>{`${cell.data.length} of ${allICO ? allICO.length : '0'} ICOs`}</Text>
+        Footer: cell => (<Text>{`${cell.data.length} of ${allIcos ? allIcos.length : '0'} ICOs`}</Text>
         ),
       }, {
         Header: 'Status',
-        accessor: 'ICO.status',
+        accessor: 'icoStatus',
       }, {
         Header: 'Start date',
-        accessor: 'ICO.date',
+        accessor: 'icoDate',
         id: 'start_date',
         Cell: cell => (shortDate(cell.value)),
       }, {
         Header: 'End date',
-        accessor: 'ICO.endDate',
+        accessor: 'icoEndDate',
         id: 'end_date',
         Cell: cell => (cell.value ? shortDate(cell.value) : 'N/A'),
       }, {
         Header: 'Token type',
-        accessor: 'ICO.tokenType',
+        accessor: 'icoTokenType',
       }, {
         Header: 'Funding target',
         getProps: () => ({ textAlign: 'end' }),
-        accessor: 'ICO.fundingTarget',
+        accessor: 'icoFundingTarget',
       },
     ];
     return (
@@ -75,7 +75,7 @@ class ICOList extends Component {
           }}
           loading={loading}
           filterable={true}
-          data={allICO}
+          data={allIcos}
           SubComponent={this.onExpand}
           columns={columns}
           defaultSorted={[{ id: 'start_date', desc: true }]}

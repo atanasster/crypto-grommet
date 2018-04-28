@@ -34,7 +34,7 @@ class LoginForm extends Component {
 
   onSubmitLogin = ({ email, password }) => {
     this.props.mutate({
-      variables: { input: { email, password } },
+      variables: { input: { username: email, password } },
     })
       .then((response) => {
         if (response.data) {

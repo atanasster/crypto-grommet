@@ -1,25 +1,21 @@
 import * as ActionTypes from './constants';
 import { removeItem, setItem, getItem } from '../storage';
 
-export const saveTokens = async ({ accessToken, refreshToken }) => {
-  await setItem('accessToken', accessToken);
-  await setItem('refreshToken', refreshToken);
+export const saveToken = async (token) => {
+  await setItem('token', token);
 };
 
-export const removeTokens = async () => {
-  await removeItem('accessToken');
-  await removeItem('refreshToken');
+export const removeToken = async () => {
+  await removeItem('token');
 };
 
 const initialState = {
   user: undefined,
-  accessToken: undefined,
-  refreshToken: undefined,
+  token: undefined,
 };
 
 if (process.browser) {
-  getItem('accessToken').then((token) => { initialState.accessToken = token; });
-  getItem('refreshToken').then((token) => { initialState.refreshToken = token; });
+  getItem('token').then((token) => { initialState.token = token; });
 }
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -28,22 +24,21 @@ export default (state = initialState, action) => {
         ...state,
         user: action.user,
       };
-      if (action.tokens) {
-        saveTokens(action.tokens);
-        newState.accessToken = action.tokens.accessToken;
-        newState.refreshToken = action.tokens.refreshToken;
+      if (action.token) {
+        saveToken(action.token);
+        newState.token = action.token;
       }
       return newState;
     }
     case ActionTypes.AUTH_ANONYMOUS: {
-      removeTokens();
+      removeToken();
       return {
-        ...state, user: undefined, accessToken: undefined, refreshToken: undefined,
+        ...state, user: undefined, token: undefined,
       };
     }
-    case ActionTypes.AUTH_SET_TOKENS: {
-      saveTokens(action);
-      return { ...state, accessToken: action.accessToken, refreshToken: action.refreshToken };
+    case ActionTypes.AUTH_SET_TOKEN: {
+      saveToken(action.token);
+      return { ...state, token: action.token };
     }
     default:
       return state;

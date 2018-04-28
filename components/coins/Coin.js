@@ -9,7 +9,7 @@ import routerPush from '../Router';
 export const FormattedCoinValue = ({
   value, toSymbol, coin, large, justify, level,
 }) => {
-  let format = (coin.fullName && !large) ? '0,0.0000' : '0,0.00';
+  let format = (coin.name && !large) ? '0,0.0000' : '0,0.00';
   if (large) {
     format = `${format}a`;
   }
@@ -76,13 +76,13 @@ const Coin = (
 ) => {
   let coinName;
   if (coin) {
-    coinName = (coin.fullName && !short) ? coin.fullName : coin.symbol;
+    coinName = (coin.name && !short) ? coin.name : coin.symbol;
   } else {
     coinName = '';
   }
   const textLevel = short ? 4 : level;
   const title = <Heading level={textLevel} margin='none'>{coinName}</Heading>;
-  const link = coin && coin.fullName ? (
+  const link = coin && coin.name ? (
     <CoinPath
       symbol={coin.symbol}
       toSymbol={toCoin.symbol}
@@ -92,10 +92,10 @@ const Coin = (
     </CoinPath>
   ) : title;
   let image;
-  if (coin && coin.imageUrl && !short) {
+  if (coin && coin.image && !short) {
     image = (
       <Image
-        src={coin.imageUrl}
+        src={coin.image}
         style={{ width: textLevel > 2 ? '24px' : '34px', height: textLevel > 2 ? '24px' : '34px' }}
       />
     );

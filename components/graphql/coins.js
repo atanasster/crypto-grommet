@@ -4,53 +4,48 @@ export const coinInfoQuery = gql`
   query getCoin($symbol : String!) {
     coin(symbol: $symbol) {
       symbol
-      imageUrl
-      fullName
+      image
+      name
     }
   }
 `;
 
 const ICOFields = `
-ICO {
-  date
-  endDate
-  description
-  status
-  blogLink
-  websiteURL
-  whitePaperLink
-  features
-  tokenType
-  fundingTarget
-  startPrice
-  startPriceCurrency
-  fundsRaisedList
-  tokenPercentageForInvestors
-  tokenReserveSplit
-  tokenSupply
-  tokenSupplyPostICO
-  fundingCap
-  fundsRaisedUSD
-  jurisdiction
-  legalAdvisers
-  legalForm
-  paymentMethod {
-    symbol
-  }
-}
+  icoDate
+  icoEndDate
+  icoDescription
+  icoStatus
+  icoBlogURL
+  icoWebsiteURL
+  icoWhitePaperURL
+  icoFeatures
+  icoTokenType
+  icoFundingTarget
+  icoStartPrice
+  icoStartPriceCurrency
+  icoFundsRaisedList
+  icoTokenPercentageForInvestors
+  icoTokenReserveSplit
+  icoTokenSupply
+  icoTokenSupplyPostICO
+  icoFundingCap
+  icoFundsRaisedUSD
+  icoJurisdiction
+  icoLegalAdvisers
+  icoLegalForm
+  icoPaymentMethod
 `;
 
 export const coinDetailsQuery = gql`
   query getCoin($symbol : String!) {
     coin(symbol: $symbol) {
       symbol
-      imageUrl
-      fullName
+      image
+      name
       description
-      messages {
-        message
-        type
-      }
+      dangerMessage
+      warningMessage
+      infoMessage
       ${ICOFields}
     }
   }
@@ -58,7 +53,7 @@ export const coinDetailsQuery = gql`
 
 export const priceHistoryQuery = gql`
   query getPriceHistory($symbol : String!, $toSymbol : String!, $exchange: String!, $period: String, $limit: Int) {
-    priceHistory(symbol: $symbol, toSymbol: $toSymbol, exchange: $exchange, period: $period, limit: $limit) {
+    coinPriceHistory(symbol: $symbol, toSymbol: $toSymbol, exchange: $exchange, period: $period, limit: $limit) {
       time
       close
       high
@@ -75,30 +70,29 @@ export const allCoinsQuery = gql`
   query getCoins {
     allCoins {
       symbol
-      imageUrl
-      fullName
+      image
+      name
       algorithm
       proofType
       fullyPremined
       preMinedValue
-      totalCoinSupply
+      totalCoinsSupply
       totalCoinsFreeFloat
-      ${ICOFields}
     }
   }
 `;
 
 export const allICOQuery = gql`
   query getICOCoins {
-    allICO {
+    allIcos {
       symbol
-      imageUrl
-      fullName
+      image
+      name
       algorithm
       proofType
       fullyPremined
       preMinedValue
-      totalCoinSupply
+      totalCoinsSupply
       totalCoinsFreeFloat
       ${ICOFields}
     }
@@ -110,23 +104,23 @@ export const marketCapQuery = gql`
     marketCap(currency: $currency, start: $start, limit: $limit) {
       rank
       symbol
-      last_updated
-      price_usd
-      volume_24h_usd
-      market_cap_usd
-      price_btc
-      available_supply
-      total_supply
+      lastUpdated
+      priceUsd
+      volume24hUsd
+      marketCapUsd
+      priceBtc
+      availableSupply
+      totalSupply
       price
-      market_cap
-      volume_24h
-      percent_change_1h
-      percent_change_24h
-      percent_change_7d
+      marketCap
+      volume24h
+      percentChange1h
+      percentChange24h
+      percentChange7d
       coin {
         symbol
-        imageUrl
-        fullName
+        image
+        name
       }
     }
   }

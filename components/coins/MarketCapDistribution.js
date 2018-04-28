@@ -28,13 +28,13 @@ class MarketCapDistribution extends Component {
         </Box>
       );
     }
-    const values = marketCap.map((item, index) => (
+    const values = marketCap ? marketCap.map((item, index) => (
       {
         ...item,
-        value: item.price * item.available_supply,
+        value: item.price * item.availableSupply,
         index,
       }
-    ));
+    )) : [];
     return (
       <Box fill='horizontal' basis='large'>
         <Distribution values={values} style={{ width: '100%' }}>
