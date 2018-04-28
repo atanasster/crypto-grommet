@@ -5,7 +5,6 @@ import { Bitcoin as AppIcon, Menu as MenuIcon, User } from 'grommet-icons';
 import { bindActionCreators } from 'redux';
 import connect from '../redux/index';
 import Login from './auth/AuthSideBar';
-import SearchCoin from './coins/SearchCoin';
 import RoutedAnchor from './RoutedAnchor';
 import routerPush from './Router';
 import { navActivate } from '../redux/nav/actions';
@@ -67,7 +66,6 @@ class NavMenu extends Component {
             />
           )
           }
-          <SearchCoin />
         </Box>
       );
     }
