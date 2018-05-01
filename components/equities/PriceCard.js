@@ -25,7 +25,7 @@ class PriceCard extends Component {
           <Equitity equity={equity} border='bottom' />
         </CardTitle>
         <CardSubTitle border='bottom'>
-          Data from IEX
+          IEX Real-Time Price
         </CardSubTitle>
         <CardContent >
           <Box pad='small'>

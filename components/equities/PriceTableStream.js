@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
+import { longDate } from 'grommet-controls/utils/moment';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../sockets/price_stream/IEXPrices';
 import { valueToColor } from '../coins/Coin';
 
@@ -44,12 +45,19 @@ export default class PriceTableStream extends Component {
     const { priceStream, lastData } = this.state;
     let priceTable;
     if (priceStream) {
-      /*
-      lastSaleTime
-      lastUpdated
-*/
-
       const rows = [
+        {
+          label: 'Last sale ',
+          value: (
+            <Box direction='row' justify='end'>
+              <Text>
+                <strong>
+                  {longDate(priceStream.lastSaleTime)}
+                </strong>
+              </Text>
+            </Box>
+          ),
+        },
         {
           label: 'Prev sale ',
           value: (
@@ -158,7 +166,7 @@ export default class PriceTableStream extends Component {
               resizable={false}
               data={rows}
               columns={[
-                { accessor: 'label' },
+                { accessor: 'label', maxWidth: 100 },
                 { accessor: 'value' },
               ]}
             />
