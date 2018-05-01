@@ -8,13 +8,13 @@ import routerPush from '../Router';
 export const EquityPath = ({
   symbol, children,
 }) => (
-  <RoutedAnchor route='equities_info' params={{ symbol }} >
+  <RoutedAnchor route='equity_info' params={{ symbol }} >
     {children}
   </RoutedAnchor>
 );
 
 export const pushEquityPath = ({ symbol }) => {
-  routerPush({ route: 'equities_info', params: { symbol } });
+  routerPush({ route: 'equity_info', params: { symbol } });
 };
 const Equity = ({ equity, level }) => {
   let name;

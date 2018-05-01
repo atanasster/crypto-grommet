@@ -7,7 +7,7 @@ export default ({
 }) => {
   const exchangeMenu = [
     {
-      route: 'exchange_prices',
+      route: 'exchange_info',
       params: { exchange },
       label: 'Prices',
       a11yTitle: `Favorite coins prices on ${exchange}`,

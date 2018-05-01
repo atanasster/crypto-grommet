@@ -15,12 +15,15 @@ export default class PriceTableStream extends Component {
   }
 
   onPriceStream = (data) => {
-    const lastData = this.state.priceStream || data;
-    this.setState({ priceStream: data, lastData });
+    if (!this.unMounted) {
+      const lastData = this.state.priceStream || data;
+      this.setState({ priceStream: data, lastData });
+    }
   };
 
   componentDidMount() {
     const { symbol } = this.props;
+    this.unMounted = false;
     subscribeLastPrices({
       symbol, callback: this.onPriceStream,
     });
@@ -36,6 +39,7 @@ export default class PriceTableStream extends Component {
 
   componentWillUnmount() {
     const { symbol } = this.props;
+    this.unMounted = true;
     unSubscribeLastPrices({
       symbol, callback: this.onPriceStream,
     });

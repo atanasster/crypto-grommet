@@ -6,7 +6,12 @@ import { searchQuery } from '../graphql/entities';
 import routerPush from '../Router';
 
 const entityLinks = {
-  'coin': 'coin_info',
+  'coin': { route: 'coin_info' },
+  'equity': { route: 'equity_info' },
+  'coinexchange': {
+    route: 'exchange_info',
+    routeParams: entity => ({ exchange: entity.name }),
+  },
 };
 class SearchEntity extends React.Component {
   onSearch = (e) => {
@@ -16,9 +21,19 @@ class SearchEntity extends React.Component {
   onSelect = ({ suggestion }) => {
     const selected = suggestion.value.split('_');
     if (selected.length === 2) {
-      const route = entityLinks[selected[0]];
-      if (route !== undefined) {
-        routerPush({ route, params: { symbol: selected[1] } });
+      const link = entityLinks[selected[0]];
+      if (link !== undefined) {
+        const { data: { search } } = this.props;
+        const type = search.find(t => (t.type === selected[0]));
+        if (type) {
+          const entity = type.results.find(e => e.slug === selected[1]);
+          if (entity) {
+            routerPush({
+              route: link.route,
+              params: link.routeParams ? link.routeParams(entity) : { symbol: entity.slug },
+            });
+          }
+        }
       }
     }
   };
@@ -64,5 +79,5 @@ class SearchEntity extends React.Component {
 }
 
 export default graphql(searchQuery,
-  { options: () => ({ skip: true }) })(SearchEntity);
+  { options: () => ({ skip: true, variables: { types: ['equity', 'coin', 'coinexchange'] } }) })(SearchEntity);
 
