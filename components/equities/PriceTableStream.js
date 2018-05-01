@@ -29,8 +29,8 @@ export default class PriceTableStream extends Component {
   componentWillReceiveProps(nextProps) {
     const { symbol } = nextProps;
     if (symbol !== this.props.symbol) {
-      unSubscribeLastPrices({ ...this.props, callback: this.onPriceStream });
-      subscribeLastPrices({ ...nextProps, callback: this.onPriceStream });
+      unSubscribeLastPrices({ symbol, callback: this.onPriceStream });
+      subscribeLastPrices({ symbol, callback: this.onPriceStream });
     }
   }
 

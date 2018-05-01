@@ -2,7 +2,7 @@ import SocketSub from '../socket_sub/SocketSub';
 
 class IEXStream extends SocketSub {
   unpack = message => JSON.parse(message);
-  subKey = data => data.symbol;
+  subKey = data => (data ? data.symbol : '');
 }
 
 const socketSub = new IEXStream('https://ws-api.iextrading.com/1.0/tops');
