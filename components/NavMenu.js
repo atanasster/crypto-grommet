@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import connect from '../redux/index';
 import Login from './auth/AuthSideBar';
 import RoutedAnchor from './RoutedAnchor';
+import SearchEntity from './entities/SearchEntity';
 import routerPush from './Router';
 import { navActivate } from '../redux/nav/actions';
 import { signOut } from '../redux/auth/actions';
@@ -93,7 +94,10 @@ class NavMenu extends Component {
             <Text size='large'>crypto-grommet</Text>
           </RoutedAnchor>
         </Box>
-        {this.renderMenu()}
+        <Box direction='row' align='center' gap='small'>
+          <SearchEntity />
+          {this.renderMenu()}
+        </Box>
         {layer}
       </Box>
     );
