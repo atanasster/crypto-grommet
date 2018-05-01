@@ -9,7 +9,7 @@ import routerPush from '../Router';
 export const FormattedCoinValue = ({
   value, toSymbol, coin, large, justify, level,
 }) => {
-  let format = (coin.name && !large) ? '0,0.0000' : '0,0.00';
+  let format = (coin && coin.name && !large) ? '0,0.0000' : '0,0.00';
   if (large) {
     format = `${format}a`;
   }
@@ -30,11 +30,13 @@ FormattedCoinValue.defaultProps = {
   large: false,
   justify: 'end',
   level: 4,
+  coin: undefined,
+  value: undefined,
 };
 
 FormattedCoinValue.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  coin: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  coin: PropTypes.object,
   large: PropTypes.bool,
   justify: PropTypes.string,
   level: PropTypes.number,
@@ -71,7 +73,8 @@ export const pushCoinPath = ({ symbol, toSymbol, exchange }) => {
 };
 const Coin = (
   {
-    coin, exchange, defaultExchange, toCoin, level, aggregatedExchange, short,
+    coin, exchange, defaultExchange, toCoin, level, aggregatedExchange,
+    short, defaultCurrency,
   }
 ) => {
   let coinName;
@@ -81,11 +84,12 @@ const Coin = (
     coinName = '';
   }
   const textLevel = short ? 4 : level;
+  const toCurrency = toCoin || { symbol: defaultCurrency };
   const title = <Heading level={textLevel} margin='none'>{coinName}</Heading>;
   const link = coin && coin.name ? (
     <CoinPath
       symbol={coin.symbol}
-      toSymbol={toCoin.symbol}
+      toSymbol={toCurrency.symbol}
       exchange={exchange === aggregatedExchange ? defaultExchange : exchange}
     >
       {title}
@@ -120,6 +124,7 @@ const mapStateToProps = (state, props) => ({
   defaultExchange: state.settings.defaultExchange,
   aggregatedExchange: state.settings.aggregatedExchange,
   exchange: props.exchange || state.settings.defaultExchange,
+  defaultCurrency: state.settings.defaultCurrency,
 });
 
 

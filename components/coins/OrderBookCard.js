@@ -55,7 +55,7 @@ export class ConnectedOrderBook extends Component {
         type: 'area',
       },
       title: {
-        text: orderBook ? longDate(orderBook.last_updated) : '',
+        text: orderBook ? longDate(orderBook.lastUpdated) : '',
       },
       credits: {
         enabled: false,

@@ -8,7 +8,7 @@ const cors = require('cors');
 const staticFiles = require('./static');
 const routes = require('./routes');
 const logger = require('./logger');
-const modules = require('./graphql');
+const modules = require('./modules');
 require('dotenv').config();
 
 const port = parseInt(process.env.PORT, 10) || 3000;

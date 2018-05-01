@@ -3,50 +3,56 @@ import gql from 'graphql-tag';
 export const coinInfoQuery = gql`
   query getCoin($symbol : String!) {
     coin(symbol: $symbol) {
-      symbol
+      symbol: slug
       image
       name
     }
   }
 `;
 
-const ICOFields = `
-  icoDate
-  icoEndDate
-  icoDescription
-  icoStatus
-  icoBlogURL
-  icoWebsiteURL
-  icoWhitePaperURL
-  icoFeatures
-  icoTokenType
-  icoFundingTarget
-  icoStartPrice
-  icoStartPriceCurrency
-  icoFundsRaisedList
-  icoTokenPercentageForInvestors
-  icoTokenReserveSplit
-  icoTokenSupply
-  icoTokenSupplyPostICO
-  icoFundingCap
-  icoFundsRaisedUSD
-  icoJurisdiction
-  icoLegalAdvisers
-  icoLegalForm
-  icoPaymentMethod
+export const icoDetailsQuery = gql`
+  query getCoin($symbol : String!) {
+    coin(symbol: $symbol) {
+      symbol: slug
+      image
+      name
+      icoDate
+      icoEndDate
+      icoDescription
+      icoStatus
+      icoBlogURL
+      icoWebsiteURL
+      icoWhitePaperURL
+      icoFeatures
+      icoTokenType
+      icoFundingTarget
+      icoStartPrice
+      icoStartPriceCurrency
+      icoFundsRaisedList
+      icoTokenPercentageForInvestors
+      icoTokenReserveSplit
+      icoTokenSupply
+      icoTokenSupplyPostICO
+      icoFundingCap
+      icoFundsRaisedUSD
+      icoJurisdiction
+      icoLegalAdvisers
+      icoLegalForm
+      icoPaymentMethod
+    }
+  }    
 `;
 
 export const coinDetailsQuery = gql`
   query getCoin($symbol : String!) {
     coin(symbol: $symbol) {
-      symbol
+      symbol: slug
       image
       name
       description
       dangerMessage
       warningMessage
       infoMessage
-      ${ICOFields}
     }
   }
 `;
@@ -66,26 +72,10 @@ export const priceHistoryQuery = gql`
 `;
 
 
-export const allCoinsQuery = gql`
-  query getCoins {
-    allCoins {
-      symbol
-      image
-      name
-      algorithm
-      proofType
-      fullyPremined
-      preMinedValue
-      totalCoinsSupply
-      totalCoinsFreeFloat
-    }
-  }
-`;
-
 export const allICOQuery = gql`
   query getICOCoins {
     allIcos {
-      symbol
+      symbol: slug
       image
       name
       algorithm
@@ -94,34 +84,53 @@ export const allICOQuery = gql`
       preMinedValue
       totalCoinsSupply
       totalCoinsFreeFloat
-      ${ICOFields}
     }
   }
 `;
 
-export const marketCapQuery = gql`
-   query getMarketCap($currency : String!, $start: Int, $limit: Int) {
-    marketCap(currency: $currency, start: $start, limit: $limit) {
-      rank
-      symbol
-      lastUpdated
-      priceUsd
-      volume24hUsd
-      marketCapUsd
-      priceBtc
-      availableSupply
-      totalSupply
-      price
-      marketCap
-      volume24h
-      percentChange1h
-      percentChange24h
-      percentChange7d
-      coin {
-        symbol
+export const allICOCoinsQuery = gql`
+   query getMarketCap($offset: Int!, $limit: Int!, $ordering: String, $hasMarketCap: Boolean, $hasICO: Boolean, $hasPriceChange: Boolean) {
+    list: allCoins(hasMarketCap: $hasMarketCap, hasIco: $hasICO, hasPriceChange: $hasPriceChange) {
+      totalCount
+      results(offset: $offset, limit: $limit, ordering: $ordering) {
+        symbol: slug
         image
         name
+        icoStatus
+        icoDate
+        icoEndDate
+        icoTokenType
+        icoFundingTarget
+        icoDescription
       }
-    }
+    }  
+  }
+`;
+export const allCoinsQuery = gql`
+   query getAllCoins($offset: Int!, $limit: Int!, $ordering: String, $hasMarketCap: Boolean, $hasICO: Boolean, $hasPriceChange: Boolean, $algorithm: String, $proofType: String) {
+    list: allCoins(hasMarketCap: $hasMarketCap, hasIco: $hasICO, hasPriceChange: $hasPriceChange, algorithm: $algorithm, proofType: $proofType) {
+      totalCount
+      results(offset: $offset, limit: $limit, ordering: $ordering) {
+        stats {
+          price
+          marketCap
+          priceBtc
+          availableSupply
+          totalSupply
+          percentChange7d
+        }  
+        symbol: slug
+        image
+        name
+        algorithm {
+          name
+        }  
+        proofType {
+          name
+        }
+        fullyPremined
+        preMinedValue
+      }
+    }  
   }
 `;

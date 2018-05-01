@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook');
+/*
 const { User, Sequelize } = require('../../../../database/models');
-const { userProfileFields, updateUserProfile } = require('../UserData');
+const { userProfileFields } = require('../UserData');
 const generateTokens = require('../jwt');
 const oAuthtemplate = require('../popupTemplpate');
+*/
 
 if (process.env.FACEBOOK_APP_ID) {
   passport.use(
@@ -22,7 +25,7 @@ if (process.env.FACEBOOK_APP_ID) {
           profileUrl, emails: [{ value }], photos: [{ value: picture }], gender,
         } = profile;
         try {
-          let user = await User.findOne(
+          /* let user = await User.findOne(
             { where: { [Sequelize.Op.or]: [{ facebook_id: id }, { email: value }] } }
           );
           if (!user) {
@@ -52,7 +55,7 @@ if (process.env.FACEBOOK_APP_ID) {
               });
           }
           const userJSON = userProfileFields(user);
-          done(null, userJSON);
+          done(null, userJSON); */
         } catch (err) {
           done(err, {});
         }
@@ -66,13 +69,13 @@ if (process.env.FACEBOOK_APP_ID) {
       passport.authenticate('facebook')(req, res, next);
     });
     app.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), async (req, res) => {
-      const user = await User.findOne({ where: { id: req.user.id } });
+      /*     const user = await User.findOne({ where: { id: req.user.id } });
       const tokens = await generateTokens(user, req);
       res.send(oAuthtemplate({
         title: 'Success',
         status: 'success',
         payload: { user: userProfileFields(user), tokens },
-      }));
+      })); */
     });
   };
 

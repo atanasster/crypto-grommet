@@ -5,7 +5,7 @@ import { Box, Distribution } from 'grommet';
 import { Spinning } from 'grommet-controls';
 import Coin, { FormattedCoinValue, pushCoinPath } from './Coin';
 import connect from '../../redux';
-import { marketCapQuery } from '../graphql/coins';
+import { allCoinsQuery } from '../graphql/coins';
 
 
 class MarketCapDistribution extends Component {
@@ -20,7 +20,7 @@ class MarketCapDistribution extends Component {
   };
 
   render() {
-    const { data: { loading, marketCap }, currency, responsive } = this.props;
+    const { data: { loading, list }, currency, responsive } = this.props;
     if (loading) {
       return (
         <Box full='horizontal' align='center' pad='large'>
@@ -28,10 +28,10 @@ class MarketCapDistribution extends Component {
         </Box>
       );
     }
-    const values = marketCap ? marketCap.map((item, index) => (
+    const values = list && list.results ? list.results.map((item, index) => (
       {
         ...item,
-        value: item.price * item.availableSupply,
+        value: item.stats.marketCap,
         index,
       }
     )) : [];
@@ -54,7 +54,7 @@ class MarketCapDistribution extends Component {
               >
                 <Coin
                   level={3}
-                  coin={item.coin}
+                  coin={item}
                   toCoin={{ symbol: currency }}
                   border={null}
                   short={smallCap}
@@ -86,12 +86,14 @@ const mapStateToProps = state => ({
 });
 
 
-export default graphql(marketCapQuery, {
+export default graphql(allCoinsQuery, {
   options: props => ({
     variables: {
       currency: props.currency.toLowerCase(),
-      start: 0,
+      offset: 0,
       limit: 25,
+      hasMarketCap: true,
+      ordering: '-tickers_coinkeystats.marketCap',
     },
   }),
 })(connect(mapStateToProps)(MarketCapDistribution));

@@ -6,7 +6,9 @@ import RoutedAnchor from '../RoutedAnchor';
 import { exchangeInfoQuery } from '../graphql/exchanges';
 
 export const CountryFlag = ({ code }) => (
-  <div>{code}</div>
+  <RoutedAnchor route='exchange_by_country' params={{ country: code }} >
+    {code}
+  </RoutedAnchor>
 );
 
 
@@ -20,9 +22,9 @@ export const Country = ({ code, name = 'all countries', level = 4 }) => (
 );
 
 export const ExchangeCountries = ({ countries }) => (
-  countries.map(code => (
-    <Box key={`country_${code}`} margin={{ horizontal: 'xsmall' }} border='all' alignSelf='center'>
-      <CountryFlag code={code} />
+  countries.map(country => (
+    <Box key={`country_${country.code}`} margin={{ horizontal: 'xsmall' }} border='all' alignSelf='center'>
+      <CountryFlag code={country.code} />
     </Box>
   ))
 );

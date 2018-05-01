@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import numeral from 'numeral';
 import { Box, Anchor } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
+import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { shortDate } from 'grommet-controls/utils/moment';
 import Coin from './Coin';
+import { icoDetailsQuery } from '../graphql/coins';
 
 
-export default class ICOCard extends Component {
+class ICOCard extends Component {
   renderTable() {
-    const { coin } = this.props;
+    const { data: { coin } } = this.props;
     if (coin) {
       const rows = [
         {
@@ -114,28 +117,34 @@ export default class ICOCard extends Component {
   }
 
   render() {
-    const { coin } = this.props;
-    const ico = coin && coin.ICO ? coin.ICO : null;
+    const { data: { coin } } = this.props;
+    console.log(coin);
     return (
       <Card
         size={{ height: 'large' }}
-        title={<Coin symbol={coin && coin.symbol} />}
-        subTitle={`ICO ${ico && ico.status}`}
+        subTitle='SUB'
       >
-        <Box pad='small'>
-          {this.renderTable()}
-        </Box>
+        <CardTitle>
+          {coin && <Coin coin={coin} />}
+        </CardTitle>
+        <CardSubTitle>
+          {coin && coin.icoStatus}
+        </CardSubTitle>
+        <CardContent>
+          <Box pad='small' fill='horizontal'>
+            {this.renderTable()}
+          </Box>
+        </CardContent>
       </Card>
     );
   }
 }
 
-ICOCard.defaultProps = {
-  coin: undefined,
-};
-
-
 ICOCard.propTypes = {
-  coin: PropTypes.object,
+  // eslint-disable-next-line react/no-unused-prop-types
+  symbol: PropTypes.string.isRequired,
 };
+
+export default graphql(icoDetailsQuery,
+  { options: props => ({ variables: { symbol: props.symbol } }) })(ICOCard);
 

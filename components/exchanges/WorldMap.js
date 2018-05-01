@@ -1,45 +1,12 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Box, WorldMap as GrommetWordMap, Image } from 'grommet';
 import { PagingTable } from 'grommet-controls';
 import RoutedAnchor from '../RoutedAnchor';
 import SideLayer from '../SideLayer';
-import { uniqueCountries } from './countries';
+import { uniqueCountries, continents } from './countries';
 import { ExchangeCountries } from './Exchange';
 import { allExchangesQuery } from '../graphql/exchanges';
-
-const continents = [
-  {
-    name: 'Africa',
-    color: 'accent-1',
-    code: 'AF',
-  },
-  {
-    name: 'Australia',
-    color: 'accent-2',
-    code: 'OC',
-  },
-  {
-    name: 'Asia',
-    color: 'neutral-1',
-    code: 'AS',
-  },
-  {
-    name: 'Europe',
-    color: 'neutral-2',
-    code: 'EU',
-  },
-  {
-    name: 'North America',
-    color: 'neutral-3',
-    code: 'NA',
-  },
-  {
-    name: 'South America',
-    color: 'status-warning',
-    code: 'SA',
-  },
-];
 
 class WorldMap extends React.Component {
   state = {
@@ -50,9 +17,10 @@ class WorldMap extends React.Component {
   };
 
   exchangesByName(name) {
-    const { allExchanges } = this.props.data;
+    const { list } = this.props.data;
     const continent = continents.find(c => (c.name === name));
-    if (allExchanges) {
+    if (list) {
+      const allExchanges = list.results;
       const exchanges = Object.keys(allExchanges).map(key => allExchanges[key]);
       const continentExchanges = [];
       this.countries = uniqueCountries(allExchanges);
@@ -60,7 +28,7 @@ class WorldMap extends React.Component {
       this.countries.filter(c => (c.continent === continent.code))
         .forEach((c) => {
           exchanges.filter(e => e.countries.findIndex(
-            ec => (ec === c.code)
+            ec => (ec.code === c.code)
           ) !== -1).forEach((e) => {
             if (continentExchanges.findIndex(ex => ex.symbol === e.symbol) === -1) {
               continentExchanges.push(e);
@@ -173,7 +141,12 @@ class WorldMap extends React.Component {
 }
 
 
-export default compose(
-  graphql(allExchangesQuery),
-)(WorldMap);
+export default graphql(allExchangesQuery, {
+  options: () => ({
+    variables: {
+      offset: 0,
+      limit: 500,
+    },
+  }),
+})(WorldMap);
 

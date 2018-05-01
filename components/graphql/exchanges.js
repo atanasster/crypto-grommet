@@ -1,14 +1,19 @@
 import gql from 'graphql-tag';
 
 export const allExchangesQuery = gql`
-  query getExchanges {
-    allExchanges {
-      symbol
-      name
-      image
-      countries
-      url
-      hasOrderBook
+  query getExchanges($offset: Int, $limit: Int, $ordering: String, $country: String) {
+    list: allExchanges(country: $country) {
+    totalCount
+    results(offset: $offset, limit: $limit, ordering: $ordering) {
+        symbol: slug
+        name
+        image
+        countries {
+          code
+        }
+        url
+        hasOrderBook
+      }  
     }
   }
 `;
@@ -17,7 +22,7 @@ export const allExchangesQuery = gql`
 export const exchangeInfoQuery = gql`
   query getExchange($exchange : String!) {
     coinExchange(name: $exchange) {
-      symbol
+      symbol: slug
       name
       image
     }
@@ -27,13 +32,13 @@ export const exchangeInfoQuery = gql`
 export const exchangeMarketsQuery = gql`
   query getExchange($exchange : String!) {
     coinExchangeCurrency(name: $exchange) {
-      symbol
+      symbol: slug
       name
       currencies {
         symbol
         precision
         coin {
-          symbol
+          symbol: slug
           image
           name
         }
@@ -51,7 +56,7 @@ export const exchangeMarketsQuery = gql`
 export const exchangeFeesQuery = gql`
   query getExchange($exchange : String!) {
     coinExchangeFees(name: $exchange) {
-      symbol
+      symbol: slug
       name
       fundingFees {
         tierBased
@@ -59,7 +64,7 @@ export const exchangeFeesQuery = gql`
         withdraw {
           fee
           coin {
-            symbol
+            symbol: slug
             name
             image
           }
@@ -67,7 +72,7 @@ export const exchangeFeesQuery = gql`
         deposit {
           fee
           coin {
-            symbol
+            symbol: slug
             name
             image
           }
@@ -90,20 +95,21 @@ export const exchangeFeesQuery = gql`
 `;
 
 export const orderBookQuery = gql`
-  query getOrderBook($exchange : String!, $symbol: String!, $toSymbol: String!, $start: Int, $limit: Int) {
-    coinOrderBook(name: $exchange, symbol: $symbol, toSymbol: $toSymbol, start: $start, limit: $limit) {
+  query getOrderBook($exchange : String!, $symbol: String!, $toSymbol: String!, $offset: Int, $limit: Int) {
+    coinOrderBook(name: $exchange, symbol: $symbol, toSymbol: $toSymbol, offset: $offset, limit: $limit) {
       symbol
       exchange {
-        symbol
+        symbol: slug
         name
         image
       }
       coin {
-        symbol
+        symbol: slug
         name
         image
       } 
       lastUpdated
+      realToSymbol
       asks {
         price
         qty

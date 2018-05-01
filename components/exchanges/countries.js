@@ -2864,15 +2864,52 @@ const allCountries = {
 
 export default allCountries;
 
+export const continents = [
+  {
+    name: 'Africa',
+    color: 'accent-1',
+    code: 'AF',
+  },
+  {
+    name: 'Australia',
+    color: 'accent-2',
+    code: 'OC',
+  },
+  {
+    name: 'Asia',
+    color: 'neutral-1',
+    code: 'AS',
+  },
+  {
+    name: 'Europe',
+    color: 'neutral-2',
+    code: 'EU',
+  },
+  {
+    name: 'North America',
+    color: 'neutral-3',
+    code: 'NA',
+  },
+  {
+    name: 'South America',
+    color: 'status-warning',
+    code: 'SA',
+  },
+];
+
 let countries = null;
 
 export const uniqueCountries = (exchanges) => {
   if (!countries && exchanges) {
-    const eCountries = [...new Set(exchanges.reduce((arr, ex) =>
-      ([...arr, ...ex.countries]), [])),
-    ];
-    countries = Object.keys(allCountries).filter(c =>
-      (eCountries.indexOf(c)) !== -1).map(c => ({ ...allCountries[c], code: c }));
+    countries = [];
+    for (let i = 0; i < exchanges.length; i += 1) {
+      for (let j = 0; j < exchanges[i].countries.length; j += 1) {
+        const country = exchanges[i].countries[j];
+        if (countries.findIndex(c => c.code === country.code) === -1) {
+          countries.push({ ...allCountries[country.code], code: country.code });
+        }
+      }
+    }
   }
   return countries;
 };

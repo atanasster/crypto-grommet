@@ -1,31 +1,32 @@
+/* eslint-disable no-unused-vars */
 const passport = require('passport');
-const { OAuth2Strategy } = require('passport-google-oauth');
+const LinkedinStrategy = require('passport-linkedin-oauth2').Strategy;
+/*
 const { User, Sequelize } = require('../../../../database/models');
 const { userProfileFields, updateUserProfile } = require('../UserData');
 const generateTokens = require('../jwt');
 const oAuthtemplate = require('../popupTemplpate');
+*/
 
 
-if (process.env.GOOGLE_APP_ID) {
+if (process.env.LINKEDIN_APP_ID) {
   passport.use(
-    new OAuth2Strategy(
+    new LinkedinStrategy(
       {
-        clientID: process.env.GOOGLE_APP_ID,
-        clientSecret: process.env.GOOGLE_APP_SECRET,
-        callbackURL: `${process.env.WEBSITE_URL}/auth/google/callback`,
-        profileFields: ['id', 'emails', 'name', 'displayName', 'picture.type(normal)',
-          'profileUrl', 'gender'],
-
+        clientID: process.env.LINKEDIN_APP_ID,
+        clientSecret: process.env.LINKEDIN_APP_SECRET,
+        callbackURL: `${process.env.WEBSITE_URL}/auth/linkedin/callback`,
+        scope: ['r_basicprofile', 'r_emailaddress'],
       },
       (async (accessToken, refreshToken, profile, done) => {
         const {
           id, username, displayName, name: { givenName: firstName, familyName: lastName },
-          _json: { url: profileUrl },
+          _json: { publicProfileUrl: profileUrl },
           emails: [{ value }], photos: [{ value: picture }], gender,
         } = profile;
         try {
-          let user = await User.findOne(
-            { where: { [Sequelize.Op.or]: [{ google_id: id }, { email: value }] } }
+          /* let user = await User.findOne(
+            { where: { [Sequelize.Op.or]: [{ linkedin_id: id }, { email: value }] } }
           );
           if (!user) {
             user = await User.create({
@@ -33,28 +34,28 @@ if (process.env.GOOGLE_APP_ID) {
               email: value,
               password: id,
               is_active: true,
-              google_name: displayName,
-              google_id: id,
+              linkedin_name: displayName,
+              linkedin_id: id,
               firstName,
               lastName,
               picture,
               gender,
-              google_url: profileUrl,
+              linkedin_url: profileUrl,
             });
-          } else if (!user.google_id) {
+          } else if (!user.linkedin_id) {
             user = await updateUserProfile(user,
               {
-                google_name: displayName,
-                google_id: id,
+                linkedin_name: displayName,
+                linkedin_id: id,
                 firstName,
                 lastName,
                 picture,
                 gender,
-                google_url: profileUrl,
+                linkedin_url: profileUrl,
               });
           }
           const userJSON = userProfileFields(user);
-          done(null, userJSON);
+          done(null, userJSON); */
         } catch (err) {
           done(err, {});
         }
@@ -64,20 +65,18 @@ if (process.env.GOOGLE_APP_ID) {
 
   const middleware = (app) => {
     app.use(passport.initialize());
-    app.get('/auth/google', (req, res, next) => {
-      passport.authenticate('google', {
-        scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-      })(req, res, next);
+    app.get('/auth/linkedin', (req, res, next) => {
+      passport.authenticate('linkedin')(req, res, next);
     });
 
-    app.get('/auth/google/callback', passport.authenticate('google', { session: false }), async (req, res) => {
-      const user = await User.findOne({ where: { id: req.user.id } });
+    app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { session: false }), async (req, res) => {
+      /* const user = await User.findOne({ where: { id: req.user.id } });
       const tokens = await generateTokens(user, req);
       res.send(oAuthtemplate({
         title: 'Success',
         status: 'success',
         payload: { user: userProfileFields(user), tokens },
-      }));
+      })); */
     });
   };
   module.exports = {

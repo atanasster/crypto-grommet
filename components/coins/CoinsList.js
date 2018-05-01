@@ -1,119 +1,135 @@
-import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import numeral from 'numeral';
-import { Box, Text, Markdown } from 'grommet';
-import { PagingTable } from 'grommet-controls';
-import connect from '../../redux';
-import Coin from './Coin';
+import React from 'react';
+import PropTypes from 'prop-types';
+import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
+import CardScroll from '../CardScroll';
+import Coin, { FormattedCoinValue, ColoredPercentChange } from './Coin';
 import PriceCard from './PriceCard';
-import ICOCard from './ICOCard';
 import OrderBookCard from './OrderBookCard';
 import { allCoinsQuery } from '../graphql/coins';
+import RoutedAnchor from '../RoutedAnchor';
 
-class CoinsList extends Component {
-  // eslint-disable-next-line no-undef
+class CoinsList extends React.Component {
   onExpand = (row) => {
-    const { defaultCurrency, exchange, defaultExchange } = this.props;
-    if (row.original.ICO) {
-      return (
-        <Box direction='row' pad='small' gap='medium'>
-          <Box>
-            <Markdown >
-              {row.original.ICO.description}
-            </Markdown>
-          </Box>
-          <ICOCard
-            coin={row.original}
-          />
-        </Box>
-      );
-    }
+    const { exchange, currency } = this.props;
     return (
-      <Box direction='row' pad='small' gap='medium'>
+      <CardScroll>
         <PriceCard
           symbol={row.original.symbol}
-          toSymbol={defaultCurrency}
+          toSymbol={currency}
           exchange={exchange}
         />
         <OrderBookCard
           symbol={row.original.symbol}
-          toSymbol={defaultCurrency}
-          exchange={defaultExchange}
+          toSymbol={currency}
+          exchange={exchange}
         />
-
-      </Box>
+      </CardScroll>
     );
   };
+
   render() {
     const {
-      data: { allCoins, loading },
+      exchange, data, loadMoreEntries, algorithm, proofType,
+
     } = this.props;
     const columns = [
       {
         Header: 'Coin',
-        accessor: 'name',
+        accessor: 'symbol',
         Cell: cell => (
           <Coin
             coin={cell.original}
-            toCoin={{ symbol: this.props.defaultCurrency }}
-            exchange={this.props.defaultExchange}
+            toCoin={{ symbol: 'USD' }}
+            exchange={exchange}
             level={4}
             border={null}
           />
         ),
-        Footer: cell => (
-          <Text >{`${cell.data.length} of ${allCoins ? allCoins.length : '0'} coins`}</Text>
+      }, {
+        Header: 'Market cap',
+        accessor: 'stats.marketCap',
+        maxWidth: 150,
+        Cell: cell => (
+          <FormattedCoinValue
+            value={cell.value}
+            coin={cell.original}
+            large={true}
+          />
         ),
+        getProps: () => ({ align: 'end' }),
       }, {
         Header: 'Algo',
-        accessor: 'algorithm',
+        accessor: 'algorithm.name',
+        Cell: cell => (cell.value && (
+          <RoutedAnchor route='coins_by_algo' params={{ algorithm: cell.value }} >
+            {cell.value}
+          </RoutedAnchor>
+        )
+        ),
       }, {
         Header: 'Proof',
-        accessor: 'proofType',
+        accessor: 'proofType.name',
+        Cell: cell => (cell.value && (
+          <RoutedAnchor route='coins_by_prooftype' params={{ proofType: cell.value }} >
+            {cell.value}
+          </RoutedAnchor>
+        )
+        ),
+      },
+      {
+        Header: 'Price',
+        accessor: 'stats.price',
+        maxWidth: 120,
+        Cell: cell => (<FormattedCoinValue value={cell.value} coin={cell.original.coin} />),
+        getProps: () => ({ align: 'end' }),
       }, {
-        Header: 'Pre-mined',
-        accessor: 'fullyPremined',
-        getProps: () => ({ textAlign: 'center' }),
-        Cell: cell => (cell.value === 0 ? 'Yes' : ''),
-      }, {
-        Header: 'Pre-mined value',
-        accessor: 'preMinedValue',
+        Header: '%7d',
+        accessor: 'stats.percentChange7d',
+        maxWidth: 120,
+        Cell: cell => (<ColoredPercentChange value={cell.value / 100} />),
         getProps: () => ({ textAlign: 'end' }),
       }, {
-        Header: 'Total Coin Supply',
+        Header: 'Circulation',
+        accessor: 'stats.availableSupply',
+        Cell: cell => (
+          <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
+        ),
         getProps: () => ({ textAlign: 'end' }),
-        accessor: 'totalCoinSupply',
-        Cell: cell => (<Text textAlign='right'>{numeral(cell.value).format('0,000')}</Text>),
       }, {
-        Header: 'Free float',
-        accessor: 'totalCoinsFreeFloat',
+        Header: 'Total',
+        accessor: 'stats.totalSupply',
+        Cell: cell => (
+          <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
+        ),
         getProps: () => ({ textAlign: 'end' }),
       },
     ];
     return (
-      <Box fill='horizontal'>
-        <PagingTable
-          decorations={{
-            table: { elevation: 'medium' },
-            rowEven: { background: { color: 'light-1' } },
-          }}
-          loading={loading}
-          filterable={true}
-          data={allCoins}
-          SubComponent={this.onExpand}
-          columns={columns}
-          defaultSorted={[{ id: 'symbol' }]}
-        />
-      </Box>
+      <PagingGraphqlList
+        columns={columns}
+        loadMoreEntries={loadMoreEntries}
+        data={data}
+        onExpand={this.onExpand}
+        aliases={{ 'stats': 'tickers_coinkeystats' }}
+        ordering={[{ id: 'stats.marketCap', desc: true }]}
+        gqlProps={{
+ hasMarketCap: true, hasICO: false, algorithm, proofType,
+}}
+      />
     );
   }
 }
 
-const mapStateToProps = state => ({
-  defaultCurrency: state.settings.defaultCurrency,
-  exchange: state.settings.aggregatedExchange,
-  defaultExchange: state.settings.defaultExchange,
-});
+CoinsList.defaultProps = {
+  algorithm: undefined,
+  proofType: undefined,
+};
+CoinsList.propTypes = {
+  currency: PropTypes.string.isRequired,
+  exchange: PropTypes.string.isRequired,
+  algorithm: PropTypes.string,
+  proofType: PropTypes.string,
+};
 
+export default withGraphQLList(allCoinsQuery, CoinsList);
 
-export default graphql(allCoinsQuery)(connect(mapStateToProps)(CoinsList));
