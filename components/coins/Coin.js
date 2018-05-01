@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Image, Text, Heading } from 'grommet';
+import { Box, Text, Heading } from 'grommet';
+import { ImageStamp } from 'grommet-controls';
 import numeral from 'numeral';
 import RoutedAnchor from '../RoutedAnchor';
 import connect from '../../redux/index';
@@ -98,9 +99,9 @@ const Coin = (
   let image;
   if (coin && coin.image && !short) {
     image = (
-      <Image
+      <ImageStamp
         src={coin.image}
-        style={{ width: textLevel > 2 ? '24px' : '34px', height: textLevel > 2 ? '24px' : '34px' }}
+        size={textLevel > 2 ? 'medium' : 'large'}
       />
     );
   }

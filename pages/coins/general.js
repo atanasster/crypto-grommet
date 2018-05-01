@@ -34,7 +34,7 @@ class CoinInfo extends React.Component {
         title={`${symbol}/${toSymbol}/${exchange}`}
         notifications={notifications}
         description={coin && (coin.ICO && coin.ICO.status !== 'Finished' ? coin.ICO.description : coin.description)}
-        visibleTitle={coin && <Coin coin={coin} toCoin={toCoin} exchange={exchange} />}
+        visibleTitle={coin && <Coin level={1} coin={coin} toCoin={toCoin} exchange={exchange} />}
         menu={
           <CoinsPageMenu
             activeItem={0}

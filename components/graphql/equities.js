@@ -6,7 +6,7 @@ export const allEquitiesQuery = gql`
     list: allEquities(hasMarketCap: true, hasPriceChange: true, exchange: $exchange, industry: $industry, sector: $sector) {
       totalCount
       results(offset: $offset, limit: $limit, ordering: $ordering) {
-        slug
+        symbol: slug
         image
         name
         stats {
@@ -23,6 +23,17 @@ export const allEquitiesQuery = gql`
           name
         }
       }  
+    }
+  }
+`;
+
+export const equityDetailsQuery = gql`
+  query getEquity($symbol : String!) {
+    equity(symbol: $symbol) {
+      symbol: slug
+      image
+      name
+      description
     }
   }
 `;

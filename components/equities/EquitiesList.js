@@ -16,7 +16,7 @@ class EquitiesList extends Component {
     const columns = [
       {
         Header: 'Ticker',
-        accessor: 'slug',
+        accessor: 'symbol',
         maxWidth: 150,
         Cell: cell => (
           <Equity

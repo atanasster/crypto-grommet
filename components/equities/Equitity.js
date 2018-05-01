@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Image, Heading } from 'grommet';
+import { Box, Heading } from 'grommet';
+import { ImageStamp } from 'grommet-controls';
 import RoutedAnchor from '../RoutedAnchor';
 import routerPush from '../Router';
 
@@ -15,17 +16,17 @@ export const EquityPath = ({
 export const pushEquityPath = ({ symbol }) => {
   routerPush({ route: 'equities_info', params: { symbol } });
 };
-const Equity = ({ equity }) => {
+const Equity = ({ equity, level }) => {
   let name;
   if (equity) {
-    name = equity.slug;
+    name = equity.symbol;
   } else {
     name = '';
   }
-  const title = <Heading level={4} margin='none'>{name}</Heading>;
-  const link = equity && equity.slug ? (
+  const title = <Heading level={level} margin='none'>{name}</Heading>;
+  const link = equity && equity.symbol ? (
     <EquityPath
-      symbol={equity.slug}
+      symbol={equity.symbol}
     >
       {title}
     </EquityPath>
@@ -33,9 +34,9 @@ const Equity = ({ equity }) => {
   let image;
   if (equity && equity.image) {
     image = (
-      <Image
+      <ImageStamp
         src={equity.image}
-        style={{ width: '24px', height: '24px' }}
+        size={level > 2 ? 'medium' : 'large'}
       />
     );
   }
@@ -57,10 +58,12 @@ const Equity = ({ equity }) => {
 
 Equity.defaultProps = {
   equity: undefined,
+  level: 3,
 };
 
 Equity.propTypes = {
   equity: PropTypes.object,
+  level: PropTypes.number,
 };
 
 export default Equity;

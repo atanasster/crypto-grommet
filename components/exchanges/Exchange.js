@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import { Box, Image, Heading } from 'grommet';
+import { Box, Heading } from 'grommet';
+import { ImageStamp } from 'grommet-controls';
 import RoutedAnchor from '../RoutedAnchor';
 import { exchangeInfoQuery } from '../graphql/exchanges';
 
@@ -39,11 +40,9 @@ export const ConnectedExchange = ({
   let image;
   if (exchange) {
     image = (
-      <Image
+      <ImageStamp
         src={exchange.image}
-        style={{
-          height: level > 2 ? '24px' : '34px',
-        }}
+        size={level > 2 ? 'medium' : 'large'}
       />
     );
   }
@@ -64,7 +63,7 @@ export const ConnectedExchange = ({
 };
 
 ConnectedExchange.defaultProps = {
-  level: 4,
+  level: 3,
   exchange: undefined,
 };
 
