@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Equity from './Equity';
+import CardScroll from '../CardScroll';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
 import { FormattedCoinValue, ColoredPercentChange } from '../coins/Coin';
 import RoutedAnchor from '../RoutedAnchor';
-// import PriceCard from './PriceCard';
-// import OrderBookCard from './OrderBookCard';
+import PriceCard from './PriceCard';
+import PeersCard from './PeersCard';
+import Equity from './Equity';
 import { allEquitiesQuery } from '../graphql/equities';
 
 class EquitiesList extends Component {
+  onExpand = row => (
+    <CardScroll>
+      <PriceCard symbol={row.original.symbol} />
+      <PeersCard symbol={row.original.symbol} />
+    </CardScroll>
+  );
   render() {
     const {
       data, loadMoreEntries, exchange, industry, sector,
@@ -81,6 +88,7 @@ class EquitiesList extends Component {
         columns={columns}
         loadMoreEntries={loadMoreEntries}
         data={data}
+        onExpand={this.onExpand}
         aliases={{ 'stats': 'tickers_keystats' }}
         gqlProps={{ exchange, industry, sector }}
         ordering={[{ id: 'stats.marketCap', desc: true }]}
