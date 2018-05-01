@@ -8,19 +8,12 @@ import withData from '../../apollo/withData';
 import { equityDetailsQuery } from '../../components/graphql/equities';
 import CardScroll from '../../components/CardScroll';
 import PriceCard from '../../components/equities/PriceCard';
-import CoinsPageMenu from '../../components/coins/CoinsPageMenu';
 
 export const EquityInfo = ({ symbol, data: { equity } }) => (
   <App
     title={`${symbol}`}
     description={equity && equity.description}
     visibleTitle={equity && <Equity level={1} equity={equity} />}
-    menu={
-      <CoinsPageMenu
-        activeItem={0}
-        symbol={symbol}
-      />
-    }
   >
     {equity && (
       <CardScroll>
