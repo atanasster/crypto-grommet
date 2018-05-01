@@ -5,31 +5,46 @@ import { Box } from 'grommet';
 import { Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
-import PriceTableStream from './PriceTableStream';
 // import PriceChart from './PriceChart';
-import { equityDetailsQuery } from '../graphql/equities';
+import { equityPeersQuery } from '../graphql/equities';
 
 
 class PriceCard extends Component {
+  renderPeers = (peers) => {
+    const { symbol } = this.props;
+    if (!peers) {
+      return null;
+    }
+    return peers.map(item => (
+      <Equity
+        key={`peers_${symbol}_${item.peer.symbol}`}
+        border='bottom'
+        pad='small'
+        equity={item.peer}
+        level={4}
+        showName={true}
+      />
+    ));
+  };
+
   render() {
     const {
-      symbol, data: { equity },
+      data: { equity },
     } = this.props;
     if (!equity) {
       return null;
     }
-    // const { period, points } = this.state;
     return (
       <Card>
         <CardTitle border='bottom'>
           <Equity equity={equity} />
         </CardTitle>
         <CardSubTitle border='bottom'>
-          IEX Real-Time Price
+          Company peers
         </CardSubTitle>
         <CardContent >
-          <Box pad='small'>
-            <PriceTableStream symbol={symbol} />
+          <Box full='horizontal' pad='small' >
+            {this.renderPeers(equity.peers)}
           </Box>
         </CardContent>
       </Card>
@@ -38,7 +53,6 @@ class PriceCard extends Component {
 }
 PriceCard.defaultProps = {
   symbol: 'AAPL',
-
 };
 
 PriceCard.propTypes = {
@@ -46,7 +60,7 @@ PriceCard.propTypes = {
 };
 
 
-export default graphql(equityDetailsQuery, {
+export default graphql(equityPeersQuery, {
   options: props => (
     { variables: { symbol: props.symbol } }),
 })(PriceCard);

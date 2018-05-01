@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Equity from './Equitity';
+import Equity from './Equity';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
 import { FormattedCoinValue, ColoredPercentChange } from '../coins/Coin';
 import RoutedAnchor from '../RoutedAnchor';

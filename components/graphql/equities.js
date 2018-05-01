@@ -37,3 +37,20 @@ export const equityDetailsQuery = gql`
     }
   }
 `;
+
+export const equityPeersQuery = gql`
+  query getEquity($symbol : String!) {
+    equity(symbol: $symbol) {
+      symbol: slug
+      image
+      name
+      peers {
+        peer {
+          name
+          symbol: slug
+          image
+        }
+      }
+    }
+  }
+`;
