@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'next/router';
 import App from '../../components/App';
 import connect from '../../redux';
 import Exchange from '../../components/exchanges/Exchange';
@@ -17,10 +18,10 @@ const ExchanceCurrencies = ({ exchange }) => (
 );
 
 const mapStateToProps = (state, props) => {
-  const exchange = props.url.query.exchange || state.settings.defaultExchange;
+  const exchange = props.router.query.exchange || state.settings.defaultExchange;
   return {
     exchange,
   };
 };
 
-export default withData(connect(mapStateToProps)(ExchanceCurrencies));
+export default withRouter(withData(connect(mapStateToProps)(ExchanceCurrencies)));

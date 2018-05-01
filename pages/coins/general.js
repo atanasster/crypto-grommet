@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
 import App from '../../components/App';
 import Coin from '../../components/coins/Coin';
@@ -58,9 +59,9 @@ class CoinInfo extends React.Component {
 
 
 const mapStateToProps = (state, props) => {
-  const exchange = props.url.query.exchange || state.settings.defaultExchange;
-  const symbol = props.url.query.symbol || 'BTC';
-  const toSymbol = props.url.query.toSymbol || state.settings.defaultCurrency;
+  const exchange = props.router.query.exchange || state.settings.defaultExchange;
+  const symbol = props.router.query.symbol || 'BTC';
+  const toSymbol = props.router.query.toSymbol || state.settings.defaultCurrency;
   return {
     exchange,
     symbol,
@@ -69,7 +70,7 @@ const mapStateToProps = (state, props) => {
 };
 
 
-export default withData(connect(mapStateToProps)(compose(
+export default withRouter(withData(connect(mapStateToProps)(compose(
   graphql(coinDetailsQuery, { name: 'coin', options: props => ({ variables: { symbol: props.symbol } }) }),
   graphql(coinInfoQuery, { name: 'toCoin', options: props => ({ variables: { symbol: props.toSymbol } }) }),
-)(CoinInfo)));
+)(CoinInfo))));
