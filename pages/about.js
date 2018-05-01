@@ -20,14 +20,21 @@ export default withData(() => (
       </Box>
       <Box>
         <Heading level={1}>
-          <strong>User interface library</strong>
+          <strong>Stock market data</strong>
         </Heading>
         <Paragraph size='large'>
           <Anchor
-            label='Grommet v2'
-            href='https://v2.grommet.io/'
+            label='IEX'
+            href='https://iextrading.com/developer/'
             target='_blank'
-          />. The most advanced open source UX framework for enterprise applications.
+          />
+          . Stock market data provided for free by IEX.
+          Please review the
+          <Anchor
+            label=' Terms of service'
+            href='https://iextrading.com/api-exhibit-a/'
+            target='_blank'
+          />
         </Paragraph>
       </Box>
       <Box>
@@ -69,20 +76,6 @@ export default withData(() => (
             target='_blank'
           />
           . Cryptocurrency Market Capitalizations.
-        </Paragraph>
-      </Box>
-      <Box margin={{ vertical: 'small' }} >
-        <Heading level={1}>
-          <strong>Advanced charting</strong>
-        </Heading>
-        <Paragraph size='large'>
-          <Anchor
-            label='Highcharts'
-            href='http://www.highcharts.com'
-            target='_blank'
-          />
-          . JavaScript charting library based on SVG,
-          with fallbacks to VML and canvas for old browsers.
         </Paragraph>
       </Box>
     </Box>
