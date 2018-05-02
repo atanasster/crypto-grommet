@@ -77,3 +77,24 @@ export const volumeByVenueQuery = gql`
     }
   }
 `;
+
+export const priceHistoryQuery = gql`
+  query equity($symbol : String!, $offset: Int, $limit: Int) {
+    equity(symbol: $symbol) {
+      list: dailyPrices(offset: $offset, limit: $limit) {
+        totalCount 
+        results {    
+          date
+          close
+          high
+          low
+          open
+          volume
+          unadjustedVolume
+          change
+          changePercent
+        }
+      }    
+    }
+  }
+`;
