@@ -82,8 +82,8 @@ class App extends Component {
       children, description, title, visibleTitle,
       notifications, menu, showLogin, themes: { themes },
     } = this.props;
-    const { theme = 'grommet' } = this.state;
-    const keywords = ['grommet', 'grommet 2', 'react', 'next.js', 'crypto', 'cryptocurrencies'];
+    const { theme = 'metro' } = this.state;
+    const keywords = ['financeboards', 'equities', 'stock markets', 'crypto', 'cryptocurrencies'];
     if (title) {
       keywords.push(title);
     }
