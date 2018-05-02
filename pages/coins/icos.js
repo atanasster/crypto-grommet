@@ -3,7 +3,7 @@ import withData from '../../apollo/withData';
 import ICOList from '../../components/coins/ICOList';
 
 const ICOs = () => (
-  <App title='Upcoming initial coin offerings'>
+  <App title='initial coin offerings'>
     <ICOList />
   </App>
 );
