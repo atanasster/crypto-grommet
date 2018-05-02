@@ -6,22 +6,10 @@ const initialState = {
   active: false,
   manual_active: false,
   items: [
+    { route: 'equities_home', label: 'equities', a11yTitle: 'Home page for equities' },
+    { route: 'coins_home', label: 'coins', a11yTitle: 'Home page for crypto coins' },
     { route: 'exchanges', label: 'exchanges', a11yTitle: 'List of exchanges' },
-    { route: 'coins_list', label: 'coins', a11yTitle: 'List of crypto coins' },
-    { route: 'equities_list', label: 'equities', a11yTitle: 'List of equities' },
     { route: 'coins_icos', label: 'ICOs', a11yTitle: 'List of active and upcoming initial coin offerings' },
-    {
-      route: 'coin_info',
-      params: { symbol: 'BTC' },
-      label: 'bitcoin',
-      a11yTitle: 'Information about BitCoin',
-    },
-    {
-      route: 'coin_info',
-      params: { symbol: 'ETH' },
-      label: 'ethereum',
-      a11yTitle: 'Information about Ethereum',
-    },
   ],
   user_items: [
     { route: 'profile', label: 'profile', a11yTitle: 'View your user profile' },

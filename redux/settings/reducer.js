@@ -12,6 +12,14 @@ const initialState = {
     { symbol: 'BCH', toSymbol: 'USD' },
     { symbol: 'ETC', toSymbol: 'USD' },
   ],
+  favEquities: [
+    { symbol: 'AAPL' },
+    { symbol: 'AMZN' },
+    { symbol: 'MSFT' },
+    { symbol: 'GOOGL' },
+    { symbol: 'FB' },
+    { symbol: 'JNJ' },
+  ],
   aggregatedExchange: aggExchange,
   defaultCurrency: 'USD',
 };

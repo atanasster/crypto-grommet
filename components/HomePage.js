@@ -4,42 +4,43 @@ import { Box, Heading } from 'grommet';
 import App from './App';
 
 import RoutedAnchor from './RoutedAnchor';
-import FavoritePrices from './coins/FavoritePrices';
-import WorldMap from './exchanges/WorldMap';
-import MarketCapDistribution from './coins/MarketCapDistribution';
+import FavoritPrices from './FavoritePrices';
+import CoinsMarketCapDistribution from './coins/MarketCapDistribution';
+import EquitiesMarketCapDistribution from './equities/MarketCapDistribution';
 import connect from '../redux';
 
 const HomePage = ({
-  responsive, defaultExchange, defaultCurrency, showLogin,
+  defaultExchange, defaultCurrency, showLogin,
 }) => (
-  <App title='crypto-grommet' visibleTitle='' showLogin={showLogin}>
-    <Box pad='small' align='center' fill='horizontal'>
-      <Heading level={1}>
-        <strong>Prices</strong>
-      </Heading>
-      <FavoritePrices />
-    </Box>
-    <Box border='top' align='center' style={{ height: responsive ? '430px' : undefined }} fill='horizontal'>
-      <Heading level={1}>
-        <RoutedAnchor route='world_exchanges' a11yTitle='Exchanges by continent'>
-          <strong>Exchanges by continent</strong>
-        </RoutedAnchor>
-      </Heading>
-      <WorldMap />
-    </Box>
-    <Box border='top' align='center' fill='horizontal'>
-      <Heading level={1}>
-        <RoutedAnchor route='markets_distribution' a11yTitle='Market cap distribution of crypto coins'>
-          <strong>Top coins</strong>
-        </RoutedAnchor>
-      </Heading>
-      <MarketCapDistribution exchange={defaultExchange} currency={defaultCurrency} />
+  <App title='Crypto grommet home' showLogin={showLogin}>
+    <Box gap='small'>
+      <Box border='top' align='center' fill='horizontal'>
+        <Heading level={1}>
+          <strong>Prices</strong>
+        </Heading>
+        <FavoritPrices numCards={3} />
+      </Box>
+      <Box border='top' align='center' fill='horizontal'>
+        <Heading level={1}>
+          <RoutedAnchor route='equities_markets_distribution' a11yTitle='Market cap distribution of top equities'>
+            <strong>Top equities</strong>
+          </RoutedAnchor>
+        </Heading>
+        <EquitiesMarketCapDistribution />
+      </Box>
+      <Box border='top' align='center' fill='horizontal'>
+        <Heading level={1}>
+          <RoutedAnchor route='markets_distribution' a11yTitle='Market cap distribution of crypto coins'>
+            <strong>Top coins</strong>
+          </RoutedAnchor>
+        </Heading>
+        <CoinsMarketCapDistribution exchange={defaultExchange} currency={defaultCurrency} />
+      </Box>
     </Box>
   </App>
 );
 
 const mapStateToProps = state => ({
-  responsive: state.nav.responsive,
   defaultExchange: state.settings.defaultExchange,
   defaultCurrency: state.settings.defaultCurrency,
 });

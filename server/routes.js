@@ -22,16 +22,19 @@ routes.add('exchange_fees', '/exchanges/fees/:exchange', `${SITE_ROOT}/exchanges
 
 routes.add({ name: 'about', page: `${SITE_ROOT}/about` });
 routes.add({ name: 'login', page: `${SITE_ROOT}/login` });
-routes.add({ name: 'markets_distribution', page: `${SITE_ROOT}/markets/distribution` });
+routes.add({ name: 'markets_distribution', pattern: '/coins/market-distribution', page: `${SITE_ROOT}/coins/distribution` });
 routes.add({ name: 'world_exchanges', page: `${SITE_ROOT}/exchanges/worldmap` });
 routes.add({ name: 'exchanges', page: `${SITE_ROOT}/exchanges` });
-routes.add({ name: 'coins_list', page: `${SITE_ROOT}/coins` });
-routes.add({ name: 'coins_icos', page: `${SITE_ROOT}/coins/icos` });
+routes.add({ name: 'coins_home', pattern: '/coins', page: `${SITE_ROOT}/coins` });
+routes.add({ name: 'coins_list', pattern: '/coins/list', page: `${SITE_ROOT}/coins/list` });
+routes.add({ name: 'coins_icos', pattern: '/coins/icos', page: `${SITE_ROOT}/coins/icos` });
 
-routes.add({ name: 'equities_list', page: `${SITE_ROOT}/equities` });
-routes.add('equities_by_exchange', '/equities/exchanges/:exchange', `${SITE_ROOT}/equities/by_exchange`);
-routes.add('equities_by_industry', '/equities/industries/:industry', `${SITE_ROOT}/equities/by_industry`);
-routes.add('equities_by_sector', '/equities/sectors/:sector', `${SITE_ROOT}/equities/by_sector`);
+routes.add({ name: 'equities_home', pattern: '/equities', page: `${SITE_ROOT}/equities` });
+routes.add({ name: 'equities_list', pattern: '/equities/list', page: `${SITE_ROOT}/equities/list` });
+routes.add({ name: 'equities_markets_distribution', pattern: '/equities/market-distribution', page: `${SITE_ROOT}/equities/distribution` });
+routes.add({ name: 'equities_by_exchange', pattern: '/equities/exchanges/:exchange', page: `${SITE_ROOT}/equities/by_exchange` });
+routes.add({ name: 'equities_by_industry', pattern: '/equities/industries/:industry', page: `${SITE_ROOT}/equities/by_industry` });
+routes.add({ name: 'equities_by_sector', pattern: '/equities/sectors/:sector', page: `${SITE_ROOT}/equities/by_sector` });
 
-routes.add('equity_info', '/equities/info/:symbol', `${SITE_ROOT}/equities/general`);
+routes.add({ name: 'equity_info', pattern: '/equities/info/:symbol', page: `${SITE_ROOT}/equities/general` });
 module.exports = routes;

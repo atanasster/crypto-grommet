@@ -3,7 +3,7 @@ import { Box } from 'grommet';
 import App from '../../components/App';
 import withData from '../../apollo/withData';
 import MarketCapDistribution from '../../components/coins/MarketCapDistribution';
-import connect from '../../redux';
+import connect from '../../redux/index';
 
 
 const MarketCap = ({ defaultExchange, defaultCurrency }) => (
