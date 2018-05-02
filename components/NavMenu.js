@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Anchor, Menu, Text } from 'grommet';
-import { Bitcoin as AppIcon, Menu as MenuIcon, User } from 'grommet-icons';
+import { Menu as MenuIcon, User } from 'grommet-icons';
 import { bindActionCreators } from 'redux';
+import AppIcon from './Logo';
 import connect from '../redux/index';
 import Login from './auth/AuthSideBar';
 import RoutedAnchor from './RoutedAnchor';

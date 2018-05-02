@@ -22,8 +22,24 @@ export default class MyDocument extends Document {
           <meta name='viewport' content='width=device-width,initial-scale=1' />
           <meta name='fragment' content='!' />
           <meta name='mobile-web-app-capable' content='yes' />
-          <link rel='shortcut icon' type='image/png' href='/static/img/shortcut-icon.png' />
-          <link rel='apple-touch-icon' sizes='196x196' type='image/png' href='/static/img/mobile-app-icon.png' />
+          <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+          <link rel='apple-touch-icon' sizes='57x57' type='image/png' href='/static/img/apple-icon-57x57.png' />
+          <link rel='apple-touch-icon' sizes='60x60' type='image/png' href='/static/img/apple-icon-60x60.png' />
+          <link rel='apple-touch-icon' sizes='72x72' type='image/png' href='/static/img/apple-icon-72x72.png' />
+          <link rel='apple-touch-icon' sizes='76x76' type='image/png' href='/static/img/apple-icon-76x76.png' />
+          <link rel='apple-touch-icon' sizes='114x114' type='image/png' href='/static/img/apple-icon-114x114.png' />
+          <link rel='apple-touch-icon' sizes='120x120' type='image/png' href='/static/img/apple-icon-120x120.png' />
+          <link rel='apple-touch-icon' sizes='144x144' type='image/png' href='/static/img/apple-icon-144x144.png' />
+          <link rel='apple-touch-icon' sizes='152x152' type='image/png' href='/static/img/apple-icon-152x152.png' />
+          <link rel='apple-touch-icon' sizes='180x180' type='image/png' href='/static/img/apple-icon-180x180.png' />
+          <link rel='icon' sizes='192x192' type='image/png' href='/static/img/android-icon-192x192.png' />
+          <link rel='icon' sizes='32x32' type='image/png' href='/static/img/favicon-32x32.png' />
+          <link rel='icon' sizes='96x96' type='image/png' href='/static/img/favicon-96x96.png' />
+          <link rel='icon' sizes='16x16' type='image/png' href='/static/img/favicon-16x16.png' />
+          <link rel='manifest' href='/static/img/manifest.json' />
+          <meta name='msapplication-TileColor' content='#ffffff' />
+          <meta name='msapplication-TileImage' content='/static/img/ms-icon-144x144.png' />
+          <meta name='theme-color' content='#ffffff' />
         </Head>
         <body style={{ margin: 0 }} >
           <Main />
