@@ -46,7 +46,9 @@ class PriceCard extends Component {
           {equityVolumeByExchange &&
           <Box full='horizontal' pad='small' >
             <PagingTable
-              resizable={false}
+              decorations={{
+                rowOdd: { background: { color: 'light-1' } },
+              }}
               columns={[
                 {
                   Header: 'Venue',

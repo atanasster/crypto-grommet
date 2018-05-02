@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box } from 'grommet';
-import { Card } from 'grommet-controls';
+import { Card, PagingTable } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
 import { equityPeersQuery } from '../graphql/equities';
@@ -10,20 +10,31 @@ import { equityPeersQuery } from '../graphql/equities';
 
 class PriceCard extends Component {
   renderPeers = (peers) => {
-    const { symbol } = this.props;
     if (!peers) {
       return null;
     }
-    return peers.map(item => (
-      <Equity
-        key={`peers_${symbol}_${item.peer.symbol}`}
-        border='bottom'
-        pad='small'
-        equity={item.peer}
-        level={4}
-        showName={true}
+    return (
+      <PagingTable
+        resizable={false}
+        decorations={{
+          rowOdd: { background: { color: 'light-1' } },
+        }}
+        columns={[
+          {
+            Header: 'Similar companies',
+            accessor: 'symbol',
+            Cell: cell => (
+              <Equity
+                equity={cell.original.peer}
+                showName={true}
+                level={4}
+              />
+            ),
+          },
+        ]}
+        data={peers}
       />
-    ));
+    );
   };
 
   render() {
@@ -55,6 +66,7 @@ PriceCard.defaultProps = {
 };
 
 PriceCard.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
   symbol: PropTypes.string,
 };
 
