@@ -6,6 +6,8 @@ import RoutedAnchor from '../RoutedAnchor';
 import connect from '../../redux/index';
 import routerPush from '../Router';
 
+export const hasICO = coin => (coin && coin.icoStatus && coin.icoStatus !== 'Finished');
+
 export const CoinPath = ({
   symbol, toSymbol, exchange, children,
 }) => (

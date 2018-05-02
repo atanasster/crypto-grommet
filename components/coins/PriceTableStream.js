@@ -112,15 +112,13 @@ export default class PriceTableStream extends Component {
       ];
       priceTable = (
         <Box align='center'>
-          <Box margin={{ vertical: 'medium' }}>
-            <strong>
-              <Text size='xlarge' color={priceColor} >
-                {numeral(data.PRICE).format('0,0.00')}
-              </Text>
-              <Text size='xsmall' color={priceColor} >
-                {toCoin.symbol}
-              </Text>
-            </strong>
+          <Box margin={{ vertical: 'medium' }} direction='row' gap='xsmall' align='baseline'>
+            <Text weight='bold' size='xlarge' color={priceColor} >
+              {numeral(data.PRICE).format('0,0.00')}
+            </Text>
+            <Text weight='bold' size='xsmall' color={priceColor} >
+              {toCoin.symbol}
+            </Text>
           </Box>
           <Box fill={true}>
             <PagingTable

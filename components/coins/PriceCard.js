@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
@@ -6,7 +7,7 @@ import { Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import RoutedButton from '../RoutedButton';
 import Exchange from '../exchanges/Exchange';
-import { CoinToCoin } from './Coin';
+import { CoinToCoin, hasICO } from './Coin';
 import PriceTableStream from './PriceTableStream';
 import PriceChart from './PriceChart';
 import { coinInfoQuery } from '../graphql/coins';
@@ -26,7 +27,7 @@ const optionLimit = [
 ];
 
 
-export class ConnectedPriceCard extends Component {
+class PriceCard extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = { period: props.period, points: props.points };
@@ -34,17 +35,17 @@ export class ConnectedPriceCard extends Component {
 
   onSelectPeriod = (item) => {
     this.setState({ period: item.value });
-  }
+  };
 
   onSelectPoints = (item) => {
     this.setState({ points: item.value });
-  }
+  };
 
   render() {
     const {
-      exchange, color, coin, toCoin,
+      exchange, color, coin: { coin }, toCoin: { coin: toCoin },
     } = this.props;
-    if (!coin || !toCoin) {
+    if (!coin || !toCoin || hasICO(coin)) {
       return null;
     }
     const { period, points } = this.state;
@@ -93,33 +94,14 @@ export class ConnectedPriceCard extends Component {
     );
   }
 }
-ConnectedPriceCard.defaultProps = {
-  color: undefined,
-  period: 'day',
-  points: 60,
-  coin: undefined,
-  toCoin: undefined,
-
-};
-
-ConnectedPriceCard.propTypes = {
-  coin: PropTypes.object,
-  toCoin: PropTypes.object,
-  exchange: PropTypes.string.isRequired,
-  period: PropTypes.string,
-  points: PropTypes.number,
-  color: PropTypes.string,
-};
-
-const PriceCard = ({ coin: { coin }, toCoin: { coin: toCoin }, ...rest }) => (
-  <ConnectedPriceCard coin={coin} toCoin={toCoin} {...rest} />
-);
 
 PriceCard.defaultProps = {
   color: undefined,
   period: 'day',
   points: 60,
 };
+
+/* eslint-disable react/no-unused-prop-types */
 
 PriceCard.propTypes = {
   symbol: PropTypes.string.isRequired,

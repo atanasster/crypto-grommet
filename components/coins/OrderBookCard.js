@@ -7,7 +7,7 @@ import { Box, Text } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { longDate } from 'grommet-controls/utils/moment';
-import { CoinToCoin } from './Coin';
+import { CoinToCoin, hasICO } from './Coin';
 import { ConnectedExchange } from '../exchanges/Exchange';
 import { orderBookQuery } from '../graphql/exchanges';
 
@@ -135,7 +135,7 @@ export class ConnectedOrderBook extends Component {
 
   render() {
     const { orderBook } = this.props;
-    if (!orderBook) {
+    if (!orderBook || hasICO(orderBook.coin)) {
       return null;
     }
     const { asks, bids, realToSymbol } = orderBook;

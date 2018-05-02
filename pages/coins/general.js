@@ -2,14 +2,11 @@ import React from 'react';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
 import App from '../../components/App';
-import Coin from '../../components/coins/Coin';
+import Coin, { hasICO } from '../../components/coins/Coin';
 import connect from '../../redux';
 import withData from '../../apollo/withData';
 import { coinInfoQuery, coinDetailsQuery } from '../../components/graphql/coins';
-import CardScroll from '../../components/CardScroll';
-import ICOCard from '../../components/coins/ICOCard';
-import { ConnectedPriceCard } from '../../components/coins/PriceCard';
-import OrderBookCard from '../../components/coins/OrderBookCard';
+import CoinDashboard from '../../components/coins/CoinDashboard';
 import CoinsPageMenu from '../../components/coins/CoinsPageMenu';
 
 class CoinInfo extends React.Component {
@@ -33,7 +30,7 @@ class CoinInfo extends React.Component {
       <App
         title={`${symbol}/${toSymbol}/${exchange}`}
         notifications={notifications}
-        description={coin && (coin.ICO && coin.ICO.status !== 'Finished' ? coin.ICO.description : coin.description)}
+        description={coin && (hasICO(coin) ? coin.icoDescription : coin.description)}
         visibleTitle={coin && <Coin level={1} coin={coin} toCoin={toCoin} exchange={exchange} />}
         menu={
           <CoinsPageMenu
@@ -45,12 +42,7 @@ class CoinInfo extends React.Component {
         }
       >
         {coin && toCoin && (
-          <CardScroll>
-            {coin.ICO && coin.ICO.status !== 'Finished' && <ICOCard coin={coin} />}
-            <ConnectedPriceCard coin={coin} toCoin={toCoin} exchange='CCCAGG' />
-            <ConnectedPriceCard coin={coin} toCoin={toCoin} exchange={exchange} />
-            <OrderBookCard symbol={symbol} toSymbol={toSymbol} exchange={exchange} />
-          </CardScroll>
+          <CoinDashboard symbol={symbol} toSymbol={toSymbol} exchange={exchange} />
         )}
       </App>
     );

@@ -6,11 +6,11 @@ const initialState = {
   defaultExchange: 'Bitstamp',
   favCoins: [
     { symbol: 'BTC', toSymbol: 'USD' },
+    { symbol: 'XRP', toSymbol: 'USD' },
     { symbol: 'ETH', toSymbol: 'USD' },
-    { symbol: 'LTC', toSymbol: 'USD' },
+    { symbol: 'ADA', toSymbol: 'USD' },
     { symbol: 'BCH', toSymbol: 'USD' },
     { symbol: 'ETC', toSymbol: 'USD' },
-    { symbol: 'XRP', toSymbol: 'USD' },
   ],
   aggregatedExchange: aggExchange,
   defaultCurrency: 'USD',

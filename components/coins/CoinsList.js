@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
-import CardScroll from '../CardScroll';
 import Coin from './Coin';
-import PriceCard from './PriceCard';
-import OrderBookCard from './OrderBookCard';
+import CoinDashboard from './CoinDashboard';
 import { allCoinsQuery } from '../graphql/coins';
 import { FormattedCoinValue, ColoredPercentChange } from '../utils/formatters';
 import RoutedAnchor from '../RoutedAnchor';
@@ -13,18 +11,11 @@ class CoinsList extends React.Component {
   onExpand = (row) => {
     const { exchange, currency } = this.props;
     return (
-      <CardScroll>
-        <PriceCard
-          symbol={row.original.symbol}
-          toSymbol={currency}
-          exchange={exchange}
-        />
-        <OrderBookCard
-          symbol={row.original.symbol}
-          toSymbol={currency}
-          exchange={exchange}
-        />
-      </CardScroll>
+      <CoinDashboard
+        symbol={row.original.symbol}
+        toSymbol={currency}
+        exchange={exchange}
+      />
     );
   };
 

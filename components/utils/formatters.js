@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
-import { Box, Heading, Text } from 'grommet';
+import { Box, Text } from 'grommet';
 
 export const valueToColor = (value) => {
   if (value > 0) {
@@ -38,7 +38,7 @@ export const ColoredPercentChange = ({ value }) => (
 
 
 export const FormattedCoinValue = ({
-  value, toSymbol, coin, large, justify, level,
+  value, toSymbol, coin, large, justify,
 }) => {
   let format = (coin && coin.name && !large) ? '0,0.0000' : '0,0.00';
   if (large) {
@@ -46,9 +46,9 @@ export const FormattedCoinValue = ({
   }
   return (
     <Box direction='row' align='baseline' gap='xsmall' justify={justify}>
-      <Heading margin='none' level={level}>
+      <Text weight='bold'>
         {numeral(value).format(format)}
-      </Heading>
+      </Text>
       <Text size='xsmall'>
         {toSymbol}
       </Text>
@@ -60,7 +60,6 @@ export const FormattedCoinValue = ({
 FormattedCoinValue.defaultProps = {
   large: false,
   justify: 'end',
-  level: 4,
   coin: undefined,
   value: undefined,
 };
@@ -70,7 +69,6 @@ FormattedCoinValue.propTypes = {
   coin: PropTypes.object,
   large: PropTypes.bool,
   justify: PropTypes.string,
-  level: PropTypes.number,
 };
 
 if (!String.prototype.repeat) {

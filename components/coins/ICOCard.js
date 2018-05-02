@@ -6,7 +6,7 @@ import { Box, Anchor } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { shortDate } from 'grommet-controls/utils/moment';
-import Coin from './Coin';
+import Coin, { hasICO } from './Coin';
 import { icoDetailsQuery } from '../graphql/coins';
 
 
@@ -118,7 +118,9 @@ class ICOCard extends Component {
 
   render() {
     const { data: { coin } } = this.props;
-    console.log(coin);
+    if (!coin || !hasICO(coin)) {
+      return null;
+    }
     return (
       <Card
         size={{ height: 'large' }}
