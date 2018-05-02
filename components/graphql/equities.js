@@ -27,6 +27,16 @@ export const allEquitiesQuery = gql`
   }
 `;
 
+export const equityInfoQuery = gql`
+  query getEquity($symbol : String!) {
+    equity(symbol: $symbol) {
+      symbol: slug
+      image
+      name
+    }
+  }
+`;
+
 export const equityDetailsQuery = gql`
   query getEquity($symbol : String!) {
     equity(symbol: $symbol) {
@@ -51,6 +61,19 @@ export const equityPeersQuery = gql`
           image
         }
       }
+    }
+  }
+`;
+
+export const volumeByVenueQuery = gql`
+  query getEquity($symbol : String!) {
+    equityVolumeByExchange(symbol: $symbol) {
+      date
+      volume
+      venue
+      venueName
+      marketPercent
+      avgMarketPercent
     }
   }
 `;

@@ -6,9 +6,7 @@ import Equity from '../../components/equities/Equity';
 import connect from '../../redux';
 import withData from '../../apollo/withData';
 import { equityDetailsQuery } from '../../components/graphql/equities';
-import CardScroll from '../../components/CardScroll';
-import PriceCard from '../../components/equities/PriceCard';
-import PeersCard from '../../components/equities/PeersCard';
+import EquityDashboard from '../../components/equities/EquityDashboard';
 
 export const EquityInfo = ({ symbol, data: { equity } }) => (
   <App
@@ -17,10 +15,7 @@ export const EquityInfo = ({ symbol, data: { equity } }) => (
     visibleTitle={equity && <Equity level={1} equity={equity} />}
   >
     {equity && (
-      <CardScroll>
-        <PriceCard symbol={symbol} />
-        <PeersCard symbol={symbol} />
-      </CardScroll>
+      <EquityDashboard symbol={symbol} />
     )}
   </App>
 );

@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CardScroll from '../CardScroll';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
-import { FormattedCoinValue, ColoredPercentChange } from '../coins/Coin';
+import { FormattedCoinValue, ColoredPercentChange } from '../utils/formatters';
 import RoutedAnchor from '../RoutedAnchor';
-import PriceCard from './PriceCard';
-import PeersCard from './PeersCard';
+import EquityDashboard from './EquityDashboard';
 import Equity from './Equity';
 import { allEquitiesQuery } from '../graphql/equities';
 
 class EquitiesList extends Component {
   onExpand = row => (
-    <CardScroll>
-      <PriceCard symbol={row.original.symbol} />
-      <PeersCard symbol={row.original.symbol} />
-    </CardScroll>
+    <EquityDashboard symbol={row.original.symbol} />
   );
   render() {
     const {

@@ -1,65 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text, Heading } from 'grommet';
+import { Box, Heading } from 'grommet';
 import { ImageStamp } from 'grommet-controls';
-import numeral from 'numeral';
 import RoutedAnchor from '../RoutedAnchor';
 import connect from '../../redux/index';
 import routerPush from '../Router';
-
-export const FormattedCoinValue = ({
-  value, toSymbol, coin, large, justify, level,
-}) => {
-  let format = (coin && coin.name && !large) ? '0,0.0000' : '0,0.00';
-  if (large) {
-    format = `${format}a`;
-  }
-  return (
-    <Box direction='row' align='baseline' gap='xsmall' justify={justify}>
-      <Heading margin='none' level={level}>
-        {numeral(value).format(format)}
-      </Heading>
-      <Text size='xsmall'>
-        {toSymbol}
-      </Text>
-
-    </Box>
-  );
-};
-
-FormattedCoinValue.defaultProps = {
-  large: false,
-  justify: 'end',
-  level: 4,
-  coin: undefined,
-  value: undefined,
-};
-
-FormattedCoinValue.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  coin: PropTypes.object,
-  large: PropTypes.bool,
-  justify: PropTypes.string,
-  level: PropTypes.number,
-};
-
-
-export const valueToColor = (value) => {
-  if (value > 0) {
-    return 'status-ok';
-    // eslint-disable-next-line no-bitwise
-  } else if (value < 0) {
-    return 'status-critical';
-  }
-  return 'status-warning';
-};
-
-
-export const ColoredPercentChange = ({ value, level = 4 }) => (
-  <Heading margin='none' level={level} color={valueToColor(value)} >
-    {numeral(value).format('0,0.00%')}
-  </Heading>
-);
 
 export const CoinPath = ({
   symbol, toSymbol, exchange, children,

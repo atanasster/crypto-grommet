@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
 import CardScroll from '../CardScroll';
-import Coin, { FormattedCoinValue, ColoredPercentChange } from './Coin';
+import Coin from './Coin';
 import PriceCard from './PriceCard';
 import OrderBookCard from './OrderBookCard';
 import { allCoinsQuery } from '../graphql/coins';
+import { FormattedCoinValue, ColoredPercentChange } from '../utils/formatters';
 import RoutedAnchor from '../RoutedAnchor';
 
 class CoinsList extends React.Component {

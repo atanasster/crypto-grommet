@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box, Distribution } from 'grommet';
 import { Spinning } from 'grommet-controls';
-import Coin, { FormattedCoinValue, pushCoinPath } from './Coin';
+import Coin, { pushCoinPath } from './Coin';
+import { FormattedCoinValue } from '../utils/formatters';
 import connect from '../../redux';
 import { allCoinsQuery } from '../graphql/coins';
 

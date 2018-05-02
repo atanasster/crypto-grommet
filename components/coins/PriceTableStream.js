@@ -5,7 +5,7 @@ import { Box, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../sockets/price_stream/CryptoComparePrices';
 import Exchange from '../exchanges/Exchange';
-import { FormattedCoinValue, valueToColor } from './Coin';
+import { FormattedCoinValue, valueToColor } from '../utils/formatters';
 
 
 export default class PriceTableStream extends Component {

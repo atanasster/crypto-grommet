@@ -5,7 +5,7 @@ import { Box, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
 import { longDate } from 'grommet-controls/utils/moment';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../sockets/price_stream/IEXPrices';
-import { valueToColor } from '../coins/Coin';
+import { valueToColor } from '../utils/formatters';
 
 
 export default class PriceTableStream extends Component {
@@ -144,7 +144,7 @@ export default class PriceTableStream extends Component {
             <Box direction='row' justify='end'>
               <Text>
                 <strong>
-                  {numeral(priceStream.marketPercent).format('0.00%')}
+                  {numeral(priceStream.marketPercent / 100).format('0.00%')}
                 </strong>
               </Text>
             </Box>

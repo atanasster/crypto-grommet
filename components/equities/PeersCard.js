@@ -5,7 +5,6 @@ import { Box } from 'grommet';
 import { Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
-// import PriceChart from './PriceChart';
 import { equityPeersQuery } from '../graphql/equities';
 
 
