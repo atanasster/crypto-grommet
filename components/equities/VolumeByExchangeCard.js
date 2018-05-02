@@ -31,7 +31,6 @@ class PriceCard extends Component {
     const {
       info: { equity }, data: { equityVolumeByExchange },
     } = this.props;
-    console.log(this.props);
     if (!equity) {
       return null;
     }
