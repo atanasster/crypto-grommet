@@ -6,7 +6,7 @@ import { priceHistoryQuery } from '../graphql/equities';
 
 
 const PriceChart = ({ color, data }) => {
-  if (data.equity) {
+  if (data.equity && data.equity.list) {
     return (
       <Chart
         thickness='xsmall'
