@@ -10,6 +10,7 @@ const initialState = {
     { route: 'coins_home', label: 'coins', a11yTitle: 'Home page for crypto coins' },
     { route: 'exchanges', label: 'exchanges', a11yTitle: 'List of exchanges' },
     { route: 'coins_icos', label: 'ICO', a11yTitle: 'List of active and upcoming initial coin offerings' },
+    // { route: 'deep_new', label: 'models', a11yTitle: 'List of deep learning models' },
   ],
   user_items: [
     { route: 'profile', label: 'profile', a11yTitle: 'View your user profile' },

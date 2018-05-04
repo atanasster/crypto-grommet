@@ -53,7 +53,7 @@ class LoginForm extends Component {
     return (
       <Box gap='small' overflow='scroll'>
         <Box direction='row'>
-          <Text color='status-disabled' size='small'>
+          <Text color='dark-3' size='small'>
             New user? Signup for a <Anchor label='free account' onClick={onSwitchNewAccount} />
           </Text>
         </Box>
@@ -108,7 +108,7 @@ class LoginForm extends Component {
             </Box>
           </Form>
         </Box>
-        <Text color='status-disabled' size='small'>
+        <Text size='small'>
           <Anchor label='forgot password?' onClick={onSwitchRecoverPassword} />
         </Text>
       </Box>

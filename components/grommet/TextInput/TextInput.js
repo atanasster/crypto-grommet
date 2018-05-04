@@ -18,6 +18,15 @@ function renderLabel(suggestion) {
   return suggestion;
 }
 
+function stringLabel(suggestion) {
+  if (suggestion && typeof suggestion === 'object') {
+    if (suggestion.label && typeof suggestion.label === 'string') {
+      return suggestion.label;
+    }
+    return suggestion.value;
+  }
+  return suggestion;
+}
 
 class TextInput extends Component {
   static contextTypes = {
@@ -67,14 +76,15 @@ class TextInput extends Component {
   announceSuggestion(index) {
     const { suggestions, messages: { enterSelect } } = this.props;
     if (suggestions && suggestions.length > 0) {
-      const labelMessage = renderLabel(suggestions[index]);
+      const labelMessage = stringLabel(suggestions[index]);
       this.announce(`${labelMessage} ${enterSelect}`);
     }
   }
-
-  resetSuggestions = () => {
-    const { suggestions } = this.props;
-
+  componentWillReceiveProps(nextProps) {
+    this.resetSuggestions(nextProps);
+  }
+  resetSuggestions = (props) => {
+    const { suggestions } = props;
     if (suggestions && suggestions.length) {
       this.setState({
         activeSuggestionIndex: -1,
@@ -165,7 +175,7 @@ class TextInput extends Component {
     let items;
     if (suggestions && suggestions.length > 0) {
       items = suggestions.map((suggestion, index) => (
-        <li key={suggestion.value || suggestion}>
+        <li key={`${stringLabel(suggestion)}-${index}`}>
           <Button
             active={
               activeSuggestionIndex === index ||
@@ -242,7 +252,7 @@ class TextInput extends Component {
               }
             }}
             onInput={(event) => {
-              this.resetSuggestions();
+              this.resetSuggestions(this.props);
               if (onInput) {
                 onInput(event);
               }

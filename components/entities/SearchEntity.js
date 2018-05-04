@@ -79,5 +79,5 @@ class SearchEntity extends React.Component {
 }
 
 export default graphql(searchQuery,
-  { options: () => ({ skip: true, variables: { types: ['equity', 'coin', 'coinexchange'] } }) })(SearchEntity);
+  { options: () => ({ variables: { types: ['equity', 'coin', 'coinexchange'] } }) })(SearchEntity);
 
