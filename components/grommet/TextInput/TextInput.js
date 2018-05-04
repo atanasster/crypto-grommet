@@ -42,12 +42,12 @@ class TextInput extends Component {
       suggestionsExist: 'This input has suggestions use arrow keys to navigate',
       suggestionIsOpen: 'Suggestions drop is open, continue to use arrow keys to navigate',
     },
-  }
+  };
 
   state = {
     activeSuggestionIndex: -1,
     showDrop: false,
-  }
+  };
 
   announce = (message, mode) => {
     const { suggestions } = this.props;
@@ -56,22 +56,22 @@ class TextInput extends Component {
     if (announce && suggestions && suggestions.length > 0) {
       announce(message, mode);
     }
-  }
+  };
 
   announceSuggestionsCount = () => {
     const { suggestions, messages: { suggestionsCount } } = this.props;
     this.announce(`${suggestions.length} ${suggestionsCount}`);
-  }
+  };
 
   announceSuggestionsExist = () => {
     const { messages: { suggestionsExist } } = this.props;
     this.announce(suggestionsExist);
-  }
+  };
 
   announceSuggestionsIsOpen = () => {
     const { messages: { suggestionIsOpen } } = this.props;
     this.announce(suggestionIsOpen);
-  }
+  };
 
   announceSuggestion(index) {
     const { suggestions, messages: { enterSelect } } = this.props;
@@ -92,7 +92,7 @@ class TextInput extends Component {
         selectedSuggestionIndex: -1,
       }, this.announceSuggestionsCount);
     }
-  }
+  };
 
   getSelectedSuggestionIndex = () => {
     const { suggestions, value } = this.props;
@@ -103,7 +103,7 @@ class TextInput extends Component {
       return suggestion;
     });
     return suggestionValues.indexOf(value);
-  }
+  };
 
   onShowSuggestions = () => {
     // Get values of suggestions, so we can highlight selected suggestion
@@ -114,7 +114,7 @@ class TextInput extends Component {
       activeSuggestionIndex: -1,
       selectedSuggestionIndex,
     }, this.announceSuggestionsIsOpen);
-  }
+  };
 
   onNextSuggestion = (event) => {
     const { suggestions } = this.props;
@@ -128,7 +128,7 @@ class TextInput extends Component {
         this.setState({ activeSuggestionIndex: index }, () => this.announceSuggestion(index));
       }
     }
-  }
+  };
 
   onPreviousSuggestion = (event) => {
     const { suggestions } = this.props;
@@ -138,7 +138,7 @@ class TextInput extends Component {
       const index = Math.max(activeSuggestionIndex - 1, 0);
       this.setState({ activeSuggestionIndex: index }, () => this.announceSuggestion(index));
     }
-  }
+  };
 
   onClickSuggestion = (suggestion) => {
     const { onSelect } = this.props;
@@ -148,7 +148,7 @@ class TextInput extends Component {
         target: this.componentRef, suggestion,
       });
     }
-  }
+  };
 
   onSuggestionSelect = (event) => {
     const { onSelect, suggestions } = this.props;
@@ -163,11 +163,11 @@ class TextInput extends Component {
         });
       }
     }
-  }
+  };
 
   onDropClose = () => {
     this.setState({ showDrop: false });
-  }
+  };
 
   renderSuggestions = () => {
     const { suggestions, theme } = this.props;
@@ -198,7 +198,7 @@ class TextInput extends Component {
         {items}
       </StyledSuggestions>
     );
-  }
+  };
 
   render() {
     const {
