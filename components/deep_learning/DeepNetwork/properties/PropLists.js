@@ -55,4 +55,4 @@ export const optimizersList =
       { value: 'Adadelta', label: 'Adadelta' },
       { value: 'Adam', label: 'Adam' },
       { value: 'Adamax', label: 'Adamax' },
-      { value: 'Nadam', label: 'Nadam' }];
+      { value: 'Momentum', label: 'Momentum' }];

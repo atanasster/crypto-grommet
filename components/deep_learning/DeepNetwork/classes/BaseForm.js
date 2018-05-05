@@ -13,7 +13,6 @@ import NumericField from '../properties/NumericField';
 import SelectField from '../properties/SelectField';
 import BooleanField from '../properties/BooleanField';
 
-const assert = (condition, message) => condition && console.error(message);
 
 export default class BaseForm extends Component {
   constructor(props) {
@@ -50,9 +49,6 @@ export default class BaseForm extends Component {
   }
 
   addTextProperty({ name, label, help }) {
-    assert(name === undefined, 'name is required');
-    assert(label === undefined, 'label is required');
-
     this.addProperty(PropertyText, {
       name,
       label,
@@ -65,14 +61,6 @@ export default class BaseForm extends Component {
   addNumberProperty({
     name, label, help, min, max, step,
   }) {
-    assert(name === undefined, 'name is required');
-    assert(label === undefined, 'label is required');
-    assert(min === undefined, 'min is required');
-    assert(max === undefined, 'max is required');
-    assert(step === undefined, 'step is required');
-    assert(min >= max, 'min should be smaller than max');
-    assert(step >= max, 'step should be smaller than max');
-
     this.addProperty(PropertyNumber, {
       name,
       label,
@@ -88,14 +76,6 @@ export default class BaseForm extends Component {
   addNumericField({
     name, label, help, min, max, step, decimals,
   }) {
-    assert(name === undefined, 'name is required');
-    assert(label === undefined, 'label is required');
-    assert(min === undefined, 'min is required');
-    assert(max === undefined, 'max is required');
-    assert(step === undefined, 'step is required');
-    assert(min >= max, 'min should be smaller than max');
-    assert(step >= max, 'step should be smaller than max');
-
     this.addProperty(NumericField, {
       name,
       label,
@@ -112,10 +92,6 @@ export default class BaseForm extends Component {
   addSelectField({
     name, label, help, options,
   }) {
-    assert(name === undefined, 'name is required');
-    assert(label === undefined, 'label is required');
-    assert(options === undefined, 'options is required');
-
     this.addProperty(SelectField, {
       name,
       label,
@@ -127,9 +103,6 @@ export default class BaseForm extends Component {
   }
 
   addBooleanProperty({ name, label, help }) {
-    assert(name === undefined, 'name is required');
-    assert(label === undefined, 'label is required');
-
     this.addProperty(PropertyBoolean, {
       name,
       label,
@@ -140,9 +113,6 @@ export default class BaseForm extends Component {
   }
 
   addBooleanField({ name, label, help }) {
-    assert(name === undefined, 'name is required');
-    assert(label === undefined, 'label is required');
-
     this.addProperty(BooleanField, {
       name,
       label,

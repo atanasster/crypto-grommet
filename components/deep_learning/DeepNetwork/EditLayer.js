@@ -11,7 +11,7 @@ import SimpleRNNLayer from './classes/SimpleRNNLayer';
 import DropoutLayer from './classes/DropoutLayer';
 import ActivationLayer from './classes/ActivationLayer';
 
-export default class EditKerasLayer extends Component {
+export default class EditLayer extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -110,7 +110,7 @@ export default class EditKerasLayer extends Component {
 }
 
 
-EditKerasLayer.propTypes = {
+EditLayer.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   layer: PropTypes.object.isRequired,

@@ -134,37 +134,42 @@ export default {
   'constraints': [{ 'className': 'MaxNorm', 'config': { 'max_value': 2, 'axis': 0 } }, { 'className': 'NonNeg', 'config': {} }, { 'className': 'UnitNorm', 'config': { 'axis': 0 } }],
   'initializers': [{ 'className': 'Zeros', 'config': {} }, { 'className': 'Ones', 'config': {} }, { 'className': 'Constant', 'config': { 'value': 0 } }, { 'className': 'Orthogonal', 'config': { 'gain': 1.0 } }, { 'className': 'Identity', 'config': { 'gain': 1.0 } }, { 'className': 'RandomNormal', 'config': { 'mean': 0.0, 'stddev': 0.05 } }, { 'className': 'RandomUniform', 'config': { 'minval': -0.05, 'maxval': 0.05 } }, { 'className': 'TruncatedNormal', 'config': { 'mean': 0.0, 'stddev': 0.05 } }, { 'className': 'VarianceScaling', 'config': { 'scale': 1.0, 'mode': 'fan_in', 'distribution': 'normal' } }, { 'className': 'lecun_uniform', 'config': { 'seed': 1.0 } }, { 'className': 'glorot_normal', 'config': { 'seed': 1.0 } }, { 'className': 'glorot_uniform', 'config': { 'seed': 1.0 } }, { 'className': 'he_normal', 'config': { 'seed': 2.0 } }, { 'className': 'he_uniform', 'config': { 'seed': 2.0 } }],
   'regularizers': [{ 'className': 'l1', 'config': { 'l': 0.01 } }, { 'className': 'l2', 'config': { 'l': 0.01 } }, { 'className': 'l1_l2', 'config': { 'l1': 0.01, 'l2': 0.01 } }],
-  'optimizers': [{
-    'className': 'Adadelta',
-    'config': {
-      'lr': 1.0, 'rho': 0.95, 'decay': 0.0, 'epsilon': 1e-08,
+  'optimizers': [
+    {
+      'className': 'Adadelta',
+      'config': {
+        'lr': 1.0, 'rho': 0.95, 'epsilon': 1e-08,
+      },
     },
-  }, { 'className': 'Adagrad', 'config': { 'lr': 0.01, 'decay': 0.0, 'epsilon': 1e-08 } }, {
-    'className': 'Adam',
-    'config': {
-      'lr': 0.001, 'beta_1': 0.89999998, 'beta_2': 0.99900001, 'decay': 0.0, 'epsilon': 1e-08,
-    },
-  }, {
-    'className': 'Adamax',
-    'config': {
-      'lr': 0.002, 'beta_1': 0.89999998, 'beta_2': 0.99900001, 'decay': 0.0, 'epsilon': 1e-08,
-    },
-  }, {
-    'className': 'Nadam',
-    'config': {
-      'lr': 0.002, 'beta_1': 0.89999998, 'beta_2': 0.99900001, 'epsilon': 1e-08, 'schedule_decay': 0.004,
-    },
-  }, {
-    'className': 'SGD',
-    'config': {
-      'lr': 0.01, 'momentum': 0.0, 'decay': 0.0, 'nesterov': false,
-    },
-  }, {
-    'className': 'RMSprop',
-    'config': {
-      'lr': 0.001, 'rho': 0.89999998, 'decay': 0.0, 'epsilon': 1e-08,
-    },
-  }],
+    {
+      'className': 'Adagrad',
+      'config': { 'lr': 0.01, 'initial_accumulator': 0.0 },
+    }, {
+      'className': 'Adam',
+      'config': {
+        'lr': 0.001, 'beta_1': 0.89999998, 'beta_2': 0.99900001, 'epsilon': 1e-08,
+      },
+    }, {
+      'className': 'Adamax',
+      'config': {
+        'lr': 0.002, 'beta_1': 0.89999998, 'beta_2': 0.99900001, 'decay': 0.0, 'epsilon': 1e-08,
+      },
+    }, {
+      'className': 'Momentum',
+      'config': {
+        'lr': 0.002, 'momentum': 0.0, 'nesterov': false,
+      },
+    }, {
+      'className': 'SGD',
+      'config': {
+        'lr': 0.01,
+      },
+    }, {
+      'className': 'RMSprop',
+      'config': {
+        'lr': 0.001, 'decay': 0.0, 'epsilon': 1e-08, 'momentum': 0.0, 'nesterov': false,
+      },
+    }],
 };
 
 export const createLayer = (layers, className, params) => {

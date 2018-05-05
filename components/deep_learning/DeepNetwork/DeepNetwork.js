@@ -9,7 +9,7 @@ import { NumberInput, Tag } from 'grommet-controls';
 import { CoinGQL } from '../../coins/Coin';
 import Diagram from '../../grommet/Diagram/Diagram';
 import { createLayer } from '../keras-defaults';
-import EditKerasLayer from './EditKerasLayer';
+import EditLayer from './EditLayer';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
@@ -218,19 +218,28 @@ class NetworkMap extends Component {
         });
       }
       return (
-        <Box
-          colorIndex='neutral-1'
-          direction='row'
-          justify='between'
-        >
-
-          <Menu
-            icon={<SettingsOption />}
-            label={title}
-            dropAlign={{ top: 'top', left: 'left' }}
-            a11yTitle='Layer'
-            items={actions}
-          />
+        <Box>
+          <Box
+            colorIndex='neutral-1'
+            direction='row'
+            justify='between'
+          >
+            <Menu
+              icon={<SettingsOption />}
+              label={title}
+              dropAlign={{ top: 'top', left: 'left' }}
+              a11yTitle='Layer'
+              items={actions}
+            />
+          </Box>
+          <FormField >
+            <NumberInput
+              min={1}
+              max={8}
+              value={model.layers[layerIndex].config.units}
+              onChange={e => this.onNeuronsChange(e, layerIndex)}
+            />
+          </FormField>
         </Box>
       );
     }
@@ -243,21 +252,10 @@ class NetworkMap extends Component {
       <Box key={`layer_${layer.index}`} direction='row' align='center' gap='medium' full='horizontal'>
         <Box basis='small' flex={false} >
           <Box basis='xsmall'>
-            {this.renderLayerSettings(layer.slug || layer.className,
-              editable && layer.readOnly === undefined, layer.index - 1)}
-            {editable && layer.readOnly === undefined && (
-
-            <FormField >
-              <NumberInput
-                disabled={layer && !editable}
-                min={1}
-                max={8}
-                value={layer.config.units}
-                onChange={e => this.onNeuronsChange(e, layer.index - 1)}
-              />
-            </FormField>
-          )
-          }
+            {
+              this.renderLayerSettings(layer.slug || layer.className,
+              editable && layer.readOnly === undefined, layer.index - 1)
+            }
           </Box>
 
         </Box>
@@ -278,7 +276,7 @@ class NetworkMap extends Component {
         layer = createLayer(kerasDefaults.layers, 'Dense', { units: Math.max(targets.length, 1) });
       }
       editLayer = (
-        <EditKerasLayer
+        <EditLayer
           layer={layer}
           onClose={this.onRequestForCloseEditLayer}
           onSave={this.onSaveLayer}
@@ -341,8 +339,8 @@ class NetworkMap extends Component {
       });
     });
     const layerTargets = {
-      className: 'Targets',
-      background: '#ffa171',
+      className: 'Target',
+      background: '#ff990a',
       index: layers.length,
       readOnly: true,
       config: {

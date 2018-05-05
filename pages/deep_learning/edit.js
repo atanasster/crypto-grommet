@@ -7,11 +7,13 @@ import DeepNetwork from '../../components/deep_learning/DeepNetwork/DeepNetwork'
 import LayerOptimizer from '../../components/deep_learning/DeepNetwork/properties/LayerOptimizer';
 import { optimizersList } from '../../components/deep_learning/DeepNetwork/properties/PropLists';
 import kerasDefaults, { createLayer } from '../../components/deep_learning/keras-defaults';
+import TrainModel from '../../components/deep_learning/Execution/Train';
 
 class EditNetwork extends React.Component {
   constructor() {
     super();
     this.state = {
+      modified: undefined,
       model: {
         id: 0,
         name: 'New Model',
@@ -49,6 +51,7 @@ class EditNetwork extends React.Component {
 
   onChange = (id, { target }) => {
     this.setState({
+      modified: true,
       model: {
         ...this.state.model,
         [id]: target.value,
@@ -57,6 +60,7 @@ class EditNetwork extends React.Component {
   }
   onOptimizerChange = (name, optimizer) => {
     this.setState({
+      modified: true,
       model: {
         ...this.state.model,
         optimizerClass: optimizer.className,
@@ -66,9 +70,12 @@ class EditNetwork extends React.Component {
   }
 
   render() {
-    const { model } = this.state;
+    const { model, modified } = this.state;
     return (
-      <App title='Edit model'>
+      <App
+        title={`Deep learning ${modified ? '*' : ''}`}
+        menu={<TrainModel model={model} />}
+      >
         <Box gap='small' fill='horizontal'>
           <Box primary={true} style={{ width: '100%' }}>
             <Box direction='row-responsive'>

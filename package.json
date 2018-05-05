@@ -23,6 +23,8 @@
     "start": "NODE_ENV=production node server/server.js"
   },
   "dependencies": {
+    "@nivo/line": "^0.33.0",
+    "@tensorflow/tfjs": "^0.10.3",
     "apollo-client-preset": "^1.0.8",
     "apollo-link-context": "^1.0.7",
     "babel-plugin-module-resolver": "^3.1.0",
