@@ -16,7 +16,7 @@ class EditNetwork extends React.Component {
         id: 0,
         name: 'New Model',
         // categories: [{ id: 1, name: 'Price' }],
-        datatargets: [{
+        targets: [{
           fieldName: 'close',
           symbol: 'BTC',
           entity: 'coin',
@@ -36,7 +36,7 @@ class EditNetwork extends React.Component {
           lr: 0.001, beta_1: 0.9, beta_2: 0.999, decay: 0, epsilon: 0.0000001,
         },
         objoptimizerClassectif: 'mean_squared_error',
-        datasources: [
+        features: [
           { fieldName: 'open', symbol: 'BTC', entity: 'coin' },
           { fieldName: 'high', symbol: 'BTC', entity: 'coin' },
           { fieldName: 'low', symbol: 'BTC', entity: 'coin' },

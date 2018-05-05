@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Heading, Text, Menu, Stack, FormField, Button } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
-import { NumberInput } from 'grommet-controls';
+import { NumberInput, Tag } from 'grommet-controls';
 import { CoinGQL } from '../coins/Coin';
 import Diagram from '../grommet/Diagram/Diagram';
 import { createLayer } from './keras-defaults';
@@ -58,6 +58,29 @@ const moveArrayItem = (arr, oldIndex, direction) => {
   return arr;
 };
 
+const Nodes = ({ index, nodes, ...rest }) => (
+  <Box align='center' fill={true}>
+    <Box basis='xsmall' direction='row' gap='small' >
+      {nodes.map((node, nodeIndex) => (
+        <Box
+          id={nodeName(index, nodeIndex)}
+          key={`${node.label}_${nodeIndex}`}
+          style={{ width: '94px', height: '94px' }}
+          border={{ side: 'all' }}
+          round='full'
+          align='center'
+          justify='center'
+          {...rest}
+        >
+          {typeof node.label === 'string' ? (
+            <Text weight='bold'>{node.label}</Text>
+            ) : node.label
+            }
+        </Box>
+        ))}
+    </Box>
+  </Box>
+);
 
 class NetworkMap extends Component {
   state = {
@@ -89,9 +112,8 @@ class NetworkMap extends Component {
   }
 
   onDeleteLayer = () => {
-    const { onChange } = this.props;
+    const { onChange, model } = this.props;
     const { removeLayer } = this.state;
-    const { model } = this.props;
     const updated = {
       ...model,
       layers: model.layers
@@ -99,6 +121,22 @@ class NetworkMap extends Component {
     };
     onChange(updated);
     this.setState({ removeLayer: undefined });
+  };
+
+  onRemoveFeature = (index) => {
+    const { onChange, model } = this.props;
+    if (model.features.length > 1) {
+      const updated = { ...model, features: model.features.filter((_, i) => i !== index) };
+      onChange(updated);
+    }
+  };
+
+  onRemoveTarget = (index) => {
+    const { onChange, model } = this.props;
+    if (model.targets.length > 1) {
+      const updated = { ...model, targets: model.targets.filter((_, i) => i !== index) };
+      onChange(updated);
+    }
   };
 
   onDiscardDelete = () => {
@@ -124,7 +162,6 @@ class NetworkMap extends Component {
     };
     onChange(updated);
   };
-
 
   onAddLayerClick = () => {
     this.setState({ editLayer: -1 });
@@ -222,28 +259,9 @@ class NetworkMap extends Component {
           )
           }
           </Box>
+
         </Box>
-        <Box align='center' fill={true}>
-          <Box basis='xsmall' direction='row' gap='small' >
-            {nodes.map((node, index) => (
-              <Box
-                id={nodeName(layer.index, index)}
-                key={`${node.label}_${index}`}
-                style={{ width: '94px', height: '94px' }}
-                border={{ side: 'all' }}
-                background={layer.background}
-                round='full'
-                align='center'
-                justify='center'
-              >
-                {typeof node.label === 'string' ? (
-                  <Text weight='bold'>{node.label}</Text>
-                ) : node.label
-                }
-              </Box>
-            ))}
-          </Box>
-        </Box>
+        <Nodes index={layer.index} nodes={nodes} background={layer.background} />
       </Box>
     );
   }
@@ -287,18 +305,23 @@ class NetworkMap extends Component {
       index: 0,
       readOnly: true,
       config: {
-        units: model.datasources.length,
+        units: model.features.length,
       },
     };
     layers.push(layerFeatures);
 
     const featureNodes = this.renderLayer({
       layer: layerFeatures,
-      nodes: model.datasources.map(item => ({
+      nodes: model.features.map((item, index) => ({
         label: (
           <Box align='center'>
             <CoinGQL symbol={item.symbol} display={['image']} />
-            <Text>{item.fieldName}</Text>
+            <Tag
+              background='transparent'
+              label={item.fieldName}
+              round='medium'
+              onChange={() => this.onRemoveFeature(index)}
+            />
           </Box>
         ),
       })),
@@ -323,17 +346,22 @@ class NetworkMap extends Component {
       index: layers.length,
       readOnly: true,
       config: {
-        units: model.datatargets.length,
+        units: model.targets.length,
       },
     };
     layers.push(layerTargets);
     const targetsNodes = this.renderLayer({
       layer: layerTargets,
-      nodes: model.datatargets.map(item => ({
+      nodes: model.targets.map((item, index) => ({
         label: (
           <Box align='center'>
             <CoinGQL symbol={item.symbol} display={['image']} />
-            <Text>{item.fieldName}</Text>
+            <Tag
+              background='transparent'
+              label={item.fieldName}
+              round='medium'
+              onChange={() => this.onRemoveTarget(index)}
+            />
           </Box>
         ),
       })),
