@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import { Box, Heading, Text, Menu, Stack, FormField, Button } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
 import { NumberInput, Tag } from 'grommet-controls';
-import { CoinGQL } from '../coins/Coin';
-import Diagram from '../grommet/Diagram/Diagram';
-import { createLayer } from './keras-defaults';
+import { CoinGQL } from '../../coins/Coin';
+import Diagram from '../../grommet/Diagram/Diagram';
+import { createLayer } from '../keras-defaults';
 import EditKerasLayer from './EditKerasLayer';
-import Confirmation from '../grommet-controls/Confirmation/Confirmation';
+import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
   const fromPoint = [
@@ -274,7 +274,7 @@ class NetworkMap extends Component {
       if (this.state.editLayer >= 0) {
         layer = model.layers[this.state.editLayer];
       } else {
-        const targets = model.datatargets;
+        const { targets } = model;
         layer = createLayer(kerasDefaults.layers, 'Dense', { units: Math.max(targets.length, 1) });
       }
       editLayer = (
@@ -320,7 +320,7 @@ class NetworkMap extends Component {
               background='transparent'
               label={item.fieldName}
               round='medium'
-              onChange={() => this.onRemoveFeature(index)}
+              onChange={model.features.length > 1 ? () => this.onRemoveFeature(index) : undefined}
             />
           </Box>
         ),
@@ -358,9 +358,9 @@ class NetworkMap extends Component {
             <CoinGQL symbol={item.symbol} display={['image']} />
             <Tag
               background='transparent'
-              label={item.fieldName}
+              label={<Text weight='bold'>{item.fieldName}</Text>}
               round='medium'
-              onChange={() => this.onRemoveTarget(index)}
+              onChange={model.targets.length > 1 ? () => this.onRemoveTarget(index) : undefined}
             />
           </Box>
         ),

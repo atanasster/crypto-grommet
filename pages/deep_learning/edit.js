@@ -3,9 +3,9 @@ import { Box, Heading, FormField } from 'grommet';
 import { NumberInput, Form } from 'grommet-controls';
 import App from '../../components/App';
 import withData from '../../apollo/withData';
-import DeepNetwork from '../../components/deep_learning/DeepNetwork';
-import LayerOptimizer from '../../components/deep_learning/properties/LayerOptimizer';
-import { optimizersList } from '../../components/deep_learning/properties/PropLists';
+import DeepNetwork from '../../components/deep_learning/DeepNetwork/DeepNetwork';
+import LayerOptimizer from '../../components/deep_learning/DeepNetwork/properties/LayerOptimizer';
+import { optimizersList } from '../../components/deep_learning/DeepNetwork/properties/PropLists';
 import kerasDefaults, { createLayer } from '../../components/deep_learning/keras-defaults';
 
 class EditNetwork extends React.Component {

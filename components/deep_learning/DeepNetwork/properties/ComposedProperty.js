@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Menu } from 'grommet';
-import FormField from '../../grommet/FormField/FormField';
+import FormField from '../../../grommet/FormField/FormField';
 import BaseProperty from './BaseProperty';
 
 export default class ComposedProperty extends BaseProperty {

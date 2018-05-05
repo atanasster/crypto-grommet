@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, FormField, Menu } from 'grommet';
-import SideLayer from '../SideLayer';
-import { createLayer } from './keras-defaults';
+import SideLayer from '../../SideLayer';
+import { createLayer } from '../keras-defaults';
 import LSTMLayer from './classes/LSTMLayer';
 import BatchNormalizationLayer from './/classes/BatchNormalizationLayer';
 import DenseLayer from './/classes/DenseLayer';
