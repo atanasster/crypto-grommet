@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box, Heading } from 'grommet';
-import { ImageStamp } from 'grommet-controls';
 import RoutedAnchor from '../RoutedAnchor';
+import Entity from '../entities/Entity';
 import { exchangeInfoQuery } from '../graphql/exchanges';
 
 export const CountryFlag = ({ code }) => (
@@ -32,44 +32,29 @@ export const ExchangeCountries = ({ countries }) => (
 
 
 export const ConnectedExchange = ({
-  level, exchange, aggregatedExchange, ...rest
-}) => {
-  if (!exchange) {
-    return null;
-  }
-  let image;
-  if (exchange) {
-    image = (
-      <ImageStamp
-        src={exchange.image}
-        size={level > 2 ? 'medium' : 'large'}
-      />
-    );
-  }
-  return (
-    <Box
-      a11yTitle={`View details of ${exchange.name} exchange`}
-      direction='row'
-      align='center'
-      gap='xsmall'
-      {...rest}
-    >
-      {image}
-      <RoutedAnchor route='exchange_info' params={{ exchange: exchange.name }} >
-        <Heading level={level} margin='none'><strong>{exchange.name === 'CCCAGG' ? 'Aggregated' : exchange.name}</strong></Heading>
-      </RoutedAnchor>
-    </Box>
-  );
-};
+  size, display, exchange,
+}) => (exchange ? (
+  <RoutedAnchor route='exchange_info' params={{ exchange: exchange.name }} >
+    <Entity
+      entity={exchange.name === 'CCCAGG' ? { ...exchange, name: 'Aggregated' } : exchange}
+      size={size}
+      display={display}
+      type='exchange'
+    />
+  </RoutedAnchor>
+) : null
+);
 
 ConnectedExchange.defaultProps = {
-  level: 3,
+  size: 'large',
   exchange: undefined,
+  display: ['image', 'name'],
 };
 
 ConnectedExchange.propTypes = {
   exchange: PropTypes.object,
-  level: PropTypes.number,
+  size: PropTypes.string,
+  display: PropTypes.arrayOf(PropTypes.oneOf(['name', 'symbol', 'image'])),
 };
 
 

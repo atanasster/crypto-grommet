@@ -21,8 +21,7 @@ class PriceCard extends Component {
         border='bottom'
         pad='small'
         equity={item.peer}
-        level={4}
-        showName={true}
+        display={['image', 'name', 'symbol']}
       />
     ));
   };
@@ -37,7 +36,7 @@ class PriceCard extends Component {
     return (
       <Card>
         <CardTitle border='bottom'>
-          <Equity equity={equity} />
+          <Equity equity={equity} size='large' />
         </CardTitle>
         <CardSubTitle border='bottom'>
           Volume by venue

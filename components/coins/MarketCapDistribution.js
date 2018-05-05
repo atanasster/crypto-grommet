@@ -54,11 +54,11 @@ class MarketCapDistribution extends Component {
                 onClick={e => this.onClickBackground(e, item)}
               >
                 <Coin
-                  level={3}
+                  level={4}
                   coin={item}
                   toCoin={{ symbol: currency }}
                   border={null}
-                  short={smallCap}
+                  display={smallCap ? ['image'] : undefined}
                 />
                 <FormattedCoinValue
                   value={item.value}

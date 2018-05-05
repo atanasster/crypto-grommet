@@ -19,7 +19,7 @@ class EquitiesList extends Component {
       {
         Header: 'Ticker',
         accessor: 'symbol',
-        maxWidth: 150,
+        maxWidth: 200,
         Cell: cell => (
           <Equity
             equity={cell.original}

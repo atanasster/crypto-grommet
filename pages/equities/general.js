@@ -12,7 +12,7 @@ export const EquityInfo = ({ symbol, data: { equity } }) => (
   <App
     title={`${symbol}`}
     description={equity && equity.description}
-    visibleTitle={equity && <Equity level={1} equity={equity} />}
+    visibleTitle={equity && <Equity size='large' equity={equity} />}
   >
     {equity && (
       <EquityDashboard symbol={symbol} />

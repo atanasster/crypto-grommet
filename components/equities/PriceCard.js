@@ -39,7 +39,7 @@ class PriceCard extends Component {
     return (
       <Card>
         <CardTitle border='bottom'>
-          <Equity equity={equity} />
+          <Equity equity={equity} size='large' />
         </CardTitle>
         <CardSubTitle border='bottom'>
           IEX Real-Time Price

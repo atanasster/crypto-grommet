@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Box, Heading, Text, Menu, Stack, FormField, Button } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
 import { NumberInput } from 'grommet-controls';
+import { CoinGQL } from '../coins/Coin';
 import Diagram from '../grommet/Diagram/Diagram';
 import { createLayer } from './keras-defaults';
 import EditKerasLayer from './EditKerasLayer';
@@ -203,7 +204,7 @@ class NetworkMap extends Component {
     const { editable } = this.props;
     return (
       <Box key={`layer_${layer.index}`} direction='row' align='center' gap='medium' full='horizontal'>
-        <Box basis='small' flex={false}>
+        <Box basis='small' flex={false} >
           <Box basis='xsmall'>
             {this.renderLayerSettings(layer.slug || layer.className,
               editable && layer.readOnly === undefined, layer.index - 1)}
@@ -296,7 +297,7 @@ class NetworkMap extends Component {
       nodes: model.datasources.map(item => ({
         label: (
           <Box align='center'>
-            <Text>{item.symbol}</Text>
+            <CoinGQL symbol={item.symbol} display={['image']} />
             <Text>{item.fieldName}</Text>
           </Box>
         ),
@@ -318,7 +319,7 @@ class NetworkMap extends Component {
     });
     const layerTargets = {
       className: 'Targets',
-      background: '#FF7D28',
+      background: '#ffa171',
       index: layers.length,
       readOnly: true,
       config: {
@@ -328,7 +329,14 @@ class NetworkMap extends Component {
     layers.push(layerTargets);
     const targetsNodes = this.renderLayer({
       layer: layerTargets,
-      nodes: model.datatargets.map(item => ({ label: item.fieldName })),
+      nodes: model.datatargets.map(item => ({
+        label: (
+          <Box align='center'>
+            <CoinGQL symbol={item.symbol} display={['image']} />
+            <Text>{item.fieldName}</Text>
+          </Box>
+        ),
+      })),
     });
     let connections = [];
     for (let i = 0; i < layers.length - 1; i += 1) {
@@ -381,13 +389,6 @@ NetworkMap.propTypes = {
   editable: PropTypes.bool,
   model: PropTypes.object.isRequired,
 };
-
-/*
-const mapDispatchToProps = dispatch => bindActionCreators({
-  entityChildrenDelete, entityChildrenUpdate, entityChildrenMoveUp, entityChildrenMoveDown,
-
-}, dispatch);
-*/
 
 
 export default NetworkMap;

@@ -50,9 +50,9 @@ class MarketCapDistribution extends Component {
                 onClick={e => this.onClickBackground(e, item)}
               >
                 <Equity
-                  level={3}
+                  level={4}
                   equity={item}
-                  short={smallCap}
+                  display={smallCap ? ['image'] : undefined}
                 />
                 <FormattedCoinValue
                   value={item.value}

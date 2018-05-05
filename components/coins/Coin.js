@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading } from 'grommet';
-import { ImageStamp } from 'grommet-controls';
+import { graphql } from 'react-apollo';
+import { Box } from 'grommet';
 import RoutedAnchor from '../RoutedAnchor';
 import connect from '../../redux/index';
 import routerPush from '../Router';
+import { coinInfoQuery } from '../graphql/coins';
+import Entity from '../entities/Entity';
 
 export const hasICO = coin => (coin && coin.icoStatus && coin.icoStatus !== 'Finished');
 
@@ -21,51 +23,24 @@ export const pushCoinPath = ({ symbol, toSymbol, exchange }) => {
 };
 const Coin = (
   {
-    coin, exchange, defaultExchange, toCoin, level, aggregatedExchange,
-    short, defaultCurrency,
+    coin, exchange, defaultExchange, toCoin, size, aggregatedExchange,
+    display, defaultCurrency,
   }
-) => {
-  let coinName;
-  if (coin) {
-    coinName = (coin.name && !short) ? coin.name : coin.symbol;
-  } else {
-    coinName = '';
-  }
-  const textLevel = short ? 4 : level;
-  const toCurrency = toCoin || { symbol: defaultCurrency };
-  const title = <Heading level={textLevel} margin='none'>{coinName}</Heading>;
-  const link = coin && coin.name ? (
-    <CoinPath
-      symbol={coin.symbol}
-      toSymbol={toCurrency.symbol}
-      exchange={exchange === aggregatedExchange ? defaultExchange : exchange}
-    >
-      {title}
-    </CoinPath>
-  ) : title;
-  let image;
-  if (coin && coin.image && !short) {
-    image = (
-      <ImageStamp
-        src={coin.image}
-        size={textLevel > 2 ? 'medium' : 'large'}
-      />
-    );
-  }
-  return (
-    <Box
-      a11yTitle={`View details of ${coinName} coin`}
-      gap='small'
-      direction='row'
-      align='center'
-      flex={false}
-      responsive={false}
-    >
-      {image}
-      {link}
-    </Box>
-  );
-};
+) => (coin ? (
+  <CoinPath
+    symbol={coin.symbol}
+    toSymbol={toCoin ? toCoin.symbol : defaultCurrency}
+    exchange={exchange === aggregatedExchange ? defaultExchange : exchange}
+  >
+    <Entity
+      entity={coin}
+      size={size}
+      display={display}
+      type='coin'
+    />
+  </CoinPath>
+) : null
+);
 
 
 const mapStateToProps = (state, props) => ({
@@ -79,19 +54,19 @@ const mapStateToProps = (state, props) => ({
 const ConnectedCoin = connect(mapStateToProps)(Coin);
 
 Coin.defaultProps = {
-  level: 3,
+  size: undefined,
   coin: undefined,
   toCoin: undefined,
   exchange: undefined,
-  short: false,
+  display: ['image', 'name', 'symbol'],
 };
 
 Coin.propTypes = {
   coin: PropTypes.object,
   toCoin: PropTypes.object,
   exchange: PropTypes.string,
-  level: PropTypes.number,
-  short: PropTypes.bool,
+  size: PropTypes.string,
+  display: PropTypes.arrayOf(PropTypes.oneOf(['name', 'symbol', 'image'])),
 };
 
 export default ConnectedCoin;
@@ -103,12 +78,13 @@ export const CoinToCoin = ({ coin, toCoin, exchange }) => (
       coin={coin}
       toCoin={toCoin}
       exchange={exchange}
+      size='large'
     />
     <ConnectedCoin
       coin={toCoin}
       toCoin={coin}
       exchange={exchange}
-      level={4}
+      display={['symbol']}
     />
   </Box>
 );
@@ -117,5 +93,18 @@ CoinToCoin.propTypes = {
   coin: PropTypes.object.isRequired,
   toCoin: PropTypes.object.isRequired,
   exchange: PropTypes.string.isRequired,
+};
+
+export const CoinGQL = graphql(coinInfoQuery, {
+  options: props => ({ variables: { symbol: props.symbol } }),
+})(
+  ({ data, ...rest }) => (
+    <ConnectedCoin coin={data.coin} {...rest} />
+  )
+);
+
+CoinGQL.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  symbol: PropTypes.string.isRequired,
 };
 

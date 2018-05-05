@@ -11,7 +11,7 @@ const ExchangesList = ({ data, loadMoreEntries, country }) => {
       Header: 'Exchange',
       accessor: 'name',
       Cell: cell => (
-        <ConnectedExchange exchange={cell.original} />
+        <ConnectedExchange size='medium' exchange={cell.original} />
       ),
     }, {
       Header: 'Countries',

@@ -14,7 +14,7 @@ const CoinInfo = ({
 }) => (
   <App
     title={`${symbol}/${toSymbol}/${exchange}`}
-    visibleTitle={coin && <Coin coin={coin} toCoin={toCoin} exchange={exchange} />}
+    visibleTitle={coin && <Coin size='large' coin={coin} toCoin={toCoin} exchange={exchange} />}
     menu={<CoinsPageMenu activeItem={1} symbol={symbol} toSymbol={toSymbol} exchange={exchange} />}
   >
     {coin && toCoin && (
