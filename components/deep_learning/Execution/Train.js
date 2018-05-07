@@ -20,8 +20,13 @@ class TrainModel extends React.Component {
       loss: 'meanSquaredError',
       optimizer: 'sgd',
     });
-    const adam = tf.train.adam();
-    console.log('adam', adam);
+    console.log('sgd', tf.train.sgd());
+    console.log('momentum', tf.train.momentum());
+    console.log('rmsprop', tf.train.rmsprop());
+    console.log('adam', tf.train.adam());
+    console.log('adadelta', tf.train.adadelta());
+    console.log('adamax', tf.train.adamax());
+    console.log('adagrad', tf.train.adagrad());
 
     // sgd(learningRate: number)
     // momentum(learningRate: number, momentum: number, useNesterov?: boolean)
@@ -91,8 +96,6 @@ class TrainModel extends React.Component {
             stacked={true}
             curve='natural'
             enableDots={true}
-            dotLabel={e => `${e.x}: ${e.y} ${console.log(e)}`}
-            dotLabelYOffset={-12}
             dotSize={10}
             dotColor='inherit:darker(0.3)'
             dotBorderWidth={2}

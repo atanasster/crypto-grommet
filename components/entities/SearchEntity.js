@@ -30,7 +30,7 @@ class SearchEntity extends React.Component {
           const entity = type.results.find(e => e.slug === selected[1]);
           if (entity) {
             if (onChange) {
-              onChange({ link, entity });
+              onChange({ link, entity, type: selected[0] });
             }
           }
         }
@@ -67,11 +67,13 @@ class SearchEntity extends React.Component {
   };
 
   render() {
+    const { value } = this.props;
     return (
       <TextInput
+        defaultValue={value}
         placeholder='search'
         suggestions={this.createSuggestions()}
-        onInput={this.onSearch}
+        onChange={this.onSearch}
         onSelect={this.onSelect}
       />
     );
@@ -80,10 +82,12 @@ class SearchEntity extends React.Component {
 
 SearchEntity.defaultProps = {
   onChange: undefined,
+  value: undefined,
 };
 
 SearchEntity.propTypes = {
   onChange: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default graphql(searchQuery,

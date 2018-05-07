@@ -11,11 +11,13 @@ import Entity from '../entities/Entity';
 export const hasICO = coin => (coin && coin.icoStatus && coin.icoStatus !== 'Finished');
 
 export const CoinPath = ({
-  symbol, toSymbol, exchange, children,
+  symbol, toSymbol, exchange, children, disableLink,
 }) => (
-  <RoutedAnchor route='coin_info' params={{ symbol, toSymbol, exchange }} >
-    {children}
-  </RoutedAnchor>
+  disableLink ? (<div>{children}</div>) : (
+    <RoutedAnchor route='coin_info' params={{ symbol, toSymbol, exchange }} >
+      {children}
+    </RoutedAnchor>
+  )
 );
 
 export const pushCoinPath = ({ symbol, toSymbol, exchange }) => {
@@ -24,10 +26,11 @@ export const pushCoinPath = ({ symbol, toSymbol, exchange }) => {
 const Coin = (
   {
     coin, exchange, defaultExchange, toCoin, size, aggregatedExchange,
-    display, defaultCurrency,
+    display, defaultCurrency, disableLink,
   }
 ) => (coin ? (
   <CoinPath
+    disableLink={disableLink}
     symbol={coin.symbol}
     toSymbol={toCoin ? toCoin.symbol : defaultCurrency}
     exchange={exchange === aggregatedExchange ? defaultExchange : exchange}

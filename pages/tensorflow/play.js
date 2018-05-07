@@ -4,12 +4,12 @@ import { NumberInput, Form } from 'grommet-controls';
 import App from '../../components/App';
 import withData from '../../apollo/withData';
 import DeepNetwork from '../../components/deep_learning/DeepNetwork/DeepNetwork';
-import LayerOptimizer from '../../components/deep_learning/DeepNetwork/properties/LayerOptimizer';
-import { optimizersList } from '../../components/deep_learning/DeepNetwork/properties/PropLists';
+import ComposedEditor from '../../components/deep_learning/DeepNetwork/editors/ComposedEditor';
 import kerasDefaults, { createLayer } from '../../components/deep_learning/keras-defaults';
 import TrainModel from '../../components/deep_learning/Execution/Train';
+import tensorflow from '../../tensorflow';
 
-class EditNetwork extends React.Component {
+class TensorFlowPlay extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -19,9 +19,9 @@ class EditNetwork extends React.Component {
         name: 'New Model',
         // categories: [{ id: 1, name: 'Price' }],
         targets: [{
-          fieldName: 'close',
+          field: 'close',
           symbol: 'BTC',
-          entity: 'coin',
+          type: 'coin',
         }],
         lookback_days: 1,
         dataPeriod: '3month',
@@ -33,17 +33,14 @@ class EditNetwork extends React.Component {
           createLayer(kerasDefaults.layers, 'LSTM', { units: 6 }),
           createLayer(kerasDefaults.layers, 'Dense', { units: 3 }),
         ],
-        optimizerClass: 'Adam',
-        optimizerConfig: {
-          lr: 0.001, beta_1: 0.9, beta_2: 0.999, decay: 0, epsilon: 0.0000001,
-        },
+        optimizer: tensorflow.optimizer({ name: 'SGD', config: { lr: 0.003 } }),
         objoptimizerClassectif: 'mean_squared_error',
         features: [
-          { fieldName: 'open', symbol: 'BTC', entity: 'coin' },
-          { fieldName: 'high', symbol: 'BTC', entity: 'coin' },
-          { fieldName: 'low', symbol: 'BTC', entity: 'coin' },
-          { fieldName: 'close', symbol: 'BTC', entity: 'coin' },
-          { fieldName: 'volume', symbol: 'BTC', entity: 'coin' },
+          { field: 'open', symbol: 'BTC', type: 'coin' },
+          { field: 'high', symbol: 'BTC', type: 'coin' },
+          { field: 'low', symbol: 'BTC', type: 'coin' },
+          { field: 'close', symbol: 'BTC', type: 'coin' },
+          { field: 'volume', symbol: 'BTC', type: 'coin' },
         ],
       },
     };
@@ -58,13 +55,13 @@ class EditNetwork extends React.Component {
       },
     });
   }
-  onOptimizerChange = (name, optimizer) => {
+  onOptimizerChange = (value, config) => {
+    console.log(value);
     this.setState({
       modified: true,
       model: {
         ...this.state.model,
-        optimizerClass: optimizer.className,
-        optimizerConfig: optimizer.config,
+        optimizer: tensorflow.optimizer({ name: value, config }),
       },
     });
   }
@@ -73,7 +70,7 @@ class EditNetwork extends React.Component {
     const { model, modified } = this.state;
     return (
       <App
-        title={`Deep learning ${modified ? '*' : ''}`}
+        title={`Tensorflow play ${modified ? '*' : ''}`}
         menu={<TrainModel model={model} />}
       >
         <Box gap='small' fill='horizontal'>
@@ -112,14 +109,9 @@ class EditNetwork extends React.Component {
                       onChange={e => this.onChange('epochs', e)}
                     />
                   </FormField>
-                  <LayerOptimizer
-                    label='Optimizer'
-                    name='optimizer'
-                    options={optimizersList}
-                    defaults={kerasDefaults.optimizers}
-                    kerasDefaults={kerasDefaults}
-                    value={{ className: model.optimizerClass, config: model.optimizerConfig }}
-                    onUpdateValue={this.onOptimizerChange}
+                  <ComposedEditor
+                    value={model.optimizer}
+                    onChange={this.onOptimizerChange}
                   />
                 </Form>
               </Box>
@@ -138,5 +130,5 @@ class EditNetwork extends React.Component {
   }
 }
 
-export default withData(EditNetwork);
+export default withData(TensorFlowPlay);
 

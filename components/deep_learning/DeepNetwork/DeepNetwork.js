@@ -5,12 +5,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Heading, Text, Menu, Stack, FormField, Button } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
-import { NumberInput, Tag } from 'grommet-controls';
-import { CoinGQL } from '../../coins/Coin';
+import { NumberInput } from 'grommet-controls';
+import Symbol from '../../Symbol';
 import Diagram from '../../grommet/Diagram/Diagram';
 import { createLayer } from '../keras-defaults';
 import EditLayer from './EditLayer';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
+import SelectDataset from '../../datasets/SelectDataset';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
   const fromPoint = [
@@ -246,6 +247,47 @@ class NetworkMap extends Component {
     return title;
   }
 
+  onRemoveFeature = () => {
+    const { editFeature } = this.state;
+    const { model, onChange } = this.props;
+    const updated = {
+      ...model,
+      features: model.features.filter((_, index) => (index !== editFeature)),
+    };
+    onChange(updated);
+    this.setState({ editFeature: undefined });
+  };
+
+  onUpdateFeature = (newFeature) => {
+    const { editFeature } = this.state;
+    if (editFeature >= 0) {
+      const { model, onChange } = this.props;
+      const updated = {
+        ...model,
+        features: model.features
+          .map((feature, index) =>
+            (index === editFeature ? { ...feature, ...newFeature } : feature)),
+      };
+      onChange(updated);
+    }
+    this.setState({ editFeature: undefined });
+  };
+
+  onUpdateTarget = (newTarget) => {
+    const { editTarget } = this.state;
+    if (editTarget >= 0) {
+      const { model, onChange } = this.props;
+      const updated = {
+        ...model,
+        targets: model.targets
+          .map((target, index) =>
+            (index === editTarget ? { ...target, ...newTarget } : target)),
+      };
+      onChange(updated);
+    }
+    this.setState({ editTarget: undefined });
+  };
+
   renderLayer({ layer, nodes }) {
     const { editable } = this.props;
     return (
@@ -312,15 +354,12 @@ class NetworkMap extends Component {
       layer: layerFeatures,
       nodes: model.features.map((item, index) => ({
         label: (
-          <Box align='center'>
-            <CoinGQL symbol={item.symbol} display={['image']} />
-            <Tag
-              background='transparent'
-              label={item.fieldName}
-              round='medium'
-              onChange={model.features.length > 1 ? () => this.onRemoveFeature(index) : undefined}
-            />
-          </Box>
+          <Button onClick={() => this.setState({ editFeature: index })} >
+            <Box align='center'>
+              <Symbol {...item} />
+              <Text weight='bold'>{item.field}</Text>
+            </Box>
+          </Button>
         ),
       })),
     });
@@ -352,15 +391,12 @@ class NetworkMap extends Component {
       layer: layerTargets,
       nodes: model.targets.map((item, index) => ({
         label: (
-          <Box align='center'>
-            <CoinGQL symbol={item.symbol} display={['image']} />
-            <Tag
-              background='transparent'
-              label={<Text weight='bold'>{item.fieldName}</Text>}
-              round='medium'
-              onChange={model.targets.length > 1 ? () => this.onRemoveTarget(index) : undefined}
-            />
-          </Box>
+          <Button onClick={() => this.setState({ editTarget: index })}>
+            <Box align='center'>
+              <Symbol {...item} />
+              <Text weight='bold'>{item.field}</Text>
+            </Box>
+          </Button>
         ),
       })),
     });
@@ -398,11 +434,36 @@ class NetworkMap extends Component {
         </Stack>
       </Box>
     );
+    let editFeature;
+    if (this.state.editFeature !== undefined) {
+      const feature = model.features[this.state.editFeature];
+      editFeature = (
+        <SelectDataset
+          data={feature}
+          heading='Select feature'
+          onSelect={this.onUpdateFeature}
+          onClose={() => this.setState({ editFeature: undefined })}
+          onRemove={model.features.length > 1 ? this.onRemoveFeature : undefined}
+        />);
+    }
+    let editTarget;
+    if (this.state.editTarget !== undefined) {
+      const target = model.targets[this.state.editTarget];
+      editFeature = (
+        <SelectDataset
+          data={target}
+          heading='Update target'
+          onSelect={this.onUpdateTarget}
+          onClose={() => this.setState({ editTarget: undefined })}
+        />);
+    }
     return (
       <Box flex={true} full='true'>
         {modelMap}
         {editLayer}
         {deleteConfirm}
+        {editFeature}
+        {editTarget}
       </Box>
     );
   }
