@@ -1,5 +1,7 @@
 import React from 'react';
+import { Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
+import { longDate } from 'grommet-controls/utils/moment';
 import { loadHistory } from './history';
 import LossHistoryChart from './LossHistoryChart';
 
@@ -13,6 +15,17 @@ class ModelHistory extends React.Component {
   render() {
     const history = loadHistory();
     const columns = [
+      {
+        Header: 'Run',
+        accessor: 'date',
+        Cell: cell => longDate(cell.value),
+      },
+      {
+        Header: 'Loss',
+        accessor: 'loss',
+        Cell: cell => (<Text weight='bold'>{cell.value.toFixed(5)}</Text>),
+        getProps: () => ({ align: 'end' }),
+      },
       {
         Header: 'Epochs',
         accessor: 'epochs',
@@ -29,7 +42,7 @@ class ModelHistory extends React.Component {
         getProps: () => ({ align: 'end' }),
       }, {
         Header: 'Loss',
-        accessor: 'loss',
+        accessor: 'lossHistory',
         Cell: cell => (
           <LossHistoryChart
             history={cell.value}
@@ -45,7 +58,7 @@ class ModelHistory extends React.Component {
         columns={columns}
         data={history}
         onExpand={this.onExpand}
-        ordering={[{ id: 'timing', desc: true }]}
+        defaultSorted={[{ id: 'date', desc: true }]}
       />
     );
   }

@@ -58,12 +58,18 @@ class TrainModel extends React.Component {
     console.log('history', history);
     const timing = (Date.now() - beginMs).toFixed(0);
     this.setState({ running: false, timing });
-    const item = {
-      epochs: nn.epochs, batchSize: nn.batchSize, timing, loss: history.history.loss,
-    };
-    console.log(item);
-    addHistory(item);
-
+    if (history.history.loss.length > 0) {
+      const item = {
+        date: Date.now(),
+        timing,
+        loss: history.history.loss[history.history.loss.length - 1],
+        lossHistory: history.history.loss,
+        epochs: nn.epochs,
+        batchSize: nn.batchSize,
+      };
+      console.log(item);
+      addHistory(item);
+    }
     // Use the model to do inference on a data point the model hasn't seen.
     // Should print approximately 39.
     model.predict(tf.tensor2d([20], [1, 1]))
