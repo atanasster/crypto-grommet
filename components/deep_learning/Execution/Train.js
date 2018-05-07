@@ -1,8 +1,8 @@
 import React from 'react';
 import * as tf from '@tensorflow/tfjs';
 import { ResponsiveLine } from '@nivo/line';
-import { Box, Button, Text } from 'grommet';
-
+import { Box, Button } from 'grommet';
+import Value from '../../grommet-controls/Value/Value';
 
 class TrainModel extends React.Component {
   state = {
@@ -36,7 +36,7 @@ class TrainModel extends React.Component {
           await tf.nextFrame();
         },
         onTrainEnd: async (logs) => {
-          this.setState({ running: false, timing: (Date.now() - beginMs).toFixed(1) });
+          this.setState({ running: false, timing: (Date.now() - beginMs).toFixed(0) });
           console.log('Training begin', logs);
           await tf.nextFrame();
         },
@@ -47,7 +47,7 @@ class TrainModel extends React.Component {
             this.setState({
               epoch,
               loss,
-              timing: (Date.now() - beginMs).toFixed(1),
+              timing: (Date.now() - beginMs).toFixed(0),
               lossHistory: [...this.state.lossHistory, { x: `Epoch ${epoch}`, y: loss }],
             });
           }
@@ -68,8 +68,10 @@ class TrainModel extends React.Component {
     return (
       <Box direction='row' align='center' justify='between'>
         <Button onClick={running ? undefined : () => this.onTrain()} label='Train' />
-        <Box direction='row'>
-          {epoch && <Text>{`Epoch: ${epoch}, loss: ${loss} ${timing && `, time: ${timing} ms`}`}</Text>}
+        <Box direction='row' gap='medium'>
+          <Value label='epoch' value={epoch} />
+          <Value label='loss' value={loss} units='mse' />
+          <Value label='duration' value={timing} units='ms' />
         </Box>
         <div style={{ width: '300px', height: '60px' }} >
           <ResponsiveLine
