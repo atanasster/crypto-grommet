@@ -23,7 +23,8 @@
     "WebSocket": true,
     "alert": true,
     "URLSearchParams": true,
-    "React": true
+    "React": true,
+    "localStorage": true
   },
   "rules": {
     "async-await/space-after-async": 2,

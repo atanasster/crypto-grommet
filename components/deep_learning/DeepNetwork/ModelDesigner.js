@@ -14,6 +14,9 @@ import SelectDataset from '../../datasets/SelectDataset';
 import Nodes, { nodeName } from './Nodes';
 import Features from './Features';
 import Targets from './Targets';
+import ComposedEditor from './editors/ComposedEditor';
+import tensorflow from '../../../tensorflow';
+import TrainModel from '../Execution/Train';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
   const fromPoint = [
@@ -55,7 +58,7 @@ const moveArrayItem = (arr, oldIndex, direction) => {
 };
 
 
-class NetworkMap extends Component {
+class ModelDesigner extends Component {
   state = {
     editLayer: undefined,
   };
@@ -99,10 +102,24 @@ class NetworkMap extends Component {
   onDiscardDelete = () => {
     this.setState({ removeLayer: undefined });
   };
+  onChange = (id, { target }) => {
+    const { onChange, model } = this.props;
+    onChange({
+      ...model,
+      [id]: target.value,
+    });
+  };
+
+  onOptimizerChange = (value, config) => {
+    const { onChange, model } = this.props;
+    onChange({
+      ...model,
+      optimizer: tensorflow.optimizer({ name: value, config }),
+    });
+  };
 
   onMoveLayerUp = (index) => {
-    const { onChange } = this.props;
-    const { model } = this.props;
+    const { onChange, model } = this.props;
     const updated = {
       ...model,
       layers: moveArrayItem(model.layers, index, 'up'),
@@ -111,8 +128,7 @@ class NetworkMap extends Component {
   };
 
   onMoveLayerDown = (index) => {
-    const { onChange } = this.props;
-    const { model } = this.props;
+    const { onChange, model } = this.props;
     const updated = {
       ...model,
       layers: moveArrayItem(model.layers, index, 'down'),
@@ -213,14 +229,14 @@ class NetworkMap extends Component {
   };
 
   renderLayer({ layer, nodes }) {
-    const { editable } = this.props;
+    const { readOnly } = this.props;
     return (
       <Box key={`layer_${layer.index}`} direction='row' align='center' gap='medium' full='horizontal'>
         <Box basis='small' flex={false} >
           <Box basis='xsmall'>
             {
               this.renderLayerSettings(layer.slug || layer.className,
-              editable && layer.readOnly === undefined, layer.index)
+              !readOnly && layer.readOnly === undefined, layer.index)
             }
           </Box>
 
@@ -231,9 +247,9 @@ class NetworkMap extends Component {
   }
 
   render() {
-    const { editable, model, kerasDefaults } = this.props;
+    const { readOnly, model, kerasDefaults } = this.props;
     let editLayer;
-    if (editable && this.state.editLayer !== undefined) {
+    if (!readOnly && this.state.editLayer !== undefined) {
       let layer;
       if (this.state.editLayer >= 0) {
         layer = model.layers[this.state.editLayer];
@@ -251,7 +267,7 @@ class NetworkMap extends Component {
       );
     }
     let deleteConfirm;
-    if (editable && this.state.removeLayer !== undefined) {
+    if (!readOnly && this.state.removeLayer !== undefined) {
       const layer = model.layers[this.state.removeLayer];
       deleteConfirm = (
         <Confirmation
@@ -287,9 +303,9 @@ class NetworkMap extends Component {
         ...layerConnections(deepLayers.length - 1, deepLayers[deepLayers.length - 1], 'targets', model.targets)];
     }
     let addButton;
-    if (editable) {
+    if (!readOnly) {
       addButton = (
-        <Box align='end'>
+        <Box>
           <Button
             label='+Add layer'
             primary={true}
@@ -300,8 +316,10 @@ class NetworkMap extends Component {
     }
     const modelMap = (
       <Box pad='medium' direction='column'>
-        {addButton}
-        <Heading level={3}>Network topology</Heading>
+        <Box direction='row' fill='horizontal' align='center' justify='between' pad={{ bottom: 'medium' }}>
+          <Heading level={3}>Network topology</Heading>
+          {addButton}
+        </Box>
         <Stack>
           <Box fill='horizontal' gap='large'>
             <Features features={model.features} onChange={this.onChangeFeatures} />
@@ -328,24 +346,66 @@ class NetworkMap extends Component {
         />);
     }
     return (
-      <Box flex={true} full='true'>
-        {modelMap}
-        {editLayer}
-        {deleteConfirm}
-        {editTarget}
+      <Box flex={true} fill='true'>
+        <TrainModel model={model} />
+        <Box direction='row-responsive'>
+          <Box basis='1/3' pad='medium'>
+            <Heading level={3}>Parameters</Heading>
+            <Box>
+              <FormField label='Observation days / window' htmlFor='observation_days'>
+                <NumberInput
+                  id='observation_days'
+                  min={1}
+                  max={25}
+                  name='observation_days'
+                  value={model.observationDays}
+                  onChange={e => this.onChange('observationDays', e)}
+                />
+              </FormField>
+              <FormField label='Batch size' htmlFor='batch_size'>
+                <NumberInput
+                  id='batch_size'
+                  min={1}
+                  max={30}
+                  name='batch_size'
+                  value={model.batchSize}
+                  onChange={e => this.onChange('batchSize', e)}
+                />
+              </FormField>
+              <FormField label='Epochs' htmlFor='epochs'>
+                <NumberInput
+                  id='epochs'
+                  min={1}
+                  max={100}
+                  name='epochs'
+                  value={model.epochs}
+                  onChange={e => this.onChange('epochs', e)}
+                />
+              </FormField>
+              <ComposedEditor
+                value={model.optimizer}
+                onChange={this.onOptimizerChange}
+              />
+            </Box>
+          </Box>
+          {modelMap}
+          {editLayer}
+          {deleteConfirm}
+          {editTarget}
+        </Box>
       </Box>
     );
   }
 }
 
-NetworkMap.defaultProps = {
-  editable: true,
+ModelDesigner.defaultProps = {
+  readOnly: false,
 };
-NetworkMap.propTypes = {
-  editable: PropTypes.bool,
+ModelDesigner.propTypes = {
+  readOnly: PropTypes.bool,
   model: PropTypes.object.isRequired,
 };
 
 
-export default NetworkMap;
+export default ModelDesigner;
 

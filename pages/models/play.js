@@ -1,18 +1,17 @@
 import React from 'react';
-import { Box, Heading, FormField } from 'grommet';
-import { NumberInput, Form } from 'grommet-controls';
+import { Box, Heading, Button } from 'grommet';
 import App from '../../components/App';
 import withData from '../../apollo/withData';
-import DeepNetwork from '../../components/deep_learning/DeepNetwork/DeepNetwork';
-import ComposedEditor from '../../components/deep_learning/DeepNetwork/editors/ComposedEditor';
+import ModelDesigner from '../../components/deep_learning/DeepNetwork/ModelDesigner';
 import kerasDefaults, { createLayer } from '../../components/deep_learning/keras-defaults';
-import TrainModel from '../../components/deep_learning/Execution/Train';
 import tensorflow from '../../tensorflow';
+import ModelHistory from '../../components/deep_learning/Execution/ModelHistory';
 
 class TensorFlowPlay extends React.Component {
   constructor() {
     super();
     this.state = {
+      view: 'design',
       modified: undefined,
       model: {
         id: 0,
@@ -64,67 +63,47 @@ class TensorFlowPlay extends React.Component {
         optimizer: tensorflow.optimizer({ name: value, config }),
       },
     });
+  };
+
+  renderView() {
+    const { model, view } = this.state;
+    switch (view) {
+      case 'design':
+        return (
+          <ModelDesigner
+            readOnly={false}
+            model={model}
+            kerasDefaults={kerasDefaults}
+            onChange={(updated) => { this.setState({ model: updated }); }}
+          />
+        );
+      case 'history':
+        return <ModelHistory />;
+      default:
+        return null;
+    }
   }
 
   render() {
-    const { model, modified } = this.state;
+    const { modified, view } = this.state;
+    const title = `Models playground ${modified ? '*' : ''}`;
     return (
       <App
-        title={`Models playground ${modified ? '*' : ''}`}
-        menu={<TrainModel model={model} />}
-      >
-        <Box gap='small' fill='horizontal'>
-          <Box primary={true} style={{ width: '100%' }}>
-            <Box direction='row-responsive'>
-              <Box basis='1/3' pad='medium'>
-                <Heading level={3}>Parameters</Heading>
-                <Form pad={{ vertical: 'medium' }}>
-                  <FormField label='Observation days / window' htmlFor='observation_days'>
-                    <NumberInput
-                      id='observation_days'
-                      min={1}
-                      max={25}
-                      name='observation_days'
-                      value={model.observationDays}
-                      onChange={e => this.onChange('observationDays', e)}
-                    />
-                  </FormField>
-                  <FormField label='Batch size' htmlFor='batch_size'>
-                    <NumberInput
-                      id='batch_size'
-                      min={1}
-                      max={30}
-                      name='batch_size'
-                      value={model.batchSize}
-                      onChange={e => this.onChange('batchSize', e)}
-                    />
-                  </FormField>
-                  <FormField label='Epochs' htmlFor='epochs'>
-                    <NumberInput
-                      id='epochs'
-                      min={1}
-                      max={100}
-                      name='epochs'
-                      value={model.epochs}
-                      onChange={e => this.onChange('epochs', e)}
-                    />
-                  </FormField>
-                  <ComposedEditor
-                    value={model.optimizer}
-                    onChange={this.onOptimizerChange}
-                  />
-                </Form>
-              </Box>
-              <DeepNetwork
-                editable={true}
-                model={model}
-                kerasDefaults={kerasDefaults}
-                onChange={(updated) => { this.setState({ model: updated }); }}
-              />
+        title={title}
+        visibleTitle={(
+          <Box direction='row' align='center' justify='between' fill='horizontal'>
+            <Heading margin='none' level={1}>
+              <strong>{title}</strong>
+            </Heading>
+            <Box direction='row' gap='small'>
+              <Button active={view === 'design'} label='design' onClick={() => this.setState({ view: 'design' })} />
+              <Button active={view === 'history'} label='history' onClick={() => this.setState({ view: 'history' })} />
+              <Button active={view === 'predictions'} label='predictions' onClick={() => this.setState({ view: 'predictions' })} />
             </Box>
           </Box>
-
-        </Box>
+        )}
+      >
+        {this.renderView()}
       </App>
     );
   }
