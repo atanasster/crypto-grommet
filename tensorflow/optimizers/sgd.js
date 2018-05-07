@@ -14,5 +14,5 @@ export default class SGD extends BaseConfig {
       step: 0.001,
     });
   }
-  tf = () => tf.train.sgd(this.getValue('lr'));
+  tf = () => tf.train.sgd(this.getPropValue('lr'));
 }

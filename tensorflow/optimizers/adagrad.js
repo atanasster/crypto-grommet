@@ -26,5 +26,5 @@ export default class AdaGrad extends BaseConfig {
       step: 0.0001,
     });
   }
-  tf = () => tf.train.adagrad(this.getValue('lr'), this.getValue('accumulator'));
+  tf = () => tf.train.adagrad(this.getPropValue('lr'), this.getPropValue('accumulator'));
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Select } from 'grommet';
 import FormField from '../../../grommet/FormField/FormField';
 import NumericEditor from './NumericEditor';
+import BooleanEditor from './BooleanEditor';
 
 class ComposedEditor extends React.Component {
   onPropertyChange = (name, newValue) => {
@@ -25,11 +26,19 @@ class ComposedEditor extends React.Component {
       options = prop.options.map(option => option.displayName);
       selected = prop.value.constructor.displayName;
       properties = prop.value.properties.map((item, index) => {
+        const key = `${prop.name}_${item.name}_${index}`;
         switch (item.type) {
           case 'number':
             return (
               <NumericEditor
-                key={`${prop.name}_${item.name}_${index}`}
+                key={key}
+                value={item}
+                onChange={this.onPropertyChange}
+              />);
+          case 'bool':
+            return (
+              <BooleanEditor
+                key={key}
                 value={item}
                 onChange={this.onPropertyChange}
               />);

@@ -12,35 +12,18 @@ class TrainModel extends React.Component {
   async onTrain() {
     const { model: nn } = this.props;
     const beginMs = Date.now();
+    // Generate some synthetic data for training. (y = 2x - 1)
+    const xs = tf.tensor2d([-1, 0, 1, 2, 3, 4], [6, 1]);
+    const ys = tf.tensor2d([-3, -1, 1, 3, 5, 7], [6, 1]);
     const model = tf.sequential();
     model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
 
     // Prepare the model for training: Specify the loss and the optimizer.
     model.compile({
-      loss: 'meanSquaredError',
-      optimizer: 'sgd',
+      loss: nn.loss,
+      optimizer: nn.optimizer.tf(),
+      metrics: ['mae', 'mape'],
     });
-    console.log('sgd', tf.train.sgd());
-    console.log('momentum', tf.train.momentum());
-    console.log('rmsprop', tf.train.rmsprop());
-    console.log('adam', tf.train.adam());
-    console.log('adadelta', tf.train.adadelta());
-    console.log('adamax', tf.train.adamax());
-    console.log('adagrad', tf.train.adagrad());
-
-    // sgd(learningRate: number)
-    // momentum(learningRate: number, momentum: number, useNesterov?: boolean)
-    // rmsprop(learningRate: number, decay?: number, momentum?: number,
-    //    epsilon?: number, centered?: boolean)
-    // adam(learningRate?: number, beta1?: number, beta2?: number, epsilon?: number)
-    // adadelta(learningRate?: number, rho?: number, epsilon?: number)
-    // adamax(learningRate?: number, beta1?: number, beta2?: number,
-    //    epsilon?: number, decay?: number)
-    // adagrad(learningRate: number, initialAccumulatorValue?: number)
-
-    // Generate some synthetic data for training. (y = 2x - 1)
-    const xs = tf.tensor2d([-1, 0, 1, 2, 3, 4], [6, 1]);
-    const ys = tf.tensor2d([-3, -1, 1, 3, 5, 7], [6, 1]);
 
     // Train the model using the data.
     const history = await model.fit(xs, ys, {
@@ -58,13 +41,16 @@ class TrainModel extends React.Component {
           await tf.nextFrame();
         },
         onEpochEnd: async (epoch, logs) => {
-          const loss = logs.loss.toFixed(5);
-          this.setState({
-            epoch,
-            loss,
-            timing: (Date.now() - beginMs).toFixed(1),
-            lossHistory: [...this.state.lossHistory, { x: `Epoch ${epoch}`, y: loss }],
-          });
+          if (!Number.isNaN(logs.loss)) {
+            const loss = logs.loss.toFixed(5);
+
+            this.setState({
+              epoch,
+              loss,
+              timing: (Date.now() - beginMs).toFixed(1),
+              lossHistory: [...this.state.lossHistory, { x: `Epoch ${epoch}`, y: loss }],
+            });
+          }
           await tf.nextFrame();
         },
       },

@@ -6,12 +6,14 @@ import PropTypes from 'prop-types';
 import { Box, Heading, Text, Menu, Stack, FormField, Button } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
 import { NumberInput } from 'grommet-controls';
-import Symbol from '../../Symbol';
 import Diagram from '../../grommet/Diagram/Diagram';
 import { createLayer } from '../keras-defaults';
 import EditLayer from './EditLayer';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 import SelectDataset from '../../datasets/SelectDataset';
+import Nodes, { nodeName } from './Nodes';
+import Features from './Features';
+import Targets from './Targets';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
   const fromPoint = [
@@ -25,25 +27,18 @@ const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
   return [fromPoint, toPoint];
 };
 
-const nodeName = (layerIndex, nodeIndex) => (`node_${layerIndex}_${nodeIndex}`);
-
-const layerConnections = (layers, index) => {
+const layerConnections = (indexFrom, fromLayer, indexTo, toLayer) => {
   const connections = [];
-
-  if (index < layers.length - 1) {
-    const fromLayer = layers[index];
-    const toLayer = layers[index + 1];
-    for (let from = 0; from < fromLayer.config.units; from += 1) {
-      for (let to = 0; to < toLayer.config.units; to += 1) {
-        connections.push({
-          fromTarget: nodeName(index, from),
-          toTarget: nodeName(index + 1, to),
-          color: 'dark-5',
-          thickness: '2',
-          round: true,
-          type: 'curved',
-        });
-      }
+  for (let from = 0; from < (fromLayer.length || fromLayer.config.units); from += 1) {
+    for (let to = 0; to < (toLayer.length || toLayer.config.units); to += 1) {
+      connections.push({
+        fromTarget: nodeName(indexFrom, from),
+        toTarget: nodeName(indexTo, to),
+        color: 'dark-5',
+        thickness: '2',
+        round: true,
+        type: 'curved',
+      });
     }
   }
   return connections;
@@ -59,29 +54,6 @@ const moveArrayItem = (arr, oldIndex, direction) => {
   return arr;
 };
 
-const Nodes = ({ index, nodes, ...rest }) => (
-  <Box align='center' fill={true}>
-    <Box basis='xsmall' direction='row' gap='small' >
-      {nodes.map((node, nodeIndex) => (
-        <Box
-          id={nodeName(index, nodeIndex)}
-          key={`${node.label}_${nodeIndex}`}
-          style={{ width: '94px', height: '94px' }}
-          border={{ side: 'all' }}
-          round='full'
-          align='center'
-          justify='center'
-          {...rest}
-        >
-          {typeof node.label === 'string' ? (
-            <Text weight='bold'>{node.label}</Text>
-            ) : node.label
-            }
-        </Box>
-        ))}
-    </Box>
-  </Box>
-);
 
 class NetworkMap extends Component {
   state = {
@@ -122,22 +94,6 @@ class NetworkMap extends Component {
     };
     onChange(updated);
     this.setState({ removeLayer: undefined });
-  };
-
-  onRemoveFeature = (index) => {
-    const { onChange, model } = this.props;
-    if (model.features.length > 1) {
-      const updated = { ...model, features: model.features.filter((_, i) => i !== index) };
-      onChange(updated);
-    }
-  };
-
-  onRemoveTarget = (index) => {
-    const { onChange, model } = this.props;
-    if (model.targets.length > 1) {
-      const updated = { ...model, targets: model.targets.filter((_, i) => i !== index) };
-      onChange(updated);
-    }
   };
 
   onDiscardDelete = () => {
@@ -247,45 +203,13 @@ class NetworkMap extends Component {
     return title;
   }
 
-  onRemoveFeature = () => {
-    const { editFeature } = this.state;
-    const { model, onChange } = this.props;
-    const updated = {
-      ...model,
-      features: model.features.filter((_, index) => (index !== editFeature)),
-    };
-    onChange(updated);
-    this.setState({ editFeature: undefined });
+  onChangeFeatures = (features) => {
+    const { onChange, model } = this.props;
+    onChange({ ...model, features });
   };
-
-  onUpdateFeature = (newFeature) => {
-    const { editFeature } = this.state;
-    if (editFeature >= 0) {
-      const { model, onChange } = this.props;
-      const updated = {
-        ...model,
-        features: model.features
-          .map((feature, index) =>
-            (index === editFeature ? { ...feature, ...newFeature } : feature)),
-      };
-      onChange(updated);
-    }
-    this.setState({ editFeature: undefined });
-  };
-
-  onUpdateTarget = (newTarget) => {
-    const { editTarget } = this.state;
-    if (editTarget >= 0) {
-      const { model, onChange } = this.props;
-      const updated = {
-        ...model,
-        targets: model.targets
-          .map((target, index) =>
-            (index === editTarget ? { ...target, ...newTarget } : target)),
-      };
-      onChange(updated);
-    }
-    this.setState({ editTarget: undefined });
+  onChangeTargets = (targets) => {
+    const { onChange, model } = this.props;
+    onChange({ ...model, targets });
   };
 
   renderLayer({ layer, nodes }) {
@@ -296,7 +220,7 @@ class NetworkMap extends Component {
           <Box basis='xsmall'>
             {
               this.renderLayerSettings(layer.slug || layer.className,
-              editable && layer.readOnly === undefined, layer.index - 1)
+              editable && layer.readOnly === undefined, layer.index)
             }
           </Box>
 
@@ -339,31 +263,6 @@ class NetworkMap extends Component {
       );
     }
     const layers = [];
-    const layerFeatures = {
-      className: 'Features',
-      background: '#FFCA58',
-      index: 0,
-      readOnly: true,
-      config: {
-        units: model.features.length,
-      },
-    };
-    layers.push(layerFeatures);
-
-    const featureNodes = this.renderLayer({
-      layer: layerFeatures,
-      nodes: model.features.map((item, index) => ({
-        label: (
-          <Button onClick={() => this.setState({ editFeature: index })} >
-            <Box align='center'>
-              <Symbol {...item} />
-              <Text weight='bold'>{item.field}</Text>
-            </Box>
-          </Button>
-        ),
-      })),
-    });
-
     const { layers: deepLayers } = model;
     const layerNodes = deepLayers.map((layer, index) => {
       layers.push(layer);
@@ -371,38 +270,21 @@ class NetworkMap extends Component {
         layer: {
           ...layer,
           background: ['LSTM', 'GRU', 'SimpleRNN'].indexOf(layer.className) !== -1 ? '#0072c6' : '#07c66c',
-          index: index + 1,
+          index,
         },
         nodes: new Array(layer.config.units).fill()
           .map((_, i) => ({ label: `${layer.slug}-${i + 1}` })),
       });
     });
-    const layerTargets = {
-      className: 'Target',
-      background: '#ff990a',
-      index: layers.length,
-      readOnly: true,
-      config: {
-        units: model.targets.length,
-      },
-    };
-    layers.push(layerTargets);
-    const targetsNodes = this.renderLayer({
-      layer: layerTargets,
-      nodes: model.targets.map((item, index) => ({
-        label: (
-          <Button onClick={() => this.setState({ editTarget: index })}>
-            <Box align='center'>
-              <Symbol {...item} />
-              <Text weight='bold'>{item.field}</Text>
-            </Box>
-          </Button>
-        ),
-      })),
-    });
     let connections = [];
-    for (let i = 0; i < layers.length - 1; i += 1) {
-      connections = [...connections, ...layerConnections(layers, i)];
+    if (deepLayers.length > 0) {
+      connections = [...connections, ...layerConnections('features', model.features, 0, deepLayers[0])];
+      for (let i = 0; i < deepLayers.length - 1; i += 1) {
+        connections = [...connections,
+          ...layerConnections(i, deepLayers[i], i + 1, deepLayers[i + 1])];
+      }
+      connections = [...connections,
+        ...layerConnections(deepLayers.length - 1, deepLayers[deepLayers.length - 1], 'targets', model.targets)];
     }
     let addButton;
     if (editable) {
@@ -422,9 +304,9 @@ class NetworkMap extends Component {
         <Heading level={3}>Network topology</Heading>
         <Stack>
           <Box fill='horizontal' gap='large'>
-            {featureNodes}
+            <Features features={model.features} onChange={this.onChangeFeatures} />
             {layerNodes}
-            {targetsNodes}
+            <Targets targets={model.targets} onChange={this.onChangeTargets} />
           </Box>
           <Diagram
             style={{ pointerEvents: 'none' }}
@@ -434,22 +316,10 @@ class NetworkMap extends Component {
         </Stack>
       </Box>
     );
-    let editFeature;
-    if (this.state.editFeature !== undefined) {
-      const feature = model.features[this.state.editFeature];
-      editFeature = (
-        <SelectDataset
-          data={feature}
-          heading='Select feature'
-          onSelect={this.onUpdateFeature}
-          onClose={() => this.setState({ editFeature: undefined })}
-          onRemove={model.features.length > 1 ? this.onRemoveFeature : undefined}
-        />);
-    }
     let editTarget;
     if (this.state.editTarget !== undefined) {
       const target = model.targets[this.state.editTarget];
-      editFeature = (
+      editTarget = (
         <SelectDataset
           data={target}
           heading='Update target'
@@ -462,7 +332,6 @@ class NetworkMap extends Component {
         {modelMap}
         {editLayer}
         {deleteConfirm}
-        {editFeature}
         {editTarget}
       </Box>
     );

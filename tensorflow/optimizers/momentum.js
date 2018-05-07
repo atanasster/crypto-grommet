@@ -9,6 +9,7 @@ export default class Momentum extends BaseConfig {
       name: 'lr',
       label: 'Learning rate',
       value: lr,
+      defaultValue: 0.001,
       min: 0,
       max: 1,
       step: 0.001,
@@ -17,6 +18,7 @@ export default class Momentum extends BaseConfig {
       name: 'momentum',
       label: 'Momentum',
       value: momentum,
+      defaultValue: 0.0,
       min: 0,
       max: 1,
       step: 0.001,
@@ -25,7 +27,8 @@ export default class Momentum extends BaseConfig {
       name: 'nesterov',
       label: 'Nesterov momentum',
       value: nesterov,
+      defaultValue: false,
     });
   }
-  tf = () => tf.train.momentum(this.getValue('lr'), this.getValue('momentum'), this.getValue('nesterov'))
+  tf = () => tf.train.momentum(this.getPropValue('lr'), this.getPropValue('momentum'), this.getPropValue('nesterov'))
 }

@@ -44,5 +44,5 @@ export default class Adam extends BaseConfig {
       step: 0.0001,
     });
   }
-   tf = () => tf.train.adam(this.getValue('lr'), this.getValue('beta1'), this.getValue('beta2'), this.getValue('epsilon'));
+   tf = () => tf.train.adam(this.getPropValue('lr'), this.getPropValue('beta1'), this.getPropValue('beta2'), this.getPropValue('epsilon'));
 }

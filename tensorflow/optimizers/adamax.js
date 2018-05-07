@@ -49,6 +49,6 @@ export default class AdaMax extends BaseConfig {
       step: 0.01,
     });
   }
-   tf = () => tf.train.adamax(this.getValue('lr'), this.getValue('beta1'), this.getValue('beta2'),
-     this.getValue('epsilon'), this.getValue('decay'));
+   tf = () => tf.train.adamax(this.getPropValue('lr'), this.getPropValue('beta1'), this.getPropValue('beta2'),
+     this.getPropValue('epsilon'), this.getPropValue('decay'));
 }

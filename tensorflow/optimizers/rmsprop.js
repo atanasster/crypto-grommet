@@ -11,6 +11,7 @@ export default class RMSProp extends BaseConfig {
       name: 'lr',
       label: 'Learning rate',
       value: lr,
+      defaultValue: 0.001,
       min: 0,
       max: 1,
       step: 0.001,
@@ -45,6 +46,6 @@ export default class RMSProp extends BaseConfig {
       value: centered,
     });
   }
-  tf = () => tf.train.sgd(this.getValue('lr'), this.getValue('decay'), this.getValue('momentum'),
-    this.getValue('epsilon'), this.getValue('centered'));
+  tf = () => tf.train.sgd(this.getPropValue('lr'), this.getPropValue('decay'), this.getPropValue('momentum'),
+    this.getPropValue('epsilon'), this.getPropValue('centered'));
 }

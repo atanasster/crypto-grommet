@@ -34,7 +34,7 @@ class TensorFlowPlay extends React.Component {
           createLayer(kerasDefaults.layers, 'Dense', { units: 3 }),
         ],
         optimizer: tensorflow.optimizer({ name: 'SGD', config: { lr: 0.003 } }),
-        objoptimizerClassectif: 'mean_squared_error',
+        loss: 'meanSquaredError',
         features: [
           { field: 'open', symbol: 'BTC', type: 'coin' },
           { field: 'high', symbol: 'BTC', type: 'coin' },

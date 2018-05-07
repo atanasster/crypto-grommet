@@ -8,20 +8,21 @@ import { equityInfoQuery } from '../graphql/equities';
 
 
 export const EquityPath = ({
-  symbol, children,
-}) => (
+  symbol, children, disableLink,
+}) => (disableLink ? <div>{children}</div> : (
   <RoutedAnchor route='equity_info' params={{ symbol }} >
     {children}
   </RoutedAnchor>
-);
+));
 
 export const pushEquityPath = ({ symbol }) => {
   routerPush({ route: 'equity_info', params: { symbol } });
 };
 const Equity = ({
-  equity, size, display,
+  equity, size, display, disableLink,
 }) => (equity ? (
   <EquityPath
+    disableLink={disableLink}
     symbol={equity.symbol}
   >
     <Entity

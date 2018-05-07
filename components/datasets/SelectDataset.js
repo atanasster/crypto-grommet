@@ -39,36 +39,37 @@ class SelectDataset extends React.Component {
     const {
       onClose, heading, onRemove,
     } = this.props;
-    const { data } = this.state;
+    const { data: { symbol, field, type } } = this.state;
     return (
       <SideLayer onClose={onClose} heading={heading}>
         <Box gap='large'>
           <Box pad={{ vertical: 'small' }} gap='medium'>
             <Box gap='small'>
               <SearchEntity
-                value={data.symbol}
+                value={symbol}
                 onChange={this.onSearchSelect}
               />
             </Box>
             <Select
               options={Object.keys(fields).map(key => fields[key])}
               onChange={this.onSelectField}
-              value={fields[data.field] || ''}
+              value={fields[field] || ''}
             />
           </Box>
           <Box borer='top'>
             <Box align='center' gap='small'>
               <Heading level={3}>
-                Selected <strong>{data.type}</strong>
+                Selected <strong>{type}</strong>
               </Heading>
               <Symbol
                 display={['image', 'symbol', 'name']}
-                {...data}
+                symbol={symbol}
+                type={type}
               />
-              <Text weight='bold'>{data.field}</Text>
+              <Text weight='bold'>{field}</Text>
             </Box>
             <Box direction='row' justify='between' pad='medium'>
-              <Button label='Select' onClick={this.onConfirm} />
+              <Button label='Select' onClick={symbol && field && type ? this.onConfirm : undefined} />
               {onRemove && <Button label='Remove' onClick={onRemove} />}
 
             </Box>

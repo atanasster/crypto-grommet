@@ -45,5 +45,5 @@ export default class Optimizer extends BaseConfig {
       super.setPropValue(name, Option);
     }
   }
-  tf = () => this.getValue('optimizer').tf();
+  tf = () => this.getPropValue('optimizer').tf();
 }
