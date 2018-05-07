@@ -16,13 +16,22 @@ import loginMutation from './graphql/Login.graphql';
 class LoginForm extends Component {
   // eslint-disable-next-line no-unused-vars
   openOAutPopup = (provider) => {
-    popupWindow(`${window.location.origin}/auth/${provider}`)
-      .then((data) => {
-        this.props.signIn(data);
-        routerPush({ route: 'profile' });
-      })
-      .catch(err => console.log('error', err));
+    const { resitrationLimited } = this.props;
+    if (resitrationLimited) {
+      this.cantRegister();
+    } else {
+      popupWindow(`${window.location.origin}/auth/${provider}`)
+        .then((data) => {
+          this.props.signIn(data);
+          routerPush({ route: 'profile' });
+        })
+        .catch(err => console.log('error', err));
+    }
   };
+
+  cantRegister = () => {
+    this.props.addError('Registration is currently closed for new members');
+  }
 
   getServerErrors(err) {
     if (err.graphQLErrors || err.networkError) {
@@ -49,12 +58,12 @@ class LoginForm extends Component {
 
 
   render() {
-    const { onSwitchNewAccount, onSwitchRecoverPassword } = this.props;
+    const { onSwitchNewAccount, onSwitchRecoverPassword, resitrationLimited } = this.props;
     return (
       <Box gap='small' overflow='scroll'>
         <Box direction='row'>
           <Text color='dark-3' size='small'>
-            New user? Signup for a <Anchor label='free account' onClick={onSwitchNewAccount} />
+            New user? Signup for a <Anchor label='free account' onClick={resitrationLimited ? this.cantRegister : onSwitchNewAccount} />
           </Text>
         </Box>
         <Box pad={{ vertical: 'small' }}>
@@ -109,7 +118,7 @@ class LoginForm extends Component {
           </Form>
         </Box>
         <Text size='small'>
-          <Anchor label='forgot password?' onClick={onSwitchRecoverPassword} />
+          <Anchor label='forgot password?' onClick={resitrationLimited ? this.cantRegister : onSwitchRecoverPassword} />
         </Text>
       </Box>
     );

@@ -55,6 +55,7 @@ export default class AuthForm extends Component {
       default:
         return (
           <LoginForm
+            resitrationLimited={true}
             onClose={this.props.onClose}
             onSwitchNewAccount={this.switchNewAccount}
             onSwitchRecoverPassword={this.switchRecoverPasswor}

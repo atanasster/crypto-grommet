@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box, Text, Paragraph } from 'grommet';
 import TextInput from '../grommet/TextInput/TextInput';
 import { searchQuery } from '../graphql/entities';
-import routerPush from '../Router';
 
 const entityLinks = {
   'coin': { route: 'coin_info' },
@@ -19,6 +19,7 @@ class SearchEntity extends React.Component {
   };
 
   onSelect = ({ suggestion }) => {
+    const { onChange } = this.props;
     const selected = suggestion.value.split('_');
     if (selected.length === 2) {
       const link = entityLinks[selected[0]];
@@ -28,10 +29,9 @@ class SearchEntity extends React.Component {
         if (type) {
           const entity = type.results.find(e => e.slug === selected[1]);
           if (entity) {
-            routerPush({
-              route: link.route,
-              params: link.routeParams ? link.routeParams(entity) : { symbol: entity.slug },
-            });
+            if (onChange) {
+              onChange({ link, entity });
+            }
           }
         }
       }
@@ -77,6 +77,14 @@ class SearchEntity extends React.Component {
     );
   }
 }
+
+SearchEntity.defaultProps = {
+  onChange: undefined,
+};
+
+SearchEntity.propTypes = {
+  onChange: PropTypes.func,
+};
 
 export default graphql(searchQuery,
   { options: () => ({ variables: { types: ['equity', 'coin', 'coinexchange'] } }) })(SearchEntity);

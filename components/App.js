@@ -128,9 +128,9 @@ class App extends Component {
           <Responsive onChange={this.onResponsive}>
             <Box style={{ height: 'auto', minHeight: '100vh' }}>
               <NavMenu showLogin={showLogin} />
+              <Notifications />
               <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small' flex={true}>
                 {menu && menu}
-                <Notifications />
                 {notifications && notifications.map(
                   (msg, index) => (<Notification key={`msg_${index}`} {...msg} />)
                 )}

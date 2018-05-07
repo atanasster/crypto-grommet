@@ -73,6 +73,13 @@ class NavMenu extends Component {
     }
     return menu;
   }
+  onSearchSelect = ({ link, entity }) => {
+    routerPush({
+      route: link.route,
+      params: link.routeParams ? link.routeParams(entity) : { symbol: entity.slug },
+    });
+  };
+
   render() {
     const { loginForm } = this.state;
     let layer;
@@ -80,27 +87,31 @@ class NavMenu extends Component {
       layer = <Login onClose={() => this.setState({ loginForm: false })} />;
     }
     return (
-      <Box
-        tag='header'
-        direction='row'
-        justify='between'
-        align='center'
-        pad='small'
-        border='bottom'
-        background='brand'
-      >
-        <Box direction='row' align='center' gap='small'>
-          <AppIcon color='plain' />
-          <RoutedAnchor route='home' a11yTitle='Go to home page' >
-            <Text size='large'>crypto-grommet</Text>
-          </RoutedAnchor>
-        </Box>
-        <Box direction='row' align='center' gap='small'>
-          <SearchEntity />
-          {this.renderMenu()}
+      <div>
+        <Box
+          tag='header'
+          direction='row'
+          justify='between'
+          align='center'
+          pad='small'
+          border='bottom'
+          background='brand'
+        >
+          <Box direction='row' align='center' gap='small'>
+            <AppIcon color='plain' />
+            <RoutedAnchor route='home' a11yTitle='Go to home page' >
+              <Text size='large'>crypto-grommet</Text>
+            </RoutedAnchor>
+          </Box>
+          <Box direction='row' align='center' gap='small'>
+            <SearchEntity
+              onChange={this.onSearchSelect}
+            />
+            {this.renderMenu()}
+          </Box>
         </Box>
         {layer}
-      </Box>
+      </div>
     );
   }
 }

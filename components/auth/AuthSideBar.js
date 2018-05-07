@@ -9,7 +9,10 @@ class AuthSideBar extends Component {
     const { title } = this.state;
     return (
       <SideLayer onClose={onClose} heading={title} >
-        <AuthForm onClose={onClose} onTitle={newTitle => this.setState({ title: newTitle })} />
+        <AuthForm
+          onClose={onClose}
+          onTitle={newTitle => this.setState({ title: newTitle })}
+        />
       </SideLayer>
     );
   }
