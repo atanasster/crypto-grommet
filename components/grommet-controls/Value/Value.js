@@ -16,7 +16,7 @@ const Value = ({
 }) => (
   <Box gap={gap}>
     <Text size={size} weight={weight}>
-      {`${value}${units ? ` ${units}` : ''}` || '-'}
+      {`${value !== undefined ? value : '-'}${units ? ` ${units}` : ''}`}
     </Text>
     <Box alignSelf='end'>
       <Text size={LABEL_SIZE_MAP[size]}>
