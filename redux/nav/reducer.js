@@ -11,7 +11,7 @@ const initialState = {
     { route: 'exchanges', label: 'exchanges', a11yTitle: 'List of exchanges' },
     { route: 'coins_icos', label: 'ICO', a11yTitle: 'List of active and upcoming initial coin offerings' },
     // eslint-disable-next-line max-len
-    // { route: 'deep_play', label: 'play', a11yTitle: 'Play woth tensorflow deep learning models' },
+    // { route: 'models_playground', label: 'play', a11yTitle: 'Playground for tensorflow deep learning models' },
   ],
   user_items: [
     { route: 'profile', label: 'profile', a11yTitle: 'View your user profile' },

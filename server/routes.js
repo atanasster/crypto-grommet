@@ -42,5 +42,5 @@ routes.add({ name: 'equities_by_sector', pattern: '/equities/sectors/:sector', p
 routes.add({ name: 'equity_info', pattern: '/equities/info/:symbol', page: `${SITE_ROOT}/equities/general` });
 
 // deep learning
-routes.add({ name: 'deep_play', pattern: '/tensorflow/play', page: `${SITE_ROOT}/tensorflow/play` });
+routes.add({ name: 'models_playground', pattern: '/models/playground', page: `${SITE_ROOT}/models/play` });
 module.exports = routes;

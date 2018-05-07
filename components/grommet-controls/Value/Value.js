@@ -12,14 +12,14 @@ const LABEL_SIZE_MAP = {
   xxlarge: 'large',
 };
 const Value = ({
-  label, value, size, weight, gap, units,
+  label, value, size, weight, gap, units, color,
 }) => (
   <Box gap={gap}>
-    <Text size={size} weight={weight}>
+    <Text size={size} weight={weight} color={color}>
       {`${value !== undefined ? value : '-'}${units ? ` ${units}` : ''}`}
     </Text>
     <Box alignSelf='end'>
-      <Text size={LABEL_SIZE_MAP[size]}>
+      <Text size={LABEL_SIZE_MAP[size]} color={color}>
         {label}
       </Text>
     </Box>
@@ -32,10 +32,12 @@ Value.defaultProps = {
   weight: 'bold',
   gap: 'small',
   size: 'large',
+  color: undefined,
 };
 
 Value.propTypes = {
   label: PropTypes.string,
+  color: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   weight: PropTypes.oneOfType([PropTypes.oneOf(['normal', 'bold']), PropTypes.number]),
   gap: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge']),

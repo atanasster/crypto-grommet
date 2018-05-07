@@ -70,7 +70,7 @@ class TensorFlowPlay extends React.Component {
     const { model, modified } = this.state;
     return (
       <App
-        title={`Tensorflow play ${modified ? '*' : ''}`}
+        title={`Models playground ${modified ? '*' : ''}`}
         menu={<TrainModel model={model} />}
       >
         <Box gap='small' fill='horizontal'>
