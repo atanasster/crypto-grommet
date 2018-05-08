@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as tf from '@tensorflow/tfjs';
 import { Box, Button } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
@@ -10,14 +11,18 @@ class TrainModel extends React.Component {
     running: false,
     lossHistory: [],
   }
+  static contextTypes = {
+    client: PropTypes.object.isRequired,
+  }
   async onTrain() {
     const { model: nn } = this.props;
+    console.log(this.context);
     const beginMs = Date.now();
     // Generate some synthetic data for training. (y = 2x - 1)
-    const xs = tf.tensor2d([-1, 0, 1, 2, 3, 4], [6, 1]);
-    const ys = tf.tensor2d([-3, -1, 1, 3, 5, 7], [6, 1]);
+    const xs = tf.tensor2d([[-1, 0, 1], [-3, 1, 2], [5, 4, 2], [6, 2, 1]], [4, 3]);
+    const ys = tf.tensor2d([-3, -1, 1, 3], [4, 1]);
     const model = tf.sequential();
-    model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+    model.add(tf.layers.dense({ units: 1, inputShape: [3] }));
 
     // Prepare the model for training: Specify the loss and the optimizer.
     model.compile({
@@ -30,6 +35,7 @@ class TrainModel extends React.Component {
     const history = await model.fit(xs, ys, {
       epochs: nn.epochs,
       batchSize: nn.batchSize,
+      validationSplit: 0.3,
       callbacks: {
         onTrainBegin: async (logs) => {
           this.setState({ running: true, lossHistory: [] });
@@ -67,12 +73,11 @@ class TrainModel extends React.Component {
         epochs: nn.epochs,
         batchSize: nn.batchSize,
       };
-      console.log(item);
       addHistory(item);
     }
     // Use the model to do inference on a data point the model hasn't seen.
     // Should print approximately 39.
-    model.predict(tf.tensor2d([20], [1, 1]))
+    model.predict(tf.tensor2d([[-1, 0, 1], [-3, 1, 2], [5, 4, 2], [6, 2, 1]], [4, 3]))
       .print();
   }
   render() {

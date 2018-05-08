@@ -7,11 +7,16 @@ export const loadHistory = () => (
 
 export const addHistory = (item) => {
   if (localStorage) {
-    // localStorage.removeItem(HISTORY_STORAGE_NAME);
     const history = loadHistory();
     const updated = [...(history.slice(0, 100)), item];
     localStorage.setItem(HISTORY_STORAGE_NAME, JSON.stringify(updated));
     return updated;
   }
   return [];
+};
+
+export const clearHistory = () => {
+  if (localStorage) {
+    localStorage.removeItem(HISTORY_STORAGE_NAME);
+  }
 };

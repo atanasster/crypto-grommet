@@ -1,18 +1,39 @@
 import React from 'react';
-import { Text } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
 import { longDate } from 'grommet-controls/utils/moment';
-import { loadHistory } from './history';
+import { loadHistory, clearHistory } from './history';
 import LossHistoryChart from './LossHistoryChart';
+import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 
 class ModelHistory extends React.Component {
+  state = {
+    confirmClearHistory: false,
+  }
   onExpand = row => (
     <div>
       {row.original.epochs}
     </div>
   );
 
+  onClearHistory = () => {
+    clearHistory();
+    this.setState({ confirmClearHistory: false });
+  };
+
   render() {
+    const { confirmClearHistory } = this.state;
+    let confirmClear;
+    if (confirmClearHistory) {
+      confirmClear = (
+        <Confirmation
+          title='Clear history?'
+          text='Are you sure you want to clear the model history?'
+          onClose={() => this.setState({ confirmClearHistory: false })}
+          onConfirm={this.onClearHistory}
+        />
+      );
+    }
     const history = loadHistory();
     const columns = [
       {
@@ -52,14 +73,19 @@ class ModelHistory extends React.Component {
         ),
       },
     ];
-    console.log(history);
     return (
-      <PagingTable
-        columns={columns}
-        data={history}
-        onExpand={this.onExpand}
-        defaultSorted={[{ id: 'date', desc: true }]}
-      />
+      <Box gap='medium' fill='horizontal'>
+        <Box alignSelf='end'>
+          <Button label='Clear history' onClick={() => this.setState({ confirmClearHistory: true })} />
+        </Box>
+        <PagingTable
+          columns={columns}
+          data={history}
+          onExpand={this.onExpand}
+          defaultSorted={[{ id: 'date', desc: true }]}
+        />
+        {confirmClear}
+      </Box>
     );
   }
 }
