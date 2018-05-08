@@ -46,6 +46,7 @@ class SelectDataset extends React.Component {
           <Box pad={{ vertical: 'small' }} gap='medium'>
             <Box gap='small'>
               <SearchEntity
+                types={['equity', 'coin']}
                 value={symbol}
                 onChange={this.onSearchSelect}
               />

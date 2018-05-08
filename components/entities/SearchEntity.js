@@ -19,10 +19,11 @@ class SearchEntity extends React.Component {
 
   onSearch = async (e) => {
     const { client } = this.context;
+    const { types } = this.props;
     const { data } = await client.query({
       query: searchQuery,
       variables: {
-        types: ['equity', 'coin', 'coinexchange'],
+        types,
         search: e.target.value,
       },
     });
@@ -96,11 +97,13 @@ class SearchEntity extends React.Component {
 SearchEntity.defaultProps = {
   onChange: undefined,
   value: undefined,
+  types: ['equity', 'coin', 'coinexchange'],
 };
 
 SearchEntity.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
+  types: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default SearchEntity;
