@@ -14,7 +14,7 @@ const entityLinks = {
 };
 class SearchEntity extends React.Component {
   state = {
-    data: { search: [] },
+    data: { },
   };
 
   onSearch = async (e) => {
