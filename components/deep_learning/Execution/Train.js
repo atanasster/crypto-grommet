@@ -10,6 +10,7 @@ class TrainModel extends React.Component {
   state = {
     running: false,
     lossHistory: [],
+    valLossHistory: [],
   }
   static contextTypes = {
     client: PropTypes.object.isRequired,
@@ -28,7 +29,6 @@ class TrainModel extends React.Component {
     model.compile({
       loss: nn.loss,
       optimizer: nn.optimizer.tf(),
-      metrics: ['mae', 'mape'],
     });
 
     // Train the model using the data.
@@ -38,7 +38,7 @@ class TrainModel extends React.Component {
       validationSplit: 0.3,
       callbacks: {
         onTrainBegin: async (logs) => {
-          this.setState({ running: true, lossHistory: [] });
+          this.setState({ running: true, lossHistory: [], valLossHistory: [] });
           console.log('Training begin', logs);
           await tf.nextFrame();
         },
@@ -48,13 +48,15 @@ class TrainModel extends React.Component {
         },
         onEpochEnd: async (epoch, logs) => {
           if (!Number.isNaN(logs.loss)) {
-            const loss = logs.loss.toFixed(5);
-
+            // eslint-disable-next-line camelcase
+            const { loss, val_loss: valLoss } = logs;
             this.setState({
               epoch,
               loss,
+              valLoss,
               timing: (Date.now() - beginMs).toFixed(0),
               lossHistory: [...this.state.lossHistory, loss],
+              valLossHistory: [...this.state.valLossHistory, valLoss],
             });
           }
           await tf.nextFrame();
@@ -69,7 +71,8 @@ class TrainModel extends React.Component {
         date: Date.now(),
         timing,
         loss: history.history.loss[history.history.loss.length - 1],
-        lossHistory: history.history.loss,
+        valLoss: history.history.val_loss[history.history.val_loss.length - 1],
+        history: history.history,
         epochs: nn.epochs,
         batchSize: nn.batchSize,
       };
@@ -82,7 +85,7 @@ class TrainModel extends React.Component {
   }
   render() {
     const {
-      epoch, loss, running, timing, lossHistory,
+      epoch, loss, valLoss, running, timing, lossHistory, valLossHistory,
     } = this.state;
     return (
       <Box
@@ -96,10 +99,11 @@ class TrainModel extends React.Component {
         <Button onClick={running ? undefined : () => this.onTrain()} label='Train' />
         <Box direction='row' gap='medium'>
           <Value label='epoch' value={epoch} />
-          <Value label='loss' value={loss} units='mse' />
+          <Value label='loss' value={loss ? loss.toFixed(5) : undefined} units='mse' />
+          <Value label='val. loss' value={valLoss ? valLoss.toFixed(5) : undefined} units='mse' />
           <Value label='duration' value={timing} units='ms' />
         </Box>
-        <LossHistoryChart history={lossHistory} />
+        <LossHistoryChart loss={lossHistory} valLoss={valLossHistory} />
       </Box>
     );
   }

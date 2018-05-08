@@ -98,7 +98,7 @@ class TensorFlowPlay extends React.Component {
             <Box direction='row' gap='small'>
               <Button active={view === 'design'} label='design' onClick={() => this.setState({ view: 'design' })} />
               <Button active={view === 'history'} label='history' onClick={() => this.setState({ view: 'history' })} />
-              <Button active={view === 'predictions'} label='predictions' onClick={() => this.setState({ view: 'predictions' })} />
+              <Button active={view === 'analysis'} label='analysis' onClick={() => this.setState({ view: 'analysis' })} />
             </Box>
           </Box>
         )}

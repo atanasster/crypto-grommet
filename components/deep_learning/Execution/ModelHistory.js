@@ -63,12 +63,11 @@ class ModelHistory extends React.Component {
         getProps: () => ({ align: 'end' }),
       }, {
         Header: 'Loss',
-        accessor: 'lossHistory',
+        accessor: 'history',
         Cell: cell => (
           <LossHistoryChart
-            history={cell.value}
-            coin={cell.original}
-            large={true}
+            loss={cell.value.loss}
+            valLoss={cell.value.val_loss}
           />
         ),
       },
