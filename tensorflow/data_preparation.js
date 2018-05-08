@@ -4,24 +4,24 @@ import { priceHistoryQuery as coinPrices } from '../graphql/coins';
 import { priceHistoryQuery as equityPrices } from '../graphql/equities';
 
 
-export async function queryPriceData(symbol, query) {
+export async function queryPriceData(symbol, query, limit) {
   const client = initApollo();
   const { data: { prices: { list: { results } } } } = await client.query({
     query,
-    variables: { symbol, limit: 1000 },
+    variables: { symbol, limit },
   });
   return results;
 }
 
-export async function loadPriceData(symbol, type) {
+export async function loadPriceData(symbol, type, limit) {
   let result = null;
   switch (type) {
     case 'coin':
-      result = await queryPriceData(symbol, coinPrices);
+      result = await queryPriceData(symbol, coinPrices, limit);
       break;
     case 'equity':
     default:
-      result = await queryPriceData(symbol, equityPrices);
+      result = await queryPriceData(symbol, equityPrices, limit);
       break;
   }
   return result;
@@ -41,33 +41,143 @@ function convertToTensors(features, targets, testSplit) {
 
   // Create 2D `tf.Tensor` to hold the features data.
   const xs = tf.tensor2d(features, [numFeatures, xDims]);
-
   // Create 2D `tf.Tensor` to hold the targets data.
   const ys = tf.tensor2d(targets, [numFeatures, yDims]);
 
   // Split the data into training and test sets, using tf slice
   const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);
+
   const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);
   const yTrain = ys.slice([0, 0], [numTrainExamples, yDims]);
   const yTest = ys.slice([numTrainExamples, 0], [numTestExamples, yDims]);
-  return [xTrain, yTrain, xTest, yTest];
+  return {
+    xTrain, yTrain, xTest, yTest,
+  };
 }
 
-export async function loadData(features, targets) {
-  let uniqueSymbols = features.reduce((r, item) => (
-    { ...r, [`${item.type}_${item.symbol}`]: item }
-  ), {});
-  uniqueSymbols = targets.reduce((r, item) => (
-    { ...r, [`${item.type}_${item.symbol}`]: item }
-  ), uniqueSymbols);
+const dataKey = item => (`${item.type}_${item.symbol}`);
 
-  const prices = await Promise.all(Object.keys(uniqueSymbols).map(async (key) => {
-    const item = uniqueSymbols[key];
-    return { ...uniqueSymbols[key], prices: await loadPriceData(item.symbol, item.type) };
+const dateToSort = date => (
+  date ? `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}` : null
+);
+
+function mergeData(fields, loadedData) {
+  const data = {};
+  fields.forEach((item, index) => {
+    const prices = loadedData[dataKey(item)];
+    if (prices && prices.prices) {
+      prices.prices.forEach((price) => {
+        const date = dateToSort(new Date(price.date));
+        if (data[date] === undefined) {
+          data[date] = [];
+        }
+        data[date][index] = price[item.field];
+      });
+    }
+  });
+  // first row is the date
+  // next are the features, one by row and finally the target
+  // sort in ascending order by date
+  const pd = Object.keys(data)
+    .map(key => [key, ...data[key]])
+    .sort((a, b) => {
+      if (a[0] < b[0]) {
+        return -1;
+      }
+      if (a[0] > b[0]) {
+        return 1;
+      }
+      return 0;
+    });
+  // fill gaps in data
+  return pd;
+}
+export function scaleData(data, scalers) {
+  if (scalers === undefined) {
+    return data;
+  }
+  return data.map((row) => {
+    const newRow = [row[0]];
+    scalers.forEach((scaler, c) => {
+      newRow.push(row[c + 1] * scaler);
+    });
+    return newRow;
+  });
+}
+export function normalizeData(data) {
+  const normalized = [];
+  if (data.length > 0) {
+    const numData = data[0].length - 1;
+    const scalers = Array(...Array(numData)).map(Number.prototype.valueOf, 1);
+    const maxValues = Array(...Array(numData)).map(Number.prototype.valueOf, 0);
+
+    // fill NA values or discard rows
+    data.forEach((row, r) => {
+      const newRow = [row[0]];
+      let skip = false;
+      for (let c = 1; c <= numData; c += 1) {
+        let val = row[c];
+        if (val === undefined) {
+          if (data[r - 1] !== undefined && data[r - 1][c] !== undefined) {
+            val = data[r - 1][c];
+          } else {
+            skip = true;
+            break;
+          }
+        }
+        const absVal = Math.abs(val);
+        if (absVal > maxValues[c - 1]) {
+          maxValues[c - 1] = absVal;
+        }
+        newRow[c] = val;
+      }
+      if (!skip) {
+        normalized.push(newRow);
+      }
+    });
+    maxValues.forEach((maxValue, c) => {
+      scalers[c] = 1 / maxValue;
+    });
+    return { normalized, scalers };
+  }
+  return { normalized: data };
+}
+
+function shiftTargets(data, numFeatures, numTargets, lookbackDays) {
+  const xData = [];
+  const yData = [];
+  for (let r = lookbackDays; r < data.length; r += 1) {
+    const row = data[r];
+    const rowLookback = data[r - lookbackDays];
+    xData.push(rowLookback.slice(1, numFeatures + 1));
+    yData.push(row.slice(1 + numFeatures));
+  }
+  return { xData, yData };
+}
+
+export const loadDatasets = async (fields, dataPoints, lookbackDays) => {
+  const uniqueDatasets = fields.reduce((r, item) => (
+    { ...r, [dataKey(item)]: { ...item } }
+  ), {});
+  await Promise.all(Object.keys(uniqueDatasets).map(async (key) => {
+    const item = uniqueDatasets[key];
+    item.prices = await loadPriceData(item.symbol, item.type, dataPoints + lookbackDays);
   }));
-  const f = [[-1, 0, 1], [-3, 1, 2], [5, 4, 2], [6, 2, 1]];
-  const t = [[-3], [-1], [1], [3]];
-  console.log(prices);
-  const [xTrain, yTrain, xTest, yTest] = convertToTensors(f, t, 0.33);
-  return [xTrain, yTrain, xTest, yTest];
+  return mergeData(fields, uniqueDatasets);
+};
+
+export async function prepareTestTrainData({
+  features, targets, testSplit, lookbackDays, dataPoints,
+}) {
+  const data = await loadDatasets(features.concat(targets), dataPoints, lookbackDays);
+  const { normalized, scalers } = normalizeData(data);
+  const scaledData = scaleData(normalized, scalers);
+  const { xData, yData } =
+    shiftTargets(scaledData, features.length, targets.length, lookbackDays);
+  const {
+    xTrain, yTrain, xTest, yTest,
+  } = convertToTensors(xData, yData, testSplit);
+  return {
+    xTrain, yTrain, xTest, yTest, scalers,
+  };
 }

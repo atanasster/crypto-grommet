@@ -352,14 +352,36 @@ class ModelDesigner extends Component {
           <Box basis='1/3' pad='medium'>
             <Heading level={3}>Parameters</Heading>
             <Box>
-              <FormField label='Observation days / window' htmlFor='observation_days'>
+              <FormField label='Lookback (lag) days' htmlFor='lookback_days'>
                 <NumberInput
-                  id='observation_days'
+                  id='lookback_days'
                   min={1}
-                  max={25}
-                  name='observation_days'
-                  value={model.observationDays}
-                  onChange={e => this.onChange('observationDays', e)}
+                  max={300}
+                  name='lookback_days'
+                  value={model.lookbackDays}
+                  onChange={e => this.onChange('lookbackDays', e)}
+                />
+              </FormField>
+              <FormField label='Data points' htmlFor='data_points'>
+                <NumberInput
+                  id='data_points'
+                  min={10}
+                  max={1000}
+                  step={1}
+                  name='data_points'
+                  value={model.dataPoints}
+                  onChange={e => this.onChange('dataPoints', e)}
+                />
+              </FormField>
+              <FormField label='Test/train split' htmlFor='test_split'>
+                <NumberInput
+                  id='test_split'
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  name='test_split'
+                  value={model.testSplit}
+                  onChange={e => this.onChange('testSplit', e)}
                 />
               </FormField>
               <FormField label='Batch size' htmlFor='batch_size'>

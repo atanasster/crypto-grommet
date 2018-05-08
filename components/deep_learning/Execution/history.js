@@ -8,7 +8,7 @@ export const loadHistory = () => (
 export const addHistory = (item) => {
   if (localStorage) {
     const history = loadHistory();
-    const updated = [...(history.slice(0, 100)), item];
+    const updated = [...history.slice(Math.max(0, history.length - 99)), item];
     localStorage.setItem(HISTORY_STORAGE_NAME, JSON.stringify(updated));
     return updated;
   }

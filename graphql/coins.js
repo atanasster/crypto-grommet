@@ -68,7 +68,7 @@ export const priceHistoryQuery = gql`
           high
           low
           open
-          volumefrom
+          volume: volumefrom
           volumeto
         }
       }    

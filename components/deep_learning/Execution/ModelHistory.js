@@ -5,16 +5,22 @@ import { longDate } from 'grommet-controls/utils/moment';
 import { loadHistory, clearHistory } from './history';
 import LossHistoryChart from './LossHistoryChart';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
+import makePredictions from '../../../tensorflow/predictions';
+
+async function onExpand(row) {
+  const preditions = await makePredictions(row.original.model);
+  return (
+    <div>
+      {preditions}
+    </div>
+  );
+}
 
 class ModelHistory extends React.Component {
   state = {
     confirmClearHistory: false,
-  }
-  onExpand = row => (
-    <div>
-      {row.original.epochs}
-    </div>
-  );
+  };
+
 
   onClearHistory = () => {
     clearHistory();
@@ -44,7 +50,13 @@ class ModelHistory extends React.Component {
       {
         Header: 'Loss',
         accessor: 'loss',
-        Cell: cell => (<Text weight='bold'>{cell.value.toFixed(5)}</Text>),
+        Cell: cell => (<Text weight='bold'>{cell.value ? cell.value.toFixed(5) : '-'}</Text>),
+        getProps: () => ({ align: 'end' }),
+      },
+      {
+        Header: 'Train loss',
+        accessor: 'trainLoss',
+        Cell: cell => (<Text weight='bold'>{cell.value ? cell.value.toFixed(5) : '-'}</Text>),
         getProps: () => ({ align: 'end' }),
       },
       {
@@ -80,7 +92,7 @@ class ModelHistory extends React.Component {
         <PagingTable
           columns={columns}
           data={history}
-          onExpand={this.onExpand}
+          SubComponent={onExpand}
           defaultSorted={[{ id: 'date', desc: true }]}
         />
         {confirmClear}
