@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
 import { Box, Text, Paragraph } from 'grommet';
 import TextInput from '../grommet/TextInput/TextInput';
 import { searchQuery } from '../graphql/entities';
@@ -14,17 +13,31 @@ const entityLinks = {
   },
 };
 class SearchEntity extends React.Component {
-  onSearch = (e) => {
-    this.props.data.refetch({ search: e.target.value });
+  state = {
+    data: { search: [] },
   };
 
+  onSearch = async (e) => {
+    const { client } = this.context;
+    const { data } = await client.query({
+      query: searchQuery,
+      variables: {
+        types: ['equity', 'coin', 'coinexchange'],
+        search: e.target.value,
+      },
+    });
+    this.setState({ data });
+  };
+  static contextTypes = {
+    client: PropTypes.object.isRequired,
+  };
   onSelect = ({ suggestion }) => {
     const { onChange } = this.props;
     const selected = suggestion.value.split('_');
     if (selected.length === 2) {
       const link = entityLinks[selected[0]];
       if (link !== undefined) {
-        const { data: { search } } = this.props;
+        const { data: { search } } = this.state;
         const type = search.find(t => (t.type === selected[0]));
         if (type) {
           const entity = type.results.find(e => e.slug === selected[1]);
@@ -39,7 +52,7 @@ class SearchEntity extends React.Component {
   };
 
   createSuggestions = () => {
-    const { data: { search } } = this.props;
+    const { data: { search } } = this.state;
     const suggestions = [];
     if (search) {
       search.forEach((type) => {
@@ -90,6 +103,5 @@ SearchEntity.propTypes = {
   value: PropTypes.string,
 };
 
-export default graphql(searchQuery,
-  { options: () => ({ variables: { types: ['equity', 'coin', 'coinexchange'] } }) })(SearchEntity);
+export default SearchEntity;
 
