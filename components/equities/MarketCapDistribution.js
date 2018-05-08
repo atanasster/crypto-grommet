@@ -5,7 +5,7 @@ import { Spinning } from 'grommet-controls';
 import Equity, { pushEquityPath } from './Equity';
 import { FormattedCoinValue } from '../utils/formatters';
 import connect from '../../redux';
-import { allEquitiesQuery } from '../graphql/equities';
+import { allEquitiesQuery } from '../../graphql/equities';
 
 
 class MarketCapDistribution extends Component {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Text, Anchor } from 'grommet';
 import { ConnectedExchange, ExchangeCountries } from './Exchange';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
-import { allExchangesQuery } from '../graphql/exchanges';
+import { allExchangesQuery } from '../../graphql/exchanges';
 
 const ExchangesList = ({ data, loadMoreEntries, country }) => {
   const columns = [

@@ -15,7 +15,6 @@ routes.add({ name: 'login', page: `${SITE_ROOT}/login` });
 // coins
 routes.add('coin_info', '/coins/info/:symbol/:toSymbol?/:exchange?', `${SITE_ROOT}/coins/general`);
 routes.add('coin_order_books', '/coins/orderbooks/:symbol/:toSymbol?/:exchange?', `${SITE_ROOT}/coins/orderbooks`);
-routes.add('coin_charts', '/coins/charts/:symbol/:toSymbol?/:exchange?', `${SITE_ROOT}/coins/charts`);
 routes.add('coins_by_algo', '/coins/algo/:algorithm', `${SITE_ROOT}/coins/by_algorithm`);
 routes.add('coins_by_prooftype', '/coins/proof/:proofType', `${SITE_ROOT}/coins/by_prooftype`);
 routes.add({ name: 'coins_home', pattern: '/coins', page: `${SITE_ROOT}/coins` });

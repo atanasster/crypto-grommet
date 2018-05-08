@@ -59,15 +59,19 @@ export const coinDetailsQuery = gql`
 `;
 
 export const priceHistoryQuery = gql`
-  query getPriceHistory($symbol : String!, $toSymbol : String!, $exchange: String!, $period: String, $limit: Int) {
-    coinPriceHistory(symbol: $symbol, toSymbol: $toSymbol, exchange: $exchange, period: $period, limit: $limit) {
-      time
-      close
-      high
-      low
-      open
-      volumefrom
-      volumeto
+  query getPriceHistory($symbol : String!, $toSymbol : String, $exchange: String, $period: String, $limit: Int) {
+    prices: coinPriceHistory(symbol: $symbol, toSymbol: $toSymbol, exchange: $exchange, period: $period, limit: $limit) {
+      list {
+        results{
+          date
+          close
+          high
+          low
+          open
+          volumefrom
+          volumeto
+        }
+      }    
     }
   }
 `;

@@ -6,7 +6,7 @@ import { Card, PagingTable } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { PercentValue, LargeValue } from '../utils/formatters';
 import Equity from './Equity';
-import { volumeByVenueQuery, equityInfoQuery } from '../graphql/equities';
+import { volumeByVenueQuery, equityInfoQuery } from '../../graphql/equities';
 
 
 class PriceCard extends Component {

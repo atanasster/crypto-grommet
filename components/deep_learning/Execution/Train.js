@@ -5,6 +5,7 @@ import { Box, Button } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
 import LossHistoryChart from './LossHistoryChart';
 import { addHistory } from './history';
+import { loadData } from '../../../tensorflow/data_preparation';
 
 class TrainModel extends React.Component {
   state = {
@@ -17,13 +18,10 @@ class TrainModel extends React.Component {
   }
   async onTrain() {
     const { model: nn } = this.props;
-    console.log(this.context);
+    const [xTrain, yTrain, xTest, yTest] = await loadData(nn.features, nn.targets);
     const beginMs = Date.now();
-    // Generate some synthetic data for training. (y = 2x - 1)
-    const xs = tf.tensor2d([[-1, 0, 1], [-3, 1, 2], [5, 4, 2], [6, 2, 1]], [4, 3]);
-    const ys = tf.tensor2d([-3, -1, 1, 3], [4, 1]);
     const model = tf.sequential();
-    model.add(tf.layers.dense({ units: 1, inputShape: [3] }));
+    model.add(tf.layers.dense({ units: 1, inputShape: [xTrain.shape[1]] }));
 
     // Prepare the model for training: Specify the loss and the optimizer.
     model.compile({
@@ -32,10 +30,10 @@ class TrainModel extends React.Component {
     });
 
     // Train the model using the data.
-    const history = await model.fit(xs, ys, {
+    const history = await model.fit(xTrain, yTrain, {
       epochs: nn.epochs,
       batchSize: nn.batchSize,
-      validationSplit: 0.3,
+      validationData: [xTest, yTest],
       callbacks: {
         onTrainBegin: async (logs) => {
           this.setState({ running: true, lossHistory: [], valLossHistory: [] });

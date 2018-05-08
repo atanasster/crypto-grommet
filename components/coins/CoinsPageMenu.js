@@ -20,14 +20,6 @@ export default ({
       a11yTitle: `Order books analysis for ${symbol}`,
       plain: true,
     },
-    {
-      route: 'coin_charts',
-      params: { symbol, toSymbol, exchange },
-      label: 'Charts',
-      a11yTitle: `Technical charts for ${symbol}`,
-      plain: true,
-    },
-
   ];
   return (
     <LinksMenu items={coinsMenu} activeItem={activeItem} />

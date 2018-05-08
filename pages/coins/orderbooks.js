@@ -5,7 +5,7 @@ import App from '../../components/App';
 import Coin from '../../components/coins/Coin';
 import connect from '../../redux';
 import withData from '../../apollo/withData';
-import { coinInfoQuery, coinDetailsQuery } from '../../components/graphql/coins';
+import { coinInfoQuery, coinDetailsQuery } from '../../graphql/coins';
 import OrderBookAnalysis from '../../components/coins/OrderBookAnalysis';
 import CoinsPageMenu from '../../components/coins/CoinsPageMenu';
 

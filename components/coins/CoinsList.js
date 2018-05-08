@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
 import Coin from './Coin';
 import CoinDashboard from './CoinDashboard';
-import { allCoinsQuery } from '../graphql/coins';
+import { allCoinsQuery } from '../../graphql/coins';
 import { FormattedCoinValue, ColoredPercentChange } from '../utils/formatters';
 import RoutedAnchor from '../RoutedAnchor';
 

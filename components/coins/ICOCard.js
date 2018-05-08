@@ -7,7 +7,7 @@ import { PagingTable, Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { shortDate } from 'grommet-controls/utils/moment';
 import Coin, { hasICO } from './Coin';
-import { icoDetailsQuery } from '../graphql/coins';
+import { icoDetailsQuery } from '../../graphql/coins';
 
 
 class ICOCard extends Component {

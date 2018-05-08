@@ -5,7 +5,7 @@ import { Box } from 'grommet';
 import { Card, PagingTable } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
-import { equityPeersQuery } from '../graphql/equities';
+import { equityPeersQuery } from '../../graphql/equities';
 
 
 class PriceCard extends Component {

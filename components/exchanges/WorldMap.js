@@ -6,7 +6,7 @@ import RoutedAnchor from '../RoutedAnchor';
 import SideLayer from '../SideLayer';
 import { uniqueCountries, continents } from './countries';
 import { ExchangeCountries } from './Exchange';
-import { allExchangesQuery } from '../graphql/exchanges';
+import { allExchangesQuery } from '../../graphql/exchanges';
 
 class WorldMap extends React.Component {
   state = {

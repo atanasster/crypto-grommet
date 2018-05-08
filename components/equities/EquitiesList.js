@@ -5,7 +5,7 @@ import { FormattedCoinValue, ColoredPercentChange } from '../utils/formatters';
 import RoutedAnchor from '../RoutedAnchor';
 import EquityDashboard from './EquityDashboard';
 import Equity from './Equity';
-import { allEquitiesQuery } from '../graphql/equities';
+import { allEquitiesQuery } from '../../graphql/equities';
 
 class EquitiesList extends Component {
   onExpand = row => (

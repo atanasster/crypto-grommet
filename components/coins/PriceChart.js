@@ -2,20 +2,20 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { Chart } from 'grommet';
 import { longDate } from 'grommet-controls/utils/moment';
-import { priceHistoryQuery } from '../graphql/coins';
+import { priceHistoryQuery } from '../../graphql/coins';
 
 
-const PriceChart = ({ color, data: { coinPriceHistory } }) => (
-  coinPriceHistory ? (
+const PriceChart = ({ color, data: { prices } }) => (
+  prices && prices.list ? (
     <Chart
       thickness='xsmall'
       type='line'
       color={color}
       size={{ width: 'full', height: 'xsmall' }}
       style={{ cursor: 'pointer' }}
-      values={coinPriceHistory.map((price, index) => ({
+      values={prices.list.results.map((price, index) => ({
         value: [index, price.close],
-        label: longDate(price.time),
+        label: longDate(price.date),
       }))}
     />) : null
 );

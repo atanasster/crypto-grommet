@@ -80,7 +80,7 @@ export const volumeByVenueQuery = gql`
 
 export const priceHistoryQuery = gql`
   query equity($symbol : String!, $offset: Int, $limit: Int) {
-    equity(symbol: $symbol) {
+    prices: equity(symbol: $symbol) {
       list: dailyPrices(offset: $offset, limit: $limit) {
         totalCount 
         results {    

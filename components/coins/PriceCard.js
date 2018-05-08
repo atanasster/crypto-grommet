@@ -5,12 +5,11 @@ import { graphql, compose } from 'react-apollo';
 import { Box, Menu } from 'grommet';
 import { Card } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
-import RoutedButton from '../RoutedButton';
 import Exchange from '../exchanges/Exchange';
 import { CoinToCoin, hasICO } from './Coin';
 import PriceTableStream from './PriceTableStream';
 import PriceChart from './PriceChart';
-import { coinInfoQuery } from '../graphql/coins';
+import { coinInfoQuery } from '../../graphql/coins';
 
 const optionDuration = [
   { label: 'Daily', value: 'day' },
@@ -76,16 +75,14 @@ class PriceCard extends Component {
                   label={`${optionLimit.find(p => (p.value === points)).value} ${period}s`}
                 />
               </Box>
-              <RoutedButton route='coin_charts' params={{ symbol: coin.symbol, toSymbol: toCoin.symbol, exchange }} >
-                <PriceChart
-                  color={color}
-                  symbol={coin.symbol}
-                  toSymbol={toCoin.symbol}
-                  exchange={exchange}
-                  period={period}
-                  points={points}
-                />
-              </RoutedButton>
+              <PriceChart
+                color={color}
+                symbol={coin.symbol}
+                toSymbol={toCoin.symbol}
+                exchange={exchange}
+                period={period}
+                points={points}
+              />
             </Box>
             <PriceTableStream coin={coin} toCoin={toCoin} exchange={exchange} />
           </Box>

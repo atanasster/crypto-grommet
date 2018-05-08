@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import RoutedAnchor from '../RoutedAnchor';
 import routerPush from '../Router';
 import Entity from '../entities/Entity';
-import { equityInfoQuery } from '../graphql/equities';
+import { equityInfoQuery } from '../../graphql/equities';
 
 
 export const EquityPath = ({

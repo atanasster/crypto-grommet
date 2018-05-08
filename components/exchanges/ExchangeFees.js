@@ -8,7 +8,7 @@ import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/component
 import connect from '../../redux';
 import Coin from '../coins/Coin';
 import CardScroll from '../CardScroll';
-import { exchangeFeesQuery } from '../graphql/exchanges';
+import { exchangeFeesQuery } from '../../graphql/exchanges';
 
 const redIcon = {
   icon: {

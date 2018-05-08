@@ -5,7 +5,7 @@ import { Box } from 'grommet';
 import RoutedAnchor from '../RoutedAnchor';
 import connect from '../../redux/index';
 import routerPush from '../Router';
-import { coinInfoQuery } from '../graphql/coins';
+import { coinInfoQuery } from '../../graphql/coins';
 import Entity from '../entities/Entity';
 
 export const hasICO = coin => (coin && coin.icoStatus && coin.icoStatus !== 'Finished');

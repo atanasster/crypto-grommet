@@ -5,7 +5,7 @@ import App from '../../components/App';
 import Equity from '../../components/equities/Equity';
 import connect from '../../redux';
 import withData from '../../apollo/withData';
-import { equityDetailsQuery } from '../../components/graphql/equities';
+import { equityDetailsQuery } from '../../graphql/equities';
 import EquityDashboard from '../../components/equities/EquityDashboard';
 
 export const EquityInfo = ({ symbol, data: { equity } }) => (

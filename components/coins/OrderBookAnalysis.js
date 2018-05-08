@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import CardScroll from '../CardScroll';
 import { ConnectedOrderBook } from './OrderBookCard';
-import { allExchangesQuery, orderBookQuery } from '../graphql/exchanges';
+import { allExchangesQuery, orderBookQuery } from '../../graphql/exchanges';
 import initApollo from '../../apollo/initApollo';
 
 class OrderBookAnalysis extends Component {

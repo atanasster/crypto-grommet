@@ -9,7 +9,7 @@ import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/component
 import { longDate } from 'grommet-controls/utils/moment';
 import { CoinToCoin, hasICO } from './Coin';
 import { ConnectedExchange } from '../exchanges/Exchange';
-import { orderBookQuery } from '../graphql/exchanges';
+import { orderBookQuery } from '../../graphql/exchanges';
 
 
 function renderAskBidTable(data) {

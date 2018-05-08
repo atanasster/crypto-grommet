@@ -2,11 +2,11 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { Chart } from 'grommet';
 import { longDate } from 'grommet-controls/utils/moment';
-import { priceHistoryQuery } from '../graphql/equities';
+import { priceHistoryQuery } from '../../graphql/equities';
 
 
-const PriceChart = ({ color, data }) => {
-  if (data.equity && data.equity.list) {
+const PriceChart = ({ color, data: { prices } }) => {
+  if (prices && prices.list) {
     return (
       <Chart
         thickness='xsmall'
@@ -14,7 +14,7 @@ const PriceChart = ({ color, data }) => {
         color={color}
         size={{ width: 'full', height: 'xsmall' }}
         style={{ cursor: 'pointer' }}
-        values={data.equity.list.results.map((price, index) => ({
+        values={prices.list.results.map((price, index) => ({
           value: [index, price.close],
           label: longDate(price.date),
         }))}

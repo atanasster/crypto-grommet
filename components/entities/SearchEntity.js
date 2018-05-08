@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Text, Paragraph } from 'grommet';
 import TextInput from '../grommet/TextInput/TextInput';
-import { searchQuery } from '../graphql/entities';
+import { searchQuery } from '../../graphql/entities';
 
 const entityLinks = {
   'coin': { route: 'coin_info' },

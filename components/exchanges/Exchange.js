@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { Box, Heading } from 'grommet';
 import RoutedAnchor from '../RoutedAnchor';
 import Entity from '../entities/Entity';
-import { exchangeInfoQuery } from '../graphql/exchanges';
+import { exchangeInfoQuery } from '../../graphql/exchanges';
 
 export const CountryFlag = ({ code }) => (
   <RoutedAnchor route='exchange_by_country' params={{ country: code }} >

@@ -5,7 +5,7 @@ import connect from '../../redux';
 import Coin from './Coin';
 import ICOCard from './ICOCard';
 import PagingGraphqlList, { withGraphQLList } from '../PagingGraphqlList';
-import { allICOCoinsQuery } from '../graphql/coins';
+import { allICOCoinsQuery } from '../../graphql/coins';
 
 
 class ICOList extends Component {

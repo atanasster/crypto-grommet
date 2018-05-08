@@ -5,7 +5,7 @@ import App from '../../components/App';
 import Coin, { hasICO } from '../../components/coins/Coin';
 import connect from '../../redux';
 import withData from '../../apollo/withData';
-import { coinInfoQuery, coinDetailsQuery } from '../../components/graphql/coins';
+import { coinInfoQuery, coinDetailsQuery } from '../../graphql/coins';
 import CoinDashboard from '../../components/coins/CoinDashboard';
 import CoinsPageMenu from '../../components/coins/CoinsPageMenu';
 

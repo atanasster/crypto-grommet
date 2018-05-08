@@ -6,7 +6,7 @@ import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/component
 import connect from '../../redux';
 import CardScroll from '../CardScroll';
 import Coin, { CoinPath } from '../coins/Coin';
-import { exchangeMarketsQuery } from '../graphql/exchanges';
+import { exchangeMarketsQuery } from '../../graphql/exchanges';
 
 class ExchangeCurrencies extends Component {
   renderItem = (label, value) => (

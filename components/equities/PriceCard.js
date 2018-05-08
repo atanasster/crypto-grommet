@@ -7,7 +7,7 @@ import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/component
 import Equity from './Equity';
 import PriceTableStream from './PriceTableStream';
 import PriceChart from './PriceChart';
-import { equityDetailsQuery } from '../graphql/equities';
+import { equityDetailsQuery } from '../../graphql/equities';
 
 const optionLimit = [
   { label: '60 points', value: 60 },
