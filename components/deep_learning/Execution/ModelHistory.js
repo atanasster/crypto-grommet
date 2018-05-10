@@ -54,8 +54,8 @@ class ModelHistory extends React.Component {
         getProps: () => ({ align: 'end' }),
       },
       {
-        Header: 'Train loss',
-        accessor: 'trainLoss',
+        Header: 'Val. loss',
+        accessor: 'valLoss',
         Cell: cell => (<Text weight='bold'>{cell.value ? cell.value.toFixed(5) : '-'}</Text>),
         getProps: () => ({ align: 'end' }),
       },
