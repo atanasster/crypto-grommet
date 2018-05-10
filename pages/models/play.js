@@ -49,7 +49,7 @@ class TensorFlowPlay extends React.Component {
             },
           },
         ],
-        optimizer: { type: 'Optimizer', config: { type: 'Adam' } },
+        optimizer: { type: 'Optimizer', config: { type: 'SGD' } },
         loss: 'meanSquaredError',
         features: [
           { field: 'close', symbol: 'AAPL', type: 'equity' },
