@@ -244,7 +244,7 @@ class ModelDesigner extends Component {
   }
 
   render() {
-    const { readOnly, model, kerasDefaults } = this.props;
+    const { readOnly, model } = this.props;
     let editLayer;
     if (!readOnly && this.state.editLayer !== undefined) {
       let layer;
@@ -269,7 +269,6 @@ class ModelDesigner extends Component {
           layer={layer}
           onClose={this.onRequestForCloseEditLayer}
           onSave={this.onSaveLayer}
-          kerasDefaults={kerasDefaults}
         />
       );
     }

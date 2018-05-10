@@ -3,7 +3,6 @@ import { Box, Heading, Button } from 'grommet';
 import App from '../../components/App';
 import withData from '../../apollo/withData';
 import ModelDesigner from '../../components/deep_learning/Design/ModelDesigner';
-import kerasDefaults from '../../components/deep_learning/keras-defaults';
 import tensorflow from '../../tensorflow/config';
 import ModelHistory from '../../components/deep_learning/Execution/ModelHistory';
 
@@ -28,7 +27,6 @@ class TensorFlowPlay extends React.Component {
         batchSize: 2,
         epochs: 20,
         testSplit: 0.33,
-        windowPeriods: 5,
         layers: [
           {
             type: 'Layer',
@@ -87,7 +85,6 @@ class TensorFlowPlay extends React.Component {
           <ModelDesigner
             readOnly={false}
             model={model}
-            kerasDefaults={kerasDefaults}
             onChange={(updated) => { this.setState({ model: updated }); }}
           />
         );
