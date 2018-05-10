@@ -20,7 +20,7 @@ export default class NumericEditor extends React.Component {
           min={min}
           max={max}
           step={step}
-          value={value || ''}
+          value={value}
           onChange={this.onChange}
         />
       </FlatField>

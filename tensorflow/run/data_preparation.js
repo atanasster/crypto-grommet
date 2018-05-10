@@ -38,7 +38,7 @@ function convertToTensors(features, targets, testSplit) {
 
   const xDims = features[0].length;
   const yDims = targets[0].length;
-
+  // console.log(features);
   // Create 2D `tf.Tensor` to hold the features data.
   const xs = tf.tensor2d(features, [numFeatures, xDims]);
   // Create 2D `tf.Tensor` to hold the targets data.
@@ -46,7 +46,6 @@ function convertToTensors(features, targets, testSplit) {
 
   // Split the data into training and test sets, using tf slice
   const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);
-
   const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);
   const yTrain = ys.slice([0, 0], [numTrainExamples, yDims]);
   const yTest = ys.slice([numTrainExamples, 0], [numTestExamples, yDims]);

@@ -76,10 +76,11 @@ class ModelDesigner extends Component {
     const { model } = this.props;
     const layer = model.layers[layerIndex];
     const units = parseInt(event.target.value, 10);
-    const newLayer = { ...layer, config: { ...layer.config, units } };
-
-    this.updateLayer(layerIndex, newLayer);
-  }
+    if (!Number.isNaN(units)) {
+      const newLayer = { ...layer, config: { ...layer.config, units } };
+      this.updateLayer(layerIndex, newLayer);
+    }
+  };
 
   onLayerClick = (index) => {
     this.setState({ editLayer: index });

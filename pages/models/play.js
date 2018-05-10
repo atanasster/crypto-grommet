@@ -31,7 +31,7 @@ class TensorFlowPlay extends React.Component {
           {
             type: 'Layer',
             config: {
-              type: 'Dense', name: 'Dense', background: '#1398c6', units: 6,
+              type: 'LSTM', name: 'LSTM', background: '#1398c6', units: 6,
             },
           },
           {

@@ -26,13 +26,12 @@ export default class EditLayer extends Component {
     const { layer } = this.state;
     return (
       <SideLayer onClose={this.props.onClose} heading={layer.config.type}>
-        <ComposedEditor
-          inlineField={false}
-          value={layer}
-          onChange={this.onChange}
-        />
-
-        <Box pad={{ vertical: 'large' }}>
+        <Box align='center' gap='medium'>
+          <ComposedEditor
+            inlineField={false}
+            value={layer}
+            onChange={this.onChange}
+          />
           <Button
             primary={true}
             type='submit'
