@@ -77,7 +77,8 @@ function mergeData(fields, loadedData) {
   // first row is the date
   // next are the features, one by row and finally the target
   // sort in ascending order by date
-  const pd = Object.keys(data)
+  // fill gaps in data
+  return Object.keys(data)
     .map(key => [key, ...data[key]])
     .sort((a, b) => {
       if (a[0] < b[0]) {
@@ -88,8 +89,6 @@ function mergeData(fields, loadedData) {
       }
       return 0;
     });
-  // fill gaps in data
-  return pd;
 }
 export function scaleData(data, scalers) {
   if (scalers === undefined) {

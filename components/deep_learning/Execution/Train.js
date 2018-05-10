@@ -43,7 +43,8 @@ class TrainModel extends React.Component {
       } = await prepareTestTrainData(model, (status => this.updateStatus(status)));
       let xTrainR;
       let xTestR;
-      if (model.layers.length > 0 && ['LSTM', 'GRU', 'SimpleRNN'].indexOf(model.layers[0].config.type) !== -1) {
+      if (model.layers.length > 0 && ['LSTM', 'GRU', 'SimpleRNN']
+        .indexOf(model.layers[0].config.type) !== -1) {
         xTrainR = xTrain.reshape([xTrain.shape[0], xTrain.shape[1], 1]);
         xTestR = xTest.reshape([xTest.shape[0], xTest.shape[1], 1]);
       } else {
