@@ -64,6 +64,13 @@ class ModelHistory extends React.Component {
         accessor: 'epochs',
         getProps: () => ({ align: 'end' }),
       },
+      /*
+      {
+        Header: 'Layers',
+        accessor: 'model',
+        Cell: cell => (<Text weight='bold'>{cell.units}</Text>),
+      },
+*/
       {
         Header: 'Batch sze',
         accessor: 'batchSize',
