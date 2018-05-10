@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as tf from '@tensorflow/tfjs';
-import { Box, Button } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
 import LossHistoryChart from './LossHistoryChart';
 import { addHistory } from './history';
@@ -21,9 +21,14 @@ class TrainModel extends React.Component {
     client: PropTypes.object.isRequired,
   };
 
+  updateStatus = (status) => {
+    this.setState({ status: `${status}...` });
+  };
+
   async onTrain() {
     const { model } = this.props;
     this.setState({
+      status: undefined,
       running: true,
       lossHistory: [],
       valLossHistory: [],
@@ -35,7 +40,7 @@ class TrainModel extends React.Component {
     try {
       const {
         xTrain, yTrain, xTest, yTest, scalers,
-      } = await prepareTestTrainData(model);
+      } = await prepareTestTrainData(model, (status => this.updateStatus(status)));
       const scaler = scalers[scalers.length - 1];
       const tfModel = createTFModel(model);
       const optimizer = tensorflow.createObject(model.optimizer);
@@ -50,15 +55,16 @@ class TrainModel extends React.Component {
         batchSize: model.batchSize,
         validationData: [xTest, yTest],
         callbacks: {
-          onTrainBegin: async (logs) => {
-            console.log('Training begin', logs);
+          onTrainBegin: async () => {
+            this.updateStatus('training started');
             await tf.nextFrame();
           },
-          onTrainEnd: async (logs) => {
-            console.log('Training end', logs);
+          onTrainEnd: async () => {
+            this.updateStatus('training end');
             await tf.nextFrame();
           },
           onBatchEnd: async () => {
+            // give time for UI to update
             await tf.nextFrame();
           },
 
@@ -122,7 +128,7 @@ class TrainModel extends React.Component {
   }
   render() {
     const {
-      epoch, loss, valLoss, running, timing, lossHistory, valLossHistory,
+      epoch, loss, valLoss, running, timing, lossHistory, valLossHistory, status,
     } = this.state;
     return (
       <Box
@@ -133,7 +139,10 @@ class TrainModel extends React.Component {
         border='horizontal'
         pad={{ vertical: 'small' }}
       >
-        <Button onClick={running ? undefined : () => this.onTrain()} label='Train' />
+        <Box gap='small'>
+          <Button onClick={running ? undefined : () => this.onTrain()} label='train' />
+          <Text>{status}</Text>
+        </Box>
         <Box direction='row' gap='medium'>
           <Value label='epoch' value={epoch} />
           <Value label='loss (mse)' value={loss ? loss.toFixed(5) : undefined} />

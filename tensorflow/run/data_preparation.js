@@ -168,9 +168,18 @@ export const loadDatasets = async (fields, dataPoints, lookbackDays) => {
 
 export async function prepareTestTrainData({
   features, targets, testSplit, lookbackDays, dataPoints,
-}) {
+}, onProgress) {
+  if (onProgress) {
+    onProgress('loading datasets');
+  }
   const data = await loadDatasets(features.concat(targets), dataPoints, lookbackDays);
+  if (onProgress) {
+    onProgress('normalize data');
+  }
   const { normalized, scalers } = normalizeData(data);
+  if (onProgress) {
+    onProgress('convert to tensors');
+  }
   const scaledData = scaleData(normalized, scalers);
   const { xData, yData } =
     shiftTargets(scaledData, features.length, targets.length, lookbackDays);

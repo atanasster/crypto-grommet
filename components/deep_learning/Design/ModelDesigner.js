@@ -310,7 +310,7 @@ class ModelDesigner extends Component {
       addButton = (
         <Box>
           <Button
-            label='+Add layer'
+            label='+add layer'
             primary={true}
             onClick={this.onAddLayerClick}
           />
