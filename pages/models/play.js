@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Heading, Button } from 'grommet';
 import App from '../../components/App';
 import withData from '../../apollo/withData';
-import ModelDesigner from '../../components/deep_learning/DeepNetwork/ModelDesigner';
-import kerasDefaults, { createLayer } from '../../components/deep_learning/keras-defaults';
-import tensorflow from '../../tensorflow';
+import ModelDesigner from '../../components/deep_learning/Design/ModelDesigner';
+import kerasDefaults from '../../components/deep_learning/keras-defaults';
+import tensorflow from '../../tensorflow/config';
 import ModelHistory from '../../components/deep_learning/Execution/ModelHistory';
 
 class TensorFlowPlay extends React.Component {
@@ -30,11 +30,26 @@ class TensorFlowPlay extends React.Component {
         testSplit: 0.33,
         windowPeriods: 5,
         layers: [
-          createLayer(kerasDefaults.layers, 'LSTM', { units: 6 }),
-          createLayer(kerasDefaults.layers, 'Dense', { units: 3 }),
-          createLayer(kerasDefaults.layers, 'Dense', { units: 1 }),
+          {
+            type: 'Layer',
+            config: {
+              type: 'Dense', name: 'Dense', background: '#1398c6', units: 6,
+            },
+          },
+          {
+            type: 'Layer',
+            config: {
+              type: 'Dense', name: 'Dense', background: '#07c66c', units: 4,
+            },
+          },
+          {
+            type: 'Layer',
+            config: {
+              type: 'Dense', name: 'Dense', background: '#07c66c', units: 1,
+            },
+          },
         ],
-        optimizer: tensorflow.optimizer({ name: 'SGD', config: { lr: 0.003 } }),
+        optimizer: { type: 'Optimizer', config: { type: 'Adam' } },
         loss: 'meanSquaredError',
         features: [
           { field: 'close', symbol: 'AAPL', type: 'equity' },
@@ -53,8 +68,8 @@ class TensorFlowPlay extends React.Component {
       },
     });
   }
+
   onOptimizerChange = (value, config) => {
-    console.log(value);
     this.setState({
       modified: true,
       model: {
@@ -82,7 +97,6 @@ class TensorFlowPlay extends React.Component {
         return null;
     }
   }
-
   render() {
     const { modified, view } = this.state;
     const title = `Models playground ${modified ? '*' : ''}`;

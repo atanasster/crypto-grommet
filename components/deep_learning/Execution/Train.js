@@ -5,8 +5,9 @@ import { Box, Button } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
 import LossHistoryChart from './LossHistoryChart';
 import { addHistory } from './history';
-import { prepareTestTrainData } from '../../../tensorflow/data_preparation';
-import createTFModel from '../../../tensorflow/create_model';
+import { prepareTestTrainData } from '../../../tensorflow/run/data_preparation';
+import createTFModel from '../../../tensorflow/run/create_model';
+import tensorflow from '../../../tensorflow/config';
 // import makePredictions from '../../../tensorflow/predictions';
 
 class TrainModel extends React.Component {
@@ -37,10 +38,10 @@ class TrainModel extends React.Component {
       } = await prepareTestTrainData(model);
       const scaler = scalers[scalers.length - 1];
       const tfModel = createTFModel(model);
-      // Prepare the model for training: Specify the loss and the optimizer.
+      const optimizer = tensorflow.createObject(model.optimizer);
       tfModel.compile({
         loss: model.loss,
-        optimizer: model.optimizer.tf(),
+        optimizer: optimizer.tf(),
       });
 
       // Train the model using the data.
@@ -57,6 +58,10 @@ class TrainModel extends React.Component {
             console.log('Training end', logs);
             await tf.nextFrame();
           },
+          onBatchEnd: async () => {
+            await tf.nextFrame();
+          },
+
           onEpochEnd: async (epoch, logs) => {
             if (!Number.isNaN(logs.loss)) {
               // eslint-disable-next-line camelcase

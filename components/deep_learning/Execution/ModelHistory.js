@@ -5,7 +5,7 @@ import { longDate } from 'grommet-controls/utils/moment';
 import { loadHistory, clearHistory } from './history';
 import LossHistoryChart from './LossHistoryChart';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
-import makePredictions from '../../../tensorflow/predictions';
+import makePredictions from '../../../tensorflow/run/predictions';
 
 async function onExpand(row) {
   const preditions = await makePredictions(row.original.model);

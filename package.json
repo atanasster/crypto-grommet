@@ -2,8 +2,8 @@
   "name": "crypto-grommet",
   "version": "1.1.0",
   "engines": {
-    "node": ">=7.6.0",
-    "npm": ">=4"
+    "node": ">=10.0",
+    "npm": ">=6.0.0"
   },
   "keywords": [
     "grommet",
@@ -14,13 +14,13 @@
     "apollo-react"
   ],
   "scripts": {
-    "dev": "PORT=8568 node server/server.js ",
-    "alias": "NODE_ENV=alias PORT=8568 node server/server.js ",
+    "dev": "PORT=8568 node --experimental-modules server/server.mjs ",
+    "alias": "NODE_ENV=alias PORT=8568 node --experimental-modules server/server.mjs ",
     "build": "NODE_ENV=production next build",
     "check": "./node_modules/.bin/eslint .",
     "heroku-postbuild": "npm run build",
     "analyze": "ANALYZE_BUILD=true npm run build",
-    "start": "NODE_ENV=production node server/server.js"
+    "start": "NODE_ENV=production node --experimental-modules server/server.mjs"
   },
   "dependencies": {
     "@nivo/line": "^0.33.0",
