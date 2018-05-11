@@ -13,26 +13,23 @@ routes.add({ name: 'login', page: `${SITE_ROOT}/login` });
 
 
 // coins
-routes.add('coin_info', '/coins/info/:symbol/:toSymbol?/:exchange?', `${SITE_ROOT}/coins/general`);
-routes.add('coin_order_books', '/coins/orderbooks/:symbol/:toSymbol?/:exchange?', `${SITE_ROOT}/coins/orderbooks`);
 routes.add('coins_by_algo', '/coins/algo/:algorithm', `${SITE_ROOT}/coins/by_algorithm`);
 routes.add('coins_by_prooftype', '/coins/proof/:proofType', `${SITE_ROOT}/coins/by_prooftype`);
-routes.add({ name: 'coins_home', pattern: '/coins', page: `${SITE_ROOT}/coins` });
+routes.add({ name: 'coins_home', pattern: '/coins/dashboard', page: `${SITE_ROOT}/coins` });
 routes.add({ name: 'coins_list', pattern: '/coins/list', page: `${SITE_ROOT}/coins/list` });
 routes.add({ name: 'coins_icos', pattern: '/coins/icos', page: `${SITE_ROOT}/coins/icos` });
 routes.add({ name: 'markets_distribution', pattern: '/coins/market-distribution', page: `${SITE_ROOT}/coins/distribution` });
+routes.add('coin_info', '/coins/:page/:symbol/:toSymbol?/:exchange?', `${SITE_ROOT}/coins/general`);
 
 // exchanges
-routes.add('exchange_info', '/exchanges/prices/:exchange', `${SITE_ROOT}/exchanges/prices`);
 routes.add('exchange_by_country', '/exchanges/countries/:country', `${SITE_ROOT}/exchanges/countries_list`);
-routes.add('exchange_order_books', '/exchanges/orderbooks/:exchange', `${SITE_ROOT}/exchanges/orderbooks`);
-routes.add('exchange_currencies', '/exchanges/currencies/:exchange', `${SITE_ROOT}/exchanges/currencies`);
-routes.add('exchange_fees', '/exchanges/fees/:exchange', `${SITE_ROOT}/exchanges/fees`);
-routes.add({ name: 'world_exchanges', page: `${SITE_ROOT}/exchanges/worldmap` });
-routes.add({ name: 'exchanges', page: `${SITE_ROOT}/exchanges` });
+routes.add({ name: 'world_exchanges', pattern: '/exchanges/worldmap', page: `${SITE_ROOT}/exchanges/worldmap` });
+routes.add('exchange_info', '/exchanges/:page/:exchange', `${SITE_ROOT}/exchanges/prices`);
+
+routes.add({ name: 'exchanges', pattern: '/exchanges/list', page: `${SITE_ROOT}/exchanges` });
 
 // equities
-routes.add({ name: 'equities_home', pattern: '/equities', page: `${SITE_ROOT}/equities` });
+routes.add({ name: 'equities_home', pattern: '/equities/dashboard', page: `${SITE_ROOT}/equities` });
 routes.add({ name: 'equities_list', pattern: '/equities/list', page: `${SITE_ROOT}/equities/list` });
 routes.add({ name: 'equities_markets_distribution', pattern: '/equities/market-distribution', page: `${SITE_ROOT}/equities/distribution` });
 routes.add({ name: 'equities_by_exchange', pattern: '/equities/exchanges/:exchange', page: `${SITE_ROOT}/equities/by_exchange` });
@@ -41,5 +38,5 @@ routes.add({ name: 'equities_by_sector', pattern: '/equities/sectors/:sector', p
 routes.add({ name: 'equity_info', pattern: '/equities/info/:symbol', page: `${SITE_ROOT}/equities/general` });
 
 // deep learning
-routes.add({ name: 'models_playground', pattern: '/models/playground', page: `${SITE_ROOT}/models/play` });
+routes.add({ name: 'models_playground', pattern: '/models/playground/:page?', page: `${SITE_ROOT}/models/play` });
 module.exports = routes;

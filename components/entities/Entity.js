@@ -7,12 +7,12 @@ const Entity = ({
   entity, type, size, display,
 }) => {
   const renderTitle = index => (
-    <Text truncate={true} key={`coin_name_${entity.symbol}_${index}`} size={size}>
+    <Text truncate={true} key={`coin_name_${entity.symbol}_${index}`} size={size} weight={size === 'xlarge' ? 'bold' : 'normal'}>
       {entity.name || entity.symbol}
     </Text>
   );
   const renderSymbol = index => (
-    <Text truncate={true} key={`coin_symbol_${entity.symbol}_${index}`} size={size}>
+    <Text truncate={true} key={`coin_symbol_${entity.symbol}_${index}`} size={size} weight={size === 'xlarge' ? 'bold' : 'normal'}>
       {entity.symbol}
     </Text>
   );

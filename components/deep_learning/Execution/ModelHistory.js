@@ -7,14 +7,6 @@ import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 import makePredictions from '../../../tensorflow/run/predictions';
 import Symbol from '../../Symbol';
 
-async function onExpand(row) {
-  const preditions = await makePredictions(row.original.model);
-  return (
-    <div>
-      {preditions}
-    </div>
-  );
-}
 
 const formatTime = (date, locale = 'en-us') => (
   (new Date(date)).toLocaleDateString(locale, {
@@ -26,9 +18,24 @@ const formatTime = (date, locale = 'en-us') => (
 );
 class ModelHistory extends React.Component {
   state = {
+    predictions: 'loading',
+    history: [],
     confirmClearHistory: false,
   };
-
+  componentDidMount() {
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ history: loadHistory() });
+  }
+  onExpand = (row) => {
+    const { predictions } = this.state;
+    makePredictions(row.original.model)
+      .then(result => this.setState({ predictions: result }));
+    return (
+      <div>
+        {predictions}
+      </div>
+    );
+  };
 
   onClearHistory = () => {
     clearHistory();
@@ -36,7 +43,7 @@ class ModelHistory extends React.Component {
   };
 
   render() {
-    const { confirmClearHistory } = this.state;
+    const { confirmClearHistory, history } = this.state;
     let confirmClear;
     if (confirmClearHistory) {
       confirmClear = (
@@ -48,7 +55,6 @@ class ModelHistory extends React.Component {
         />
       );
     }
-    const history = loadHistory();
     const columns = [
       {
         Header: 'Run',
@@ -143,7 +149,7 @@ class ModelHistory extends React.Component {
         <PagingTable
           columns={columns}
           data={history}
-          SubComponent={onExpand}
+          SubComponent={this.onExpand}
           defaultSorted={[{ id: 'date', desc: true }]}
         />
         {confirmClear}

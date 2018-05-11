@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'next/router';
+import { Box } from 'grommet';
 import { compose, graphql } from 'react-apollo';
 import App from '../../components/App';
 import Equity from '../../components/equities/Equity';
@@ -12,7 +13,11 @@ export const EquityInfo = ({ symbol, data: { equity } }) => (
   <App
     title={`${symbol}`}
     description={equity && equity.description}
-    visibleTitle={equity && <Equity size='large' equity={equity} />}
+    visibleTitle={equity && (
+      <Box direction='row' align='center' justify='between' fill='horizontal'>
+        <Equity size='xlarge' equity={equity} />
+      </Box>
+     )}
   >
     {equity && (
       <EquityDashboard symbol={symbol} />

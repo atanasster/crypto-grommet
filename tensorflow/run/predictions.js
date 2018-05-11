@@ -4,7 +4,6 @@ import { loadDatasets, normalizeData, scaleData } from './data_preparation';
 
 
 export default async (model) => {
-  const tfModel = createTFModel(model);
   const data = await loadDatasets(model.features, model.dataPoints, model.lookbackDays);
   const { normalized } = normalizeData(data);
   const scaledData = scaleData(normalized, model.scalers.slice(0, model.features.length));
@@ -15,6 +14,7 @@ export default async (model) => {
     const xDims = pureData[0].length;
     // Create 2D `tf.Tensor` to hold the features data.
     const xData = tf.tensor2d(pureData, [numData, xDims]);
+    const tfModel = createTFModel(model, xData.shape.slice(1));
     const p = tfModel.predict(xData);
     p.print();
   }

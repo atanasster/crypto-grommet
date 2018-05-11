@@ -1,16 +1,39 @@
 import React from 'react';
-import { Box, Heading, Button } from 'grommet';
+import { withRouter } from 'next/router';
+import { Box, Heading } from 'grommet';
 import App from '../../components/App';
+import LinksMenu from '../../components/LinksMenu';
 import withData from '../../apollo/withData';
 import ModelDesigner from '../../components/deep_learning/Design/ModelDesigner';
 import tensorflow from '../../tensorflow/config';
 import ModelHistory from '../../components/deep_learning/Execution/ModelHistory';
 
+const playMenu = [
+  {
+    route: 'models_playground',
+    params: {},
+    label: 'design',
+    a11yTitle: 'Design tensorflow models',
+  },
+  {
+    route: 'models_playground',
+    params: { page: 'history' },
+    label: 'history',
+    a11yTitle: 'History of trained tensorflow models',
+  },
+  {
+    route: 'models_playground',
+    params: { page: 'analysis' },
+    label: 'analysis',
+    a11yTitle: 'Analysis of the last executed model',
+  },
+];
+
+
 class TensorFlowPlay extends React.Component {
   constructor() {
     super();
     this.state = {
-      view: 'design',
       modified: undefined,
       model: {
         id: 0,
@@ -32,6 +55,12 @@ class TensorFlowPlay extends React.Component {
             type: 'Layer',
             config: {
               type: 'LSTM', name: 'LSTM', background: '#1398c6', units: 6,
+            },
+          },
+          {
+            type: 'Layer',
+            config: {
+              type: 'Dense', name: 'Dense', background: '#07c66c', units: 3,
             },
           },
           {
@@ -72,10 +101,11 @@ class TensorFlowPlay extends React.Component {
     });
   };
 
-  renderView() {
-    const { model, view } = this.state;
-    switch (view) {
+  renderView(page) {
+    const { model } = this.state;
+    switch (page) {
       case 'design':
+      case undefined:
         return (
           <ModelDesigner
             readOnly={false}
@@ -90,7 +120,8 @@ class TensorFlowPlay extends React.Component {
     }
   }
   render() {
-    const { modified, view } = this.state;
+    const { modified } = this.state;
+    const { router: { query: { page = 'design' } } } = this.props;
     const title = `Models playground ${modified ? '*' : ''}`;
     return (
       <App
@@ -100,19 +131,18 @@ class TensorFlowPlay extends React.Component {
             <Heading margin='none' level={1}>
               <strong>{title}</strong>
             </Heading>
-            <Box direction='row' gap='small'>
-              <Button active={view === 'design'} label='design' onClick={() => this.setState({ view: 'design' })} />
-              <Button active={view === 'history'} label='history' onClick={() => this.setState({ view: 'history' })} />
-              <Button active={view === 'analysis'} label='analysis' onClick={() => this.setState({ view: 'analysis' })} />
-            </Box>
+            <LinksMenu
+              items={playMenu}
+              activeItem={playMenu.findIndex(item => item.label === page)}
+            />
           </Box>
         )}
       >
-        {this.renderView()}
+        {this.renderView(page)}
       </App>
     );
   }
 }
 
-export default withData(TensorFlowPlay);
+export default withRouter(withData(TensorFlowPlay));
 

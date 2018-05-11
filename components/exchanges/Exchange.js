@@ -34,7 +34,7 @@ export const ExchangeCountries = ({ countries }) => (
 export const ConnectedExchange = ({
   size, display, exchange,
 }) => (exchange ? (
-  <RoutedAnchor route='exchange_info' params={{ exchange: exchange.name }} >
+  <RoutedAnchor route='exchange_info' params={{ exchange: exchange.name, page: 'prices' }} >
     <Entity
       entity={exchange.name === 'CCCAGG' ? { ...exchange, name: 'Aggregated' } : exchange}
       size={size}
@@ -42,7 +42,7 @@ export const ConnectedExchange = ({
       type='exchange'
     />
   </RoutedAnchor>
-) : null
+) : <span />
 );
 
 ConnectedExchange.defaultProps = {
@@ -59,7 +59,7 @@ ConnectedExchange.propTypes = {
 
 
 // eslint-disable-next-line no-unused-vars
-const Exchange = ({ exchange: sExchange, data: { coinExchange }, rest }) => (
+const Exchange = ({ exchange: sExchange, data: { coinExchange }, ...rest }) => (
   <ConnectedExchange exchange={coinExchange} {...rest} />
 );
 

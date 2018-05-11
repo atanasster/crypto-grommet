@@ -14,14 +14,24 @@ export const CoinPath = ({
   symbol, toSymbol, exchange, children, disableLink,
 }) => (
   disableLink ? (<div>{children}</div>) : (
-    <RoutedAnchor route='coin_info' params={{ symbol, toSymbol, exchange }} >
+    <RoutedAnchor
+      route='coin_info'
+      params={{
+       symbol, toSymbol, exchange, page: 'info',
+      }}
+    >
       {children}
     </RoutedAnchor>
   )
 );
 
 export const pushCoinPath = ({ symbol, toSymbol, exchange }) => {
-  routerPush({ route: 'coin_info', params: { symbol, toSymbol, exchange } });
+  routerPush({
+    route: 'coin_info',
+    params: {
+      symbol, toSymbol, exchange, page: 'info',
+    },
+  });
 };
 const Coin = (
   {
