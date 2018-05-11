@@ -12,6 +12,8 @@ import tensorflow from '../../../tensorflow/config';
 
 class TrainModel extends React.Component {
   state = {
+    // eslint-disable-next-line no-undef
+    safari: process.browser && (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; }(!window.safari || (typeof safari !== 'undefined' && safari.pushNotification)))),
     running: false,
     lossHistory: [],
     valLossHistory: [],
@@ -36,6 +38,12 @@ class TrainModel extends React.Component {
       loss: undefined,
       valLoss: undefined,
     });
+    if (this.state.safari) {
+      tf.setBackend('cpu');
+      console.log('scaling down to CPU');
+    } else {
+      tf.setBackend('webgl');
+    }
     const beginMs = Date.now();
     try {
       const {
