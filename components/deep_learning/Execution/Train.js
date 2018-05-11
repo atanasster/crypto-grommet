@@ -13,7 +13,7 @@ import periodToTime from './utils';
 class TrainModel extends React.Component {
   state = {
     // eslint-disable-next-line no-undef
-    safari: process.browser && (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; }(!window.safari || (typeof safari !== 'undefined' && safari.pushNotification)))),
+    safari: false,
     running: false,
     lossHistory: [],
     valLossHistory: [],
