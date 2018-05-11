@@ -62,7 +62,7 @@
     "react-dom": "16.2.0",
     "react-ga": "^2.5.0",
     "react-highcharts": "^16.0.2",
-    "react-json-pretty": "^1.7.5",
+    "react-json-pretty": "^1.7.6",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",

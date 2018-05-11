@@ -47,14 +47,14 @@ class TensorFlowPlay extends React.Component {
         lookbackDays: 1,
         dataPoints: 300,
         fillMethod: 'ffill',
-        batchSize: 2,
+        batchSize: 8,
         epochs: 20,
         testSplit: 0.33,
         layers: [
           {
             type: 'Layer',
             config: {
-              type: 'LSTM', name: 'LSTM', background: '#1398c6', units: 6,
+              type: 'LSTM', name: 'LSTM', background: '#1398c6', units: 4,
             },
           },
           {
@@ -74,8 +74,8 @@ class TensorFlowPlay extends React.Component {
         loss: 'meanSquaredError',
         features: [
           { field: 'close', symbol: 'AAPL', type: 'equity' },
-          { field: 'volume', symbol: 'AAPL', type: 'equity' },
-          { field: 'close', symbol: 'SPY', type: 'equity' },
+          { field: 'close', symbol: 'MSFT', type: 'equity' },
+          { field: 'close', symbol: 'HPQ', type: 'equity' },
         ],
       },
     };

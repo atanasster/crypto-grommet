@@ -7,7 +7,7 @@ export default class SimpleRNN extends Dense {
     recurrentInitializer, recurrentRegularizer, recurrentConstraint, dropout,
     recurrentDropout, unroll, stateful, goBackwards, ...rest
   } = {}) {
-    super({ ...rest, defaultBackground: '#1398c6' });
+    super({ ...rest, defaultBackground: '#1398c6', defaultActivation: 'sigmoid' });
     this.addComposedProperty({
       name: 'recurrentInitializer',
       options: 'initializer',

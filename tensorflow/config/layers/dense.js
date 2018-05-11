@@ -7,7 +7,7 @@ export default class Dense extends BaseUnitsLayer {
   constructor({
     activation, activityRegularizer,
     kernelInitializer, kernelConstraint, useBias, biasInitializer, biasRegularizer,
-    biasConstraint, defaultBackground = '#07c66c', ...rest
+    biasConstraint, defaultActivation = 'linear', defaultBackground = '#07c66c', ...rest
   } = {}) {
     super({ ...rest, defaultBackground });
     this.addSelectProperty({
@@ -15,7 +15,7 @@ export default class Dense extends BaseUnitsLayer {
       label: 'Activation',
       value: activation,
       options: activations,
-      defaultValue: 'relu',
+      defaultValue: defaultActivation,
     });
     this.addComposedProperty({
       name: 'activityRegularizer',

@@ -30,6 +30,7 @@ class TrainModel extends React.Component {
   async onTrain() {
     const { model } = this.props;
     this.setState({
+      timing: undefined,
       status: undefined,
       running: true,
       lossHistory: [],
@@ -111,21 +112,23 @@ class TrainModel extends React.Component {
       if (history.history.loss.length > 0) {
         const loss = history.history.loss.map(v => v / scaler);
         const valLoss = history.history.val_loss.map(v => v / scaler);
-        model.layers.forEach((layer, index) => {
+        const savedLayers = model.layers.map((layer, index) => {
           // eslint-disable-next-line no-param-reassign
-          layer.weights = [];
+          const weights = [];
           if (history.model.layers.length >= index) {
             const tfLayer = history.model.layers[index + 1];
             tfLayer.weights.forEach((weight) => {
               const data = weight.read()
                 .dataSync();
               const { shape } = weight;
-              layer.weights.push({ data, shape, name: weight.name });
+              weights.push({ data, shape, name: weight.name });
             });
           }
+          return { ...layer, weights };
         });
         const item = {
-          model,
+          tfModel,
+          model: { ...model, layers: savedLayers },
           date: Date.now(),
           timing,
           loss: loss[loss.length - 1],

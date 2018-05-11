@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Button, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
+import JSONPretty from 'react-json-pretty';
 import { loadHistory, clearHistory } from './history';
 import LossHistoryChart from './LossHistoryChart';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
-import makePredictions from '../../../tensorflow/run/predictions';
+// import makePredictions from '../../../tensorflow/run/predictions';
 import Symbol from '../../Symbol';
 
 
@@ -18,7 +19,6 @@ const formatTime = (date, locale = 'en-us') => (
 );
 class ModelHistory extends React.Component {
   state = {
-    predictions: 'loading',
     history: [],
     confirmClearHistory: false,
   };
@@ -26,16 +26,11 @@ class ModelHistory extends React.Component {
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ history: loadHistory() });
   }
-  onExpand = (row) => {
-    const { predictions } = this.state;
-    makePredictions(row.original.model)
-      .then(result => this.setState({ predictions: result }));
-    return (
-      <div>
-        {predictions}
-      </div>
-    );
-  };
+  onExpand = row => (
+    <Box>
+      {row.original.tfModel && <JSONPretty json={JSON.parse(row.original.tfModel)} />}
+    </Box>
+  );
 
   onClearHistory = () => {
     clearHistory();
