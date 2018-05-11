@@ -321,7 +321,7 @@ class ModelDesigner extends Component {
     const modelMap = (
       <Box pad='medium' direction='column'>
         <Box direction='row' fill='horizontal' align='center' justify='between' pad={{ bottom: 'medium' }}>
-          <Heading level={3}>Network topology</Heading>
+          <Heading level={2}>Network topology</Heading>
           {addButton}
         </Box>
         <Stack>
@@ -352,9 +352,9 @@ class ModelDesigner extends Component {
     return (
       <Box flex={true} fill='true'>
         <TrainModel model={model} />
-        <Box direction='row-responsive'>
-          <Box basis='1/3' pad='medium'>
-            <Heading level={3}>Parameters</Heading>
+        <Box direction='row-responsive' justify='between'>
+          <Box pad='medium'>
+            <Heading level={2}>Parameters</Heading>
             <Box>
               <FormField label='Lookback (lag) days' htmlFor='lookback_days'>
                 <NumberInput

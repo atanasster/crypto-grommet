@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Button, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
-import { longDate } from 'grommet-controls/utils/moment';
 import { loadHistory, clearHistory } from './history';
 import LossHistoryChart from './LossHistoryChart';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 import makePredictions from '../../../tensorflow/run/predictions';
+import Symbol from '../../Symbol';
 
 async function onExpand(row) {
   const preditions = await makePredictions(row.original.model);
@@ -16,6 +16,14 @@ async function onExpand(row) {
   );
 }
 
+const formatTime = (date, locale = 'en-us') => (
+  (new Date(date)).toLocaleDateString(locale, {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+);
 class ModelHistory extends React.Component {
   state = {
     confirmClearHistory: false,
@@ -45,41 +53,77 @@ class ModelHistory extends React.Component {
       {
         Header: 'Run',
         accessor: 'date',
-        Cell: cell => longDate(cell.value),
+        maxWidth: 140,
+        Cell: cell => formatTime(cell.value),
+      },
+      {
+        Header: 'Timing',
+        accessor: 'timing',
+        maxWidth: 100,
+        getProps: () => ({ align: 'end' }),
       },
       {
         Header: 'Loss',
         accessor: 'loss',
+        maxWidth: 120,
         Cell: cell => (<Text weight='bold'>{cell.value ? cell.value.toFixed(5) : '-'}</Text>),
         getProps: () => ({ align: 'end' }),
       },
       {
         Header: 'Val. loss',
         accessor: 'valLoss',
+        maxWidth: 120,
         Cell: cell => (<Text weight='bold'>{cell.value ? cell.value.toFixed(5) : '-'}</Text>),
         getProps: () => ({ align: 'end' }),
       },
       {
         Header: 'Epochs',
-        accessor: 'epochs',
+        accessor: 'model.epochs',
+        maxWidth: 80,
         getProps: () => ({ align: 'end' }),
       },
-      /*
+      {
+        Header: 'Batch',
+        maxWidth: 80,
+        accessor: 'model.batchSize',
+        getProps: () => ({ align: 'end' }),
+      },
+      {
+        Header: 'Features',
+        accessor: 'model',
+        Cell: cell => (
+          <Box direction='row' wrap={true} gap='small'>
+            {cell.original.model.features.map((item, index) => (
+              <Box align='center' key={`feature_${index}`}>
+                <Symbol {...item} disableLink={false} />
+                <Text size='small'>{item.field}</Text>
+              </Box>
+            ))},
+          </Box>
+        ),
+      },
       {
         Header: 'Layers',
         accessor: 'model',
-        Cell: cell => (<Text weight='bold'>{cell.units}</Text>),
-      },
-*/
-      {
-        Header: 'Batch sze',
-        accessor: 'batchSize',
-        getProps: () => ({ align: 'end' }),
+        Cell: cell => (
+          <Box direction='row' wrap={true} gap='small'>
+            {cell.original.model.layers.map(layer => `${layer.config.type}(${layer.config.units})`)}
+          </Box>
+        ),
       },
       {
-        Header: 'Timing',
-        accessor: 'timing',
-        getProps: () => ({ align: 'end' }),
+        Header: 'Target',
+        accessor: 'model',
+        Cell: cell => (
+          <Box direction='row' wrap={true} gap='small'>
+            {cell.original.model.targets.map((item, index) => (
+              <Box align='center' key={`feature_${index}`}>
+                <Symbol {...item} disableLink={false} />
+                <Text size='small'>{item.field}</Text>
+              </Box>
+            ))}
+          </Box>
+        ),
       }, {
         Header: 'Loss',
         accessor: 'history',

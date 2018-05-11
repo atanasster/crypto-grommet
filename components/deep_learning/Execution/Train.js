@@ -59,6 +59,7 @@ class TrainModel extends React.Component {
         xTrainR = xTrain;
         xTestR = xTest;
       }
+      console.log('data shape:', xTrainR.shape, yTrain.shape, xTestR.shape, yTest.shape);
       const scaler = scalers[scalers.length - 1];
       const tfModel = createTFModel(model, xTrainR.shape.slice(1));
       const optimizer = tensorflow.createObject(model.optimizer);
@@ -133,8 +134,6 @@ class TrainModel extends React.Component {
             loss,
             val_loss: valLoss,
           },
-          epochs: model.epochs,
-          batchSize: model.batchSize,
         };
         addHistory(item);
       }

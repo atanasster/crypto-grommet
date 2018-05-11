@@ -37,12 +37,6 @@ class TensorFlowPlay extends React.Component {
           {
             type: 'Layer',
             config: {
-              type: 'Dense', name: 'Dense', background: '#07c66c', units: 4,
-            },
-          },
-          {
-            type: 'Layer',
-            config: {
               type: 'Dense', name: 'Dense', background: '#07c66c', units: 1,
             },
           },
@@ -52,6 +46,7 @@ class TensorFlowPlay extends React.Component {
         features: [
           { field: 'close', symbol: 'AAPL', type: 'equity' },
           { field: 'volume', symbol: 'AAPL', type: 'equity' },
+          { field: 'close', symbol: 'SPY', type: 'equity' },
         ],
       },
     };
