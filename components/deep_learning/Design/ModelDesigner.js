@@ -15,6 +15,7 @@ import Features from './Features';
 import Targets from './Targets';
 import ComposedEditor from './editors/ComposedEditor';
 import TrainModel from '../Execution/Train';
+import { ModelContext } from '../StateProvider';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
   const fromPoint = [
@@ -62,19 +63,13 @@ class ModelDesigner extends Component {
   };
 
   updateLayer = (layerIndex, newLayer) => {
-    const { onChange } = this.props;
-    const { model } = this.props;
-    const updated = {
-      ...model,
-      layers: model.layers
-        .map((l, index) => (index === layerIndex ? newLayer : l)),
-    };
-    onChange(updated);
+    this.updateModel('layers',
+      this.model.layers
+        .map((l, index) => (index === layerIndex ? newLayer : l)));
   };
 
   onNeuronsChange = (event, layerIndex) => {
-    const { model } = this.props;
-    const layer = model.layers[layerIndex];
+    const layer = this.model.layers[layerIndex];
     const units = parseInt(event.target.value, 10);
     if (!Number.isNaN(units)) {
       const newLayer = { ...layer, config: { ...layer.config, units } };
@@ -87,14 +82,9 @@ class ModelDesigner extends Component {
   };
 
   onDeleteLayer = () => {
-    const { onChange, model } = this.props;
     const { removeLayer } = this.state;
-    const updated = {
-      ...model,
-      layers: model.layers
-        .filter((_, index) => (index !== removeLayer)),
-    };
-    onChange(updated);
+    this.updateLayer('layers',
+      this.model.layers.filter((_, index) => (index !== removeLayer)));
     this.setState({ removeLayer: undefined });
   };
 
@@ -102,36 +92,19 @@ class ModelDesigner extends Component {
     this.setState({ removeLayer: undefined });
   };
   onChange = (name, value) => {
-    const { onChange, model } = this.props;
-    onChange({
-      ...model,
-      [name]: value,
-    });
+    this.updateModel(name, value);
   };
+
   onOptimizerChange = (name, value) => {
-    const { onChange, model } = this.props;
-    onChange({
-      ...model,
-      optimizer: { ...model.optimizer, ...value },
-    });
+    this.updateModel('optimizer', value);
   };
 
   onMoveLayerUp = (index) => {
-    const { onChange, model } = this.props;
-    const updated = {
-      ...model,
-      layers: moveArrayItem(model.layers, index, 'up'),
-    };
-    onChange(updated);
+    this.updateModel('layers', moveArrayItem(this.model.layers, index, 'up'));
   };
 
   onMoveLayerDown = (index) => {
-    const { onChange, model } = this.props;
-    const updated = {
-      ...model,
-      layers: moveArrayItem(model.layers, index, 'down'),
-    };
-    onChange(updated);
+    this.updateModel('layers', moveArrayItem(this.model.layers, index, 'down'));
   };
 
   onAddLayerClick = () => {
@@ -160,13 +133,12 @@ class ModelDesigner extends Component {
   };
 
   renderLayerSettings(label, editable, layerIndex) {
-    const { model } = this.props;
     const title = (
       <Text truncate={true} size='large' weight='bold' pad='small'>
         {label}
       </Text>
     );
-    if (editable && layerIndex >= 0 && layerIndex < model.layers.length) {
+    if (editable && layerIndex >= 0 && layerIndex < this.model.layers.length) {
       const actions = [
         {
           label: 'Edit',
@@ -182,7 +154,7 @@ class ModelDesigner extends Component {
           onClick: () => this.onMoveLayerUp(layerIndex),
         });
       }
-      if (layerIndex < model.layers.length - 1) {
+      if (layerIndex < this.model.layers.length - 1) {
         actions.push({
           label: 'Move Down',
           onClick: () => this.onMoveLayerDown(layerIndex),
@@ -207,7 +179,7 @@ class ModelDesigner extends Component {
             <NumberInput
               min={1}
               max={20}
-              value={model.layers[layerIndex].config.units}
+              value={this.model.layers[layerIndex].config.units}
               onChange={e => this.onNeuronsChange(e, layerIndex)}
             />
           </FormField>
@@ -218,12 +190,10 @@ class ModelDesigner extends Component {
   }
 
   onChangeFeatures = (features) => {
-    const { onChange, model } = this.props;
-    onChange({ ...model, features });
+    this.updateModel('features', features);
   };
   onChangeTargets = (targets) => {
-    const { onChange, model } = this.props;
-    onChange({ ...model, targets });
+    this.updateModel('targets', targets);
   };
 
   renderLayer({ layer, index, nodes }) {
@@ -245,181 +215,190 @@ class ModelDesigner extends Component {
   }
 
   render() {
-    const { readOnly, model } = this.props;
-    let editLayer;
-    if (!readOnly && this.state.editLayer !== undefined) {
-      let layer;
-      if (this.state.editLayer >= 0) {
-        layer = model.layers[this.state.editLayer];
-      } else {
-        const { targets } = model;
-        layer = {
-          type: 'Layer',
-          name: 'layer',
-          config: {
-            type: 'Dense',
-            name: 'Dense',
-            background: '#07c66c',
-            units: Math.max(targets.length, 1),
-            // activityRegularizer: { type: 'Regularizer', config: { type: 'L1', l1: 0.3 } },
-          },
-        };
-      }
-      editLayer = (
-        <EditLayer
-          layer={layer}
-          onClose={this.onRequestForCloseEditLayer}
-          onSave={this.onSaveLayer}
-        />
-      );
-    }
-    let deleteConfirm;
-    if (!readOnly && this.state.removeLayer !== undefined) {
-      const layer = model.layers[this.state.removeLayer];
-      deleteConfirm = (
-        <Confirmation
-          title='Remove layer?'
-          text={`Are you sure you want to remove this ${layer.displayName} layer?`}
-          onClose={this.onDiscardDelete}
-          onConfirm={this.onDeleteLayer}
-        />
-      );
-    }
-    const layers = [];
-    const { layers: deepLayers } = model;
-    const layerNodes = deepLayers.map((layer, index) => {
-      layers.push(layer);
-      return this.renderLayer({
-        layer,
-        index,
-        nodes: new Array(layer.config.units).fill()
-          .map((_, i) => ({ label: `${layer.config.name}-${i + 1}` })),
-      });
-    });
-    let connections = [];
-    if (deepLayers.length > 0) {
-      connections = [...connections, ...layerConnections('features', model.features, 0, deepLayers[0])];
-      for (let i = 0; i < deepLayers.length - 1; i += 1) {
-        connections = [...connections,
-          ...layerConnections(i, deepLayers[i], i + 1, deepLayers[i + 1])];
-      }
-      connections = [...connections,
-        ...layerConnections(deepLayers.length - 1, deepLayers[deepLayers.length - 1], 'targets', model.targets)];
-    }
-    let addButton;
-    if (!readOnly) {
-      addButton = (
-        <Box>
-          <Button
-            label='+add layer'
-            primary={true}
-            onClick={this.onAddLayerClick}
-          />
-        </Box>
-      );
-    }
-    const modelMap = (
-      <Box pad='medium' direction='column'>
-        <Box direction='row' fill='horizontal' align='center' justify='between' pad={{ bottom: 'medium' }}>
-          <Heading level={2}>Network topology</Heading>
-          {addButton}
-        </Box>
-        <Stack>
-          <Box fill='horizontal' gap='large'>
-            <Features features={model.features} onChange={this.onChangeFeatures} />
-            {layerNodes}
-            <Targets targets={model.targets} onChange={this.onChangeTargets} />
-          </Box>
-          <Diagram
-            style={{ pointerEvents: 'none' }}
-            connections={connections}
-            calcPoints={calcDiagramEdgePoints}
-          />
-        </Stack>
-      </Box>
-    );
-    let editTarget;
-    if (this.state.editTarget !== undefined) {
-      const target = model.targets[this.state.editTarget];
-      editTarget = (
-        <SelectDataset
-          data={target}
-          heading='Update target'
-          onSelect={this.onUpdateTarget}
-          onClose={() => this.setState({ editTarget: undefined })}
-        />);
-    }
+    const { readOnly } = this.props;
+
     return (
-      <Box flex={true} fill='true'>
-        <TrainModel model={model} />
-        <Box direction='row-responsive' justify='between'>
-          <Box pad='medium'>
-            <Heading level={2}>Parameters</Heading>
-            <Box>
-              <FormField label='Lookback (lag) days' htmlFor='lookback_days'>
-                <NumberInput
-                  id='lookback_days'
-                  min={1}
-                  max={300}
-                  name='lookback_days'
-                  value={model.lookbackDays}
-                  onChange={({ target: { value } }) => this.onChange('lookbackDays', value)}
-                />
-              </FormField>
-              <FormField label='Data points' htmlFor='data_points'>
-                <NumberInput
-                  id='data_points'
-                  min={10}
-                  max={1000}
-                  step={1}
-                  name='data_points'
-                  value={model.dataPoints}
-                  onChange={({ target: { value } }) => this.onChange('dataPoints', value)}
-                />
-              </FormField>
-              <FormField label='Test/train split' htmlFor='test_split'>
-                <NumberInput
-                  id='test_split'
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  name='test_split'
-                  value={model.testSplit}
-                  onChange={({ target: { value } }) => this.onChange('testSplit', value)}
-                />
-              </FormField>
-              <FormField label='Batch size' htmlFor='batch_size'>
-                <NumberInput
-                  id='batch_size'
-                  min={1}
-                  max={30}
-                  name='batch_size'
-                  value={model.batchSize}
-                  onChange={({ target: { value } }) => this.onChange('batchSize', value)}
-                />
-              </FormField>
-              <FormField label='Epochs' htmlFor='epochs'>
-                <NumberInput
-                  id='epochs'
-                  min={1}
-                  max={100}
-                  name='epochs'
-                  value={model.epochs}
-                  onChange={({ target: { value } }) => this.onChange('epochs', value)}
-                />
-              </FormField>
-              <ComposedEditor
-                value={model.optimizer}
-                onChange={this.onOptimizerChange}
+      <ModelContext.Consumer>
+        {({ model, updateModel }) => {
+          this.model = model;
+          this.updateModel = updateModel;
+          let editLayer;
+          if (!readOnly && this.state.editLayer !== undefined) {
+            let layer;
+            if (this.state.editLayer >= 0) {
+              layer = model.layers[this.state.editLayer];
+            } else {
+              const { targets } = model;
+              layer = {
+                type: 'Layer',
+                name: 'layer',
+                config: {
+                  type: 'Dense',
+                  name: 'Dense',
+                  background: '#07c66c',
+                  units: Math.max(targets.length, 1),
+                  // activityRegularizer: { type: 'Regularizer', config: { type: 'L1', l1: 0.3 } },
+                },
+              };
+            }
+            editLayer = (
+              <EditLayer
+                layer={layer}
+                onClose={this.onRequestForCloseEditLayer}
+                onSave={this.onSaveLayer}
               />
+            );
+          }
+          let deleteConfirm;
+          if (!readOnly && this.state.removeLayer !== undefined) {
+            const layer = model.layers[this.state.removeLayer];
+            deleteConfirm = (
+              <Confirmation
+                title='Remove layer?'
+                text={`Are you sure you want to remove this ${layer.displayName} layer?`}
+                onClose={this.onDiscardDelete}
+                onConfirm={this.onDeleteLayer}
+              />
+            );
+          }
+          const layers = [];
+          const { layers: deepLayers } = model;
+          const layerNodes = deepLayers.map((layer, index) => {
+            layers.push(layer);
+            return this.renderLayer({
+              layer,
+              index,
+              nodes: new Array(layer.config.units).fill()
+                .map((_, i) => ({ label: `${layer.config.name}-${i + 1}` })),
+            });
+          });
+          let connections = [];
+          if (deepLayers.length > 0) {
+            connections = [...connections, ...layerConnections('features', model.features, 0, deepLayers[0])];
+            for (let i = 0; i < deepLayers.length - 1; i += 1) {
+              connections = [...connections,
+                ...layerConnections(i, deepLayers[i], i + 1, deepLayers[i + 1])];
+            }
+            connections = [...connections,
+              ...layerConnections(deepLayers.length - 1, deepLayers[deepLayers.length - 1], 'targets', model.targets)];
+          }
+          let addButton;
+          if (!readOnly) {
+            addButton = (
+              <Box>
+                <Button
+                  label='+add layer'
+                  primary={true}
+                  onClick={this.onAddLayerClick}
+                />
+              </Box>
+            );
+          }
+          const modelMap = (
+            <Box pad='medium' direction='column'>
+              <Box direction='row' fill='horizontal' align='center' justify='between' pad={{ bottom: 'medium' }}>
+                <Heading level={2}>Network topology</Heading>
+                {addButton}
+              </Box>
+              <Stack>
+                <Box fill='horizontal' gap='large'>
+                  <Features features={model.features} onChange={this.onChangeFeatures} />
+                  {layerNodes}
+                  <Targets targets={model.targets} onChange={this.onChangeTargets} />
+                </Box>
+                <Diagram
+                  style={{ pointerEvents: 'none' }}
+                  connections={connections}
+                  calcPoints={calcDiagramEdgePoints}
+                />
+              </Stack>
             </Box>
-          </Box>
-          {modelMap}
-          {editLayer}
-          {deleteConfirm}
-          {editTarget}
-        </Box>
-      </Box>
+          );
+          let editTarget;
+          if (this.state.editTarget !== undefined) {
+            const target = model.targets[this.state.editTarget];
+            editTarget = (
+              <SelectDataset
+                data={target}
+                heading='Update target'
+                onSelect={this.onUpdateTarget}
+                onClose={() => this.setState({ editTarget: undefined })}
+              />);
+          }
+          return (
+            <Box flex={true} fill='true'>
+              <TrainModel />
+              <Box direction='row-responsive' justify='between'>
+                <Box pad='medium'>
+                  <Heading level={2}>Parameters</Heading>
+                  <Box>
+                    <FormField label='Lookback (lag) days' htmlFor='lookback_days'>
+                      <NumberInput
+                        id='lookback_days'
+                        min={1}
+                        max={300}
+                        name='lookback_days'
+                        value={model.lookbackDays}
+                        onChange={({ target: { value } }) => this.onChange('lookbackDays', value)}
+                      />
+                    </FormField>
+                    <FormField label='Data points' htmlFor='data_points'>
+                      <NumberInput
+                        id='data_points'
+                        min={10}
+                        max={1000}
+                        step={1}
+                        name='data_points'
+                        value={model.dataPoints}
+                        onChange={({ target: { value } }) => this.onChange('dataPoints', value)}
+                      />
+                    </FormField>
+                    <FormField label='Test/train split' htmlFor='test_split'>
+                      <NumberInput
+                        id='test_split'
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        name='test_split'
+                        value={model.testSplit}
+                        onChange={({ target: { value } }) => this.onChange('testSplit', value)}
+                      />
+                    </FormField>
+                    <FormField label='Batch size' htmlFor='batch_size'>
+                      <NumberInput
+                        id='batch_size'
+                        min={1}
+                        max={30}
+                        name='batch_size'
+                        value={model.batchSize}
+                        onChange={({ target: { value } }) => this.onChange('batchSize', value)}
+                      />
+                    </FormField>
+                    <FormField label='Epochs' htmlFor='epochs'>
+                      <NumberInput
+                        id='epochs'
+                        min={1}
+                        max={100}
+                        name='epochs'
+                        value={model.epochs}
+                        onChange={({ target: { value } }) => this.onChange('epochs', value)}
+                      />
+                    </FormField>
+                    <ComposedEditor
+                      value={model.optimizer}
+                      onChange={this.onOptimizerChange}
+                    />
+                  </Box>
+                </Box>
+                {modelMap}
+                {editLayer}
+                {deleteConfirm}
+                {editTarget}
+              </Box>
+            </Box>
+          );
+        }}
+      </ModelContext.Consumer>
     );
   }
 }
@@ -429,7 +408,6 @@ ModelDesigner.defaultProps = {
 };
 ModelDesigner.propTypes = {
   readOnly: PropTypes.bool,
-  model: PropTypes.object.isRequired,
 };
 
 

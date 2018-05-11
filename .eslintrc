@@ -24,7 +24,8 @@
     "alert": true,
     "URLSearchParams": true,
     "React": true,
-    "localStorage": true
+    "localStorage": true,
+    "navigator": true
   },
   "rules": {
     "async-await/space-after-async": 2,

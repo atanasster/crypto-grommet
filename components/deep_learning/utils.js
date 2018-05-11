@@ -1,4 +1,4 @@
-export default (duration) => {
+export const periodToTime = (duration) => {
   if (!duration) {
     return {
       time: undefined,
@@ -32,3 +32,12 @@ export default (duration) => {
     units: 'ms',
   };
 };
+
+export const formatTraingTime = (date, locale = 'en-us') => (
+  date ? (new Date(date)).toLocaleDateString(locale, {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }) : undefined
+);

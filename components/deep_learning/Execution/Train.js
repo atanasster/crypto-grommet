@@ -4,19 +4,15 @@ import * as tf from '@tensorflow/tfjs';
 import { Box, Button, Text } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
 import LossHistoryChart from './LossHistoryChart';
-import { addHistory } from './history';
 import { prepareTestTrainData } from '../../../tensorflow/run/data_preparation';
 import createTFModel from '../../../tensorflow/run/create_model';
 import tensorflow from '../../../tensorflow/config';
-import periodToTime from './utils';
+import { formatTraingTime, periodToTime } from '../utils';
+import { ModelContext } from '../StateProvider';
 
 class TrainModel extends React.Component {
   state = {
-    // eslint-disable-next-line no-undef
-    safari: false,
-    running: false,
-    lossHistory: [],
-    valLossHistory: [],
+    trainingStats: undefined,
   };
 
   static contextTypes = {
@@ -24,22 +20,22 @@ class TrainModel extends React.Component {
   };
 
   updateStatus = (status) => {
-    this.setState({ status: `${status}...` });
+    this.setState({ trainingStats: { ...this.state.trainingStats, status: `${status}...` } });
   };
 
-  async onTrain() {
-    const { model } = this.props;
+  componentDidMount() {
+    // http://jsfiddle.net/jlubean/dL5cLjxt/
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
-      timing: undefined,
-      status: undefined,
-      running: true,
-      lossHistory: [],
-      valLossHistory: [],
-      epoch: undefined,
-      loss: undefined,
-      valLoss: undefined,
+      safari: !!navigator.userAgent.match(/Version\/[\d]+.*Safari/),
+      iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
     });
-    if (this.state.safari) {
+  }
+
+  async onTrain(model, addToHistory) {
+    const trainingStats = { history: { loss: [], val_loss: [] } };
+    this.setState({ trainingStats });
+    if (this.state.safari || this.state.iOS) {
       tf.setBackend('cpu');
       console.log('scaling down to CPU');
     } else {
@@ -94,13 +90,16 @@ class TrainModel extends React.Component {
               const { loss, val_loss: valLoss } = logs;
               const scaledLoss = loss / scaler;
               const scaledValLoss = valLoss / scaler;
+              trainingStats.history.loss = [...trainingStats.history.loss, scaledLoss];
+              trainingStats.history.val_loss = [...trainingStats.history.val_loss, scaledValLoss];
               this.setState({
-                epoch,
-                loss: scaledLoss,
-                valLoss: scaledValLoss,
-                timing: (Date.now() - beginMs).toFixed(0),
-                lossHistory: [...this.state.lossHistory, scaledLoss],
-                valLossHistory: [...this.state.valLossHistory, scaledValLoss],
+                trainingStats: {
+                  epoch: epoch + 1,
+                  loss: scaledLoss,
+                  valLoss: scaledValLoss,
+                  timing: (Date.now() - beginMs).toFixed(0),
+                  history: trainingStats.history,
+                },
               });
             }
             await tf.nextFrame();
@@ -128,6 +127,7 @@ class TrainModel extends React.Component {
         const item = {
           tfModel: JSON.stringify(history.model.getConfig()),
           model: { ...model, layers: savedLayers },
+          epoch: model.epochs,
           scalers,
           date: Date.now(),
           timing,
@@ -138,40 +138,59 @@ class TrainModel extends React.Component {
             val_loss: valLoss,
           },
         };
-        addHistory(item);
+        addToHistory(item);
       }
       // const preditions = await makePredictions(model);
     } finally {
-      const timing = (Date.now() - beginMs).toFixed(0);
-      this.setState({ running: false, timing });
+      this.setState({ trainingStats: undefined });
     }
   }
   render() {
-    const {
-      epoch, loss, valLoss, running, timing, lossHistory, valLossHistory, status,
-    } = this.state;
-    const { time, units } = periodToTime(timing);
     return (
-      <Box
-        direction='row'
-        align='center'
-        justify='between'
-        fill='horizontal'
-        border='horizontal'
-        pad={{ vertical: 'small' }}
-      >
-        <Box gap='small'>
-          <Button onClick={running ? undefined : () => this.onTrain()} label='train' />
-          <Text>{status}</Text>
-        </Box>
-        <Box direction='row' gap='medium'>
-          <Value label='epoch' value={epoch} />
-          <Value label='loss (mse)' value={loss ? loss.toFixed(5) : undefined} />
-          <Value label='val. loss (mse)' value={valLoss ? valLoss.toFixed(5) : undefined} />
-          <Value label={`duration (${units})`} value={time} />
-        </Box>
-        <LossHistoryChart loss={lossHistory} valLoss={valLossHistory} />
-      </Box>
+      <ModelContext.Consumer>
+        {({ model, addToHistory, lastTrained = {} }) => {
+          const { trainingStats } = this.state;
+          const {
+            timing, status, date, loss, valLoss, epoch, history,
+          } = trainingStats || lastTrained;
+          const { time, units } = periodToTime(timing);
+          let statusText;
+          if (status) {
+            statusText = status;
+          } else if (date) {
+            statusText = `last: ${formatTraingTime(date)}`;
+          }
+          return (
+            <Box
+              direction='row'
+              align='center'
+              justify='between'
+              fill='horizontal'
+              border='horizontal'
+              pad={{ vertical: 'small' }}
+            >
+              <Box gap='small' align='center'>
+                <Button
+                  onClick={this.state.trainingStats ? undefined :
+                    () => this.onTrain(model, addToHistory)}
+                  label='train'
+                />
+                <Text size='small'>{statusText}</Text>
+              </Box>
+              <Box direction='row' gap='medium'>
+                <Value label='epoch' value={epoch} />
+                <Value label='loss (mse)' value={loss ? loss.toFixed(5) : undefined} />
+                <Value label='val. loss (mse)' value={valLoss ? valLoss.toFixed(5) : undefined} />
+                <Value label={`duration (${units})`} value={time} />
+              </Box>
+              <LossHistoryChart
+                loss={history && history.loss ? history.loss : undefined}
+                valLoss={history && history.val_loss ? history.val_loss : undefined}
+              />
+            </Box>
+          );
+        }}
+      </ModelContext.Consumer>
     );
   }
 }
