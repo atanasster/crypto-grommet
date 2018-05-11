@@ -8,7 +8,7 @@ import { addHistory } from './history';
 import { prepareTestTrainData } from '../../../tensorflow/run/data_preparation';
 import createTFModel from '../../../tensorflow/run/create_model';
 import tensorflow from '../../../tensorflow/config';
-// import makePredictions from '../../../tensorflow/predictions';
+import periodToTime from './utils';
 
 class TrainModel extends React.Component {
   state = {
@@ -150,6 +150,7 @@ class TrainModel extends React.Component {
     const {
       epoch, loss, valLoss, running, timing, lossHistory, valLossHistory, status,
     } = this.state;
+    const { time, units } = periodToTime(timing);
     return (
       <Box
         direction='row'
@@ -167,7 +168,7 @@ class TrainModel extends React.Component {
           <Value label='epoch' value={epoch} />
           <Value label='loss (mse)' value={loss ? loss.toFixed(5) : undefined} />
           <Value label='val. loss (mse)' value={valLoss ? valLoss.toFixed(5) : undefined} />
-          <Value label='duration (ms)' value={timing} />
+          <Value label={`duration (${units})`} value={time} />
         </Box>
         <LossHistoryChart loss={lossHistory} valLoss={valLossHistory} />
       </Box>

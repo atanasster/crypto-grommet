@@ -7,7 +7,7 @@ import LossHistoryChart from './LossHistoryChart';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 // import makePredictions from '../../../tensorflow/run/predictions';
 import Symbol from '../../Symbol';
-
+import periodToTime from './utils';
 
 const formatTime = (date, locale = 'en-us') => (
   (new Date(date)).toLocaleDateString(locale, {
@@ -58,9 +58,13 @@ class ModelHistory extends React.Component {
         Cell: cell => formatTime(cell.value),
       },
       {
-        Header: 'Timing',
+        Header: 'Duration',
         accessor: 'timing',
-        maxWidth: 100,
+        maxWidth: 110,
+        Cell: (cell) => {
+          const { time, units } = periodToTime(cell.value);
+          return `${time} (${units})`;
+        },
         getProps: () => ({ align: 'end' }),
       },
       {
