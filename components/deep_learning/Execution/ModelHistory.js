@@ -134,6 +134,7 @@ class ModelHistory extends React.Component {
         accessor: 'history',
         Cell: cell => (
           <LossHistoryChart
+            width='100%'
             loss={cell.value.loss}
             valLoss={cell.value.val_loss}
           />

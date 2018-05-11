@@ -4,7 +4,7 @@ import { ResponsiveLine } from '@nivo/line';
 
 class LossHistoryChart extends React.Component {
   render() {
-    const { loss, valLoss } = this.props;
+    const { loss, valLoss, width = '300px' } = this.props;
     const data = [];
     if (loss && loss.length > 0) {
       data.push({
@@ -21,7 +21,7 @@ class LossHistoryChart extends React.Component {
       });
     }
     return (
-      <div style={{ width: '300px', height: '60px' }} >
+      <div style={{ width, height: '60px' }} >
         {data.length > 0 ? (
           <ResponsiveLine
             colors='d310'
