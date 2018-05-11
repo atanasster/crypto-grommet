@@ -107,7 +107,6 @@ class TrainModel extends React.Component {
           },
         },
       });
-      model.scalers = scalers;
       const timing = (Date.now() - beginMs).toFixed(0);
       if (history.history.loss.length > 0) {
         const loss = history.history.loss.map(v => v / scaler);
@@ -129,6 +128,7 @@ class TrainModel extends React.Component {
         const item = {
           tfModel: JSON.stringify(history.model.getConfig()),
           model: { ...model, layers: savedLayers },
+          scalers,
           date: Date.now(),
           timing,
           loss: loss[loss.length - 1],

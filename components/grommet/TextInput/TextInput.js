@@ -83,7 +83,7 @@ class TextInput extends Component {
   componentWillReceiveProps(nextProps) {
     const { suggestions } = this.props;
     if (nextProps.suggestions &&
-      (!suggestions || suggestions.length !== nextProps.suggestions.lemgth)) {
+      (!suggestions || suggestions.length !== nextProps.suggestions.length)) {
       this.resetSuggestions(nextProps);
     }
   }
