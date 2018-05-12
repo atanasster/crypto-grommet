@@ -39,7 +39,7 @@ class TrainModel extends React.Component {
     const beginMs = Date.now();
     try {
       const {
-        xTrain, yTrain, xTest, yTest, scalers,
+        xTrain, yTrain, xTest, yTest, scalers, lasValue,
       } = await prepareTestTrainData(model, (status => this.updateStatus(status)));
       let xTrainR;
       let xTestR;
@@ -122,6 +122,7 @@ class TrainModel extends React.Component {
           tfModel: JSON.stringify(history.model.getConfig()),
           model: { ...model, layers: savedLayers },
           epoch: model.epochs,
+          lasValue,
           scalers,
           date: Date.now(),
           timing,

@@ -184,7 +184,8 @@ export async function prepareTestTrainData({
   const {
     xTrain, yTrain, xTest, yTest,
   } = convertToTensors(xData, yData, testSplit);
+  const lasValue = normalized[normalized.length - 1][features.length + 1];
   return {
-    xTrain, yTrain, xTest, yTest, scalers,
+    xTrain, yTrain, xTest, yTest, scalers, lasValue,
   };
 }
