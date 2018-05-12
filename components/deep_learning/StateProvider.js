@@ -1,4 +1,5 @@
 import React from 'react';
+import * as tf from '@tensorflow/tfjs/dist/index';
 
 const DEFAULT_STATE = {
   history: [],
@@ -61,6 +62,13 @@ export default class Provider extends React.Component {
       const lastTrained = history.length > 0 ? history[history.length - 1] : undefined;
       // eslint-disable-next-line react/no-did-mount-set-state
       this.setState({ history, lastTrained });
+    }
+    // http://jsfiddle.net/jlubean/dL5cLjxt/
+    // eslint-disable-next-line react/no-did-mount-set-state
+    if (!!navigator.userAgent.match(/Version\/[\d]+.*Safari/) ||
+       (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)) {
+      tf.setBackend('cpu');
+      console.log('scaling down to cpu backend');
     }
   }
   addToHistory = (newHistory) => {

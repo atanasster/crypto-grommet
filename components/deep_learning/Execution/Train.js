@@ -20,24 +20,10 @@ class TrainModel extends React.Component {
     this.setState({ status: `${status}...` });
   };
 
-  componentDidMount() {
-    // http://jsfiddle.net/jlubean/dL5cLjxt/
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      safari: !!navigator.userAgent.match(/Version\/[\d]+.*Safari/),
-      iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
-    });
-  }
 
   async onTrain(model, addToHistory) {
     let trainingStats = { history: { loss: [], val_loss: [] } };
     this.setState({ trainingStats });
-    if (this.state.safari || this.state.iOS) {
-      tf.setBackend('cpu');
-      console.log('scaling down to CPU');
-    } else {
-      tf.setBackend('webgl');
-    }
     const beginMs = Date.now();
     try {
       const {
