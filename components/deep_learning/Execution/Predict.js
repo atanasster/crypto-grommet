@@ -6,12 +6,14 @@ import { ModelContext } from '../StateProvider';
 import predict from '../../../tensorflow/run/predictions';
 import { formatTraingTime } from '../utils';
 import RunButton from './RunButton';
+import Symbol from '../../Symbol';
 
 class PredictModel extends React.Component {
   state = {
     prediction: undefined,
     running: false,
-  }
+  };
+
   async onPredict(model) {
     this.setState({ running: true });
     try {
@@ -46,7 +48,7 @@ class PredictModel extends React.Component {
               border='horizontal'
               pad={{ vertical: 'small' }}
             >
-              <Box gap='small' direction='row' align='center'>
+              <Box gap='small' direction='row' align='center' basis='1/3'>
                 <RunButton
                   onClick={() => this.onPredict(lastTrained)}
                   running={running}
@@ -56,7 +58,16 @@ class PredictModel extends React.Component {
                   <Text size='small'>{`last: ${formatTraingTime(date)}`}</Text>
                 )}
               </Box>
-              <Box direction='row' basis='medium' flex={false} gap='medium'>
+              <Box direction='row' gap='medium' basis='1/3'>
+                <Value
+                  value={(
+                    <Symbol
+                      disableLink={false}
+                      {...lastTrained.model.targets[0]}
+                    />
+                  )}
+                  label='target'
+                />
                 <Value
                   value={`${lastTrained.model.lookbackDays}`}
                   label='prediction days '
@@ -68,7 +79,7 @@ class PredictModel extends React.Component {
                   />
                 )}
               </Box>
-              <Box />
+              <Box basis='1/3' />
             </Box>
           );
         }}

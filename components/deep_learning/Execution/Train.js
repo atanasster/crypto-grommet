@@ -169,7 +169,7 @@ class TrainModel extends React.Component {
               border='horizontal'
               pad={{ vertical: 'small' }}
             >
-              <Box direction='row' gap='small' align='center'>
+              <Box direction='row' gap='small' align='center' basis='1/3'>
                 <RunButton
                   label='train'
                   onClick={() => this.onTrain(model, addToHistory)}
@@ -177,16 +177,18 @@ class TrainModel extends React.Component {
                 />
                 <Text size='small'>{statusText}</Text>
               </Box>
-              <Box direction='row' gap='medium'>
+              <Box direction='row' gap='medium' basis='1/3'>
                 <Value label='epoch' value={epoch} />
                 <Value label='loss (mse)' value={loss ? loss.toFixed(5) : undefined} />
                 <Value label='val. loss (mse)' value={valLoss ? valLoss.toFixed(5) : undefined} />
                 <Value label={`duration (${units})`} value={time} />
               </Box>
-              <LossHistoryChart
-                loss={history && history.loss ? history.loss : undefined}
-                valLoss={history && history.val_loss ? history.val_loss : undefined}
-              />
+              <Box basis='1/3' align='end'>
+                <LossHistoryChart
+                  loss={history && history.loss ? history.loss : undefined}
+                  valLoss={history && history.val_loss ? history.val_loss : undefined}
+                />
+              </Box>
             </Box>
           );
         }}

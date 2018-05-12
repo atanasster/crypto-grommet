@@ -15,9 +15,11 @@ const Value = ({
   label, value, size, weight, gap, units, color,
 }) => (
   <Box gap={gap}>
-    <Text size={size} weight={weight} color={color}>
-      {`${value !== undefined ? value : '-'}${units ? ` ${units}` : ''}`}
-    </Text>
+    {React.isValidElement(value) ? value : (
+      <Text size={size} weight={weight} color={color}>
+        {`${value !== undefined ? value : '-'}${units ? ` ${units}` : ''}`}
+      </Text>
+    )}
     <Box alignSelf='end'>
       <Text size={LABEL_SIZE_MAP[size]} color={color}>
         {label}
