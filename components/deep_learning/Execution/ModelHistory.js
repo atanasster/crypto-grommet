@@ -49,6 +49,12 @@ class ModelHistory extends React.Component {
               Cell: cell => formatTraingTime(cell.value),
             },
             {
+              Header: 'Prediction',
+              accessor: 'model.lookbackDays',
+              maxWidth: 140,
+              Cell: cell => (cell.value < 2 ? `${cell.value} day` : `${cell.value} days`),
+            },
+            {
               Header: 'Duration',
               accessor: 'timing',
               maxWidth: 110,

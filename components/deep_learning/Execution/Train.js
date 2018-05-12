@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as tf from '@tensorflow/tfjs';
 import { Box, Button, Text } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
@@ -13,10 +12,6 @@ import { ModelContext } from '../StateProvider';
 class TrainModel extends React.Component {
   state = {
     trainingStats: undefined,
-  };
-
-  static contextTypes = {
-    client: PropTypes.object.isRequired,
   };
 
   updateStatus = (status) => {
@@ -116,10 +111,9 @@ class TrainModel extends React.Component {
           if (history.model.layers.length >= index) {
             const tfLayer = history.model.layers[index + 1];
             tfLayer.weights.forEach((weight) => {
-              const data = weight.read()
-                .dataSync();
+              const data = weight.read().dataSync();
               const { shape } = weight;
-              weights.push({ data, shape, name: weight.name });
+              weights.push({ data: Array.from(data), shape, name: weight.name });
             });
           }
           return { ...layer, weights };

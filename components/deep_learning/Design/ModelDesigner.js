@@ -15,6 +15,7 @@ import Features from './Features';
 import Targets from './Targets';
 import ComposedEditor from './editors/ComposedEditor';
 import TrainModel from '../Execution/Train';
+import PredictModel from '../Execution/Predict';
 import { ModelContext } from '../StateProvider';
 
 const calcDiagramEdgePoints = ({ fromRect, toRect, containerRect }) => {
@@ -328,6 +329,7 @@ class ModelDesigner extends Component {
           return (
             <Box flex={true} fill='true'>
               <TrainModel />
+              <PredictModel />
               <Box direction='row-responsive' justify='between'>
                 <Box pad='medium'>
                   <Heading level={2}>Parameters</Heading>

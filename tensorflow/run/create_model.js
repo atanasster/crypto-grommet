@@ -18,6 +18,13 @@ export default (model, shape) => {
       // config.inputShape = tfLayer.output.shape;
       // console.log(config.inputShape);
     }
+    if (l.weights && l.weights.length) {
+      const weights = [];
+      l.weights.forEach((weight) => {
+        weights.push(tf.tensor(new Float32Array(weight.data), weight.shape));
+      });
+      config.weights = weights;
+    }
     tfLayer = layer.tf(config);
     tfModel.add(tfLayer);
   });

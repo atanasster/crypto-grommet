@@ -1,78 +1,73 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import * as tf from '@tensorflow/tfjs';
-import { Box, Button } from 'grommet';
+import { Box, Button, Text } from 'grommet';
+import { shortDate } from 'grommet-controls/utils/moment';
 import Value from '../../grommet-controls/Value/Value';
-import LossHistoryChart from './LossHistoryChart';
-import { prepareTestTrainData } from '../../../tensorflow/run/data_preparation';
-import periodToTime from '../utils';
+import { ModelContext } from '../StateProvider';
+import predict from '../../../tensorflow/run/predictions';
+import { formatTraingTime } from '../utils';
 
 class PredictModel extends React.Component {
   state = {
-    // eslint-disable-next-line no-undef
+    prediction: undefined,
     running: false,
-  };
-
-  static contextTypes = {
-    client: PropTypes.object.isRequired,
-  };
-
-  componentDidMount() {
-    // http://jsfiddle.net/jlubean/dL5cLjxt/
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      safari: !!navigator.userAgent.match(/Version\/[\d]+.*Safari/),
-      iOS: /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
-    });
   }
-
-  async onTrain() {
-    const { model } = this.props;
-    this.setState({
-      running: true,
-      timing: undefined,
-    });
-    if (this.state.safari || this.state.iOS) {
-      tf.setBackend('cpu');
-      console.log('scaling down to CPU');
-    } else {
-      tf.setBackend('webgl');
-    }
-    const beginMs = Date.now();
+  async onPredict(model) {
+    this.setState({ running: true });
     try {
-      const {
-        xTrain, yTrain, xTest, yTest, scalers,
-      } = await prepareTestTrainData(model, (status => this.updateStatus(status)));
-      console.log(xTrain, yTrain, xTest, yTest, scalers);
+      const { predictions, lastDate } = await predict(model);
+      if (predictions && predictions.length > 0) {
+        this.setState({
+          prediction: predictions[predictions.length - 1],
+          date: Date.now(),
+          lastDate,
+        });
+      }
     } finally {
-      const timing = (Date.now() - beginMs).toFixed(0);
-      this.setState({ running: false, timing });
+      this.setState({ running: false });
     }
   }
   render() {
-    const { model } = this.props;
-    if (!model) {
-      return null;
-    }
-    const { running, timing } = this.state;
-    const { time, units } = periodToTime(timing);
+    const {
+      prediction, lastDate, running, date,
+    } = this.state;
     return (
-      <Box
-        direction='row'
-        align='center'
-        justify='between'
-        fill='horizontal'
-        border='horizontal'
-        pad={{ vertical: 'small' }}
-      >
-        <Box gap='small'>
-          <Button onClick={running ? undefined : () => this.onTrain()} label='predict' />
-        </Box>
-        <Box direction='row' gap='medium'>
-          <Value label={`duration (${units})`} value={time} />
-        </Box>
-        <LossHistoryChart loss={model.hostory.loss} valLoss={model.hostory.val_loss} />
-      </Box>
+      <ModelContext.Consumer>
+        {({ lastTrained }) => {
+          if (!lastTrained) {
+            return null;
+          }
+          return (
+            <Box
+              direction='row'
+              align='center'
+              justify='between'
+              fill='horizontal'
+              border='horizontal'
+              pad={{ vertical: 'small' }}
+            >
+              <Box gap='small'>
+                <Button onClick={running ? undefined : () => this.onPredict(lastTrained)} label='predict' />
+                {date && (
+                  <Text size='small'>{`last: ${formatTraingTime(date)}`}</Text>
+                )}
+              </Box>
+              <Box direction='row' basis='medium' flex={false} gap='medium'>
+                <Value
+                  value={`${lastTrained.model.lookbackDays}`}
+                  label='prediction days '
+                />
+                {prediction && (
+                  <Value
+                    value={`$${prediction.toFixed(2)}`}
+                    label={`after ${shortDate(lastDate)}`}
+                  />
+                )}
+              </Box>
+              <Box />
+            </Box>
+          );
+        }}
+      </ModelContext.Consumer>
     );
   }
 }
