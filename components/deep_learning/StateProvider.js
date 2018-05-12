@@ -85,6 +85,10 @@ export default class Provider extends React.Component {
     this.setState({ model: { ...this.state.model, [propName]: value } });
   };
 
+  loadModel = (model) => {
+    this.setState({ model });
+  };
+
   clearHistory = () => {
     this.setState({ history: [], lastTrained: undefined });
     if (localStorage) {
@@ -100,6 +104,7 @@ export default class Provider extends React.Component {
           addToHistory: this.addToHistory,
           clearHistory: this.clearHistory,
           updateModel: this.updateModel,
+          loadModel: this.loadModel,
         }}
       >
         {this.props.children}

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Box, Text } from 'grommet';
 import { shortDate } from 'grommet-controls/utils/moment';
 import Value from '../../grommet-controls/Value/Value';
@@ -36,7 +37,8 @@ class PredictModel extends React.Component {
     return (
       <ModelContext.Consumer>
         {({ lastTrained }) => {
-          if (!lastTrained) {
+          const model = this.props.model || lastTrained;
+          if (!model) {
             return null;
           }
           return (
@@ -50,7 +52,7 @@ class PredictModel extends React.Component {
             >
               <Box gap='small' direction='row' align='center' basis='1/3'>
                 <RunButton
-                  onClick={() => this.onPredict(lastTrained)}
+                  onClick={() => this.onPredict(model)}
                   running={running}
                   label='predict'
                 />
@@ -63,13 +65,13 @@ class PredictModel extends React.Component {
                   value={(
                     <Symbol
                       disableLink={false}
-                      {...lastTrained.model.targets[0]}
+                      {...model.model.targets[0]}
                     />
                   )}
                   label='target'
                 />
                 <Value
-                  value={`${lastTrained.model.lookbackDays}`}
+                  value={`${model.model.lookbackDays}`}
                   label='prediction days '
                 />
                 {prediction && (
@@ -87,5 +89,13 @@ class PredictModel extends React.Component {
     );
   }
 }
+
+PredictModel.defaultProps = {
+  model: undefined,
+};
+
+PredictModel.propTypes = {
+  model: PropTypes.object,
+};
 
 export default PredictModel;

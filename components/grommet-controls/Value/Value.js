@@ -40,7 +40,7 @@ Value.defaultProps = {
 Value.propTypes = {
   label: PropTypes.string,
   color: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.number]),
   weight: PropTypes.oneOfType([PropTypes.oneOf(['normal', 'bold']), PropTypes.number]),
   gap: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge']),
   size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge']),
