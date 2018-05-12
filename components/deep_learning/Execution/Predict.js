@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Button, Text } from 'grommet';
+import { Box, Text } from 'grommet';
 import { shortDate } from 'grommet-controls/utils/moment';
 import Value from '../../grommet-controls/Value/Value';
 import { ModelContext } from '../StateProvider';
 import predict from '../../../tensorflow/run/predictions';
 import { formatTraingTime } from '../utils';
+import RunButton from './RunButton';
 
 class PredictModel extends React.Component {
   state = {
@@ -45,8 +46,12 @@ class PredictModel extends React.Component {
               border='horizontal'
               pad={{ vertical: 'small' }}
             >
-              <Box gap='small'>
-                <Button onClick={running ? undefined : () => this.onPredict(lastTrained)} label='predict' />
+              <Box gap='small' direction='row' align='center'>
+                <RunButton
+                  onClick={() => this.onPredict(lastTrained)}
+                  running={running}
+                  label='predict'
+                />
                 {date && (
                   <Text size='small'>{`last: ${formatTraingTime(date)}`}</Text>
                 )}

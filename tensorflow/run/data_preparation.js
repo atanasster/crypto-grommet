@@ -3,10 +3,10 @@ import initApollo from '../../apollo/initApollo';
 import { priceHistoryQuery as coinPrices } from '../../graphql/coins';
 import { priceHistoryQuery as equityPrices } from '../../graphql/equities';
 
+const apolloClient = initApollo();
 
 export async function queryPriceData(symbol, query, limit) {
-  const client = initApollo();
-  const { data: { prices: { list: { results } } } } = await client.query({
+  const { data: { prices: { list: { results } } } } = await apolloClient.query({
     query,
     variables: { symbol, limit },
   });

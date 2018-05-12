@@ -1,6 +1,6 @@
 import React from 'react';
 import * as tf from '@tensorflow/tfjs';
-import { Box, Button, Text } from 'grommet';
+import { Box, Text } from 'grommet';
 import Value from '../../grommet-controls/Value/Value';
 import LossHistoryChart from './LossHistoryChart';
 import { prepareTestTrainData } from '../../../tensorflow/run/data_preparation';
@@ -8,14 +8,16 @@ import createTFModel from '../../../tensorflow/run/create_model';
 import tensorflow from '../../../tensorflow/config';
 import { formatTraingTime, periodToTime } from '../utils';
 import { ModelContext } from '../StateProvider';
+import RunButton from './RunButton';
 
 class TrainModel extends React.Component {
   state = {
     trainingStats: undefined,
+    status: undefined,
   };
 
   updateStatus = (status) => {
-    this.setState({ trainingStats: { ...this.state.trainingStats, status: `${status}...` } });
+    this.setState({ status: `${status}...` });
   };
 
   componentDidMount() {
@@ -28,7 +30,7 @@ class TrainModel extends React.Component {
   }
 
   async onTrain(model, addToHistory) {
-    const trainingStats = { history: { loss: [], val_loss: [] } };
+    let trainingStats = { history: { loss: [], val_loss: [] } };
     this.setState({ trainingStats });
     if (this.state.safari || this.state.iOS) {
       tf.setBackend('cpu');
@@ -85,17 +87,20 @@ class TrainModel extends React.Component {
               const { loss, val_loss: valLoss } = logs;
               const scaledLoss = loss / scaler;
               const scaledValLoss = valLoss / scaler;
-              trainingStats.history.loss = [...trainingStats.history.loss, scaledLoss];
-              trainingStats.history.val_loss = [...trainingStats.history.val_loss, scaledValLoss];
-              this.setState({
-                trainingStats: {
+              trainingStats = {
+                ...trainingStats,
+                ...{
                   epoch: epoch + 1,
                   loss: scaledLoss,
                   valLoss: scaledValLoss,
                   timing: (Date.now() - beginMs).toFixed(0),
-                  history: trainingStats.history,
+                  history: {
+                    loss: [...trainingStats.history.loss, scaledLoss],
+                    val_loss: [...trainingStats.history.val_loss, scaledValLoss],
+                  },
                 },
-              });
+              };
+              this.setState({ trainingStats });
             }
             await tf.nextFrame();
           },
@@ -137,16 +142,16 @@ class TrainModel extends React.Component {
       }
       // const preditions = await makePredictions(model);
     } finally {
-      this.setState({ trainingStats: undefined });
+      this.setState({ status: undefined, trainingStats: undefined });
     }
   }
   render() {
     return (
       <ModelContext.Consumer>
         {({ model, addToHistory, lastTrained = {} }) => {
-          const { trainingStats } = this.state;
+          const { trainingStats, status } = this.state;
           const {
-            timing, status, date, loss, valLoss, epoch, history,
+            timing, date, loss, valLoss, epoch, history,
           } = trainingStats || lastTrained;
           const { time, units } = periodToTime(timing);
           let statusText;
@@ -164,11 +169,11 @@ class TrainModel extends React.Component {
               border='horizontal'
               pad={{ vertical: 'small' }}
             >
-              <Box gap='small' align='center'>
-                <Button
-                  onClick={this.state.trainingStats ? undefined :
-                    () => this.onTrain(model, addToHistory)}
+              <Box direction='row' gap='small' align='center'>
+                <RunButton
                   label='train'
+                  onClick={() => this.onTrain(model, addToHistory)}
+                  running={this.state.trainingStats}
                 />
                 <Text size='small'>{statusText}</Text>
               </Box>

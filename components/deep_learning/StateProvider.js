@@ -12,7 +12,7 @@ const DEFAULT_STATE = {
       symbol: 'AAPL',
       type: 'equity',
     }],
-    lookbackDays: 1,
+    lookbackDays: 30,
     dataPoints: 300,
     fillMethod: 'ffill',
     batchSize: 8,

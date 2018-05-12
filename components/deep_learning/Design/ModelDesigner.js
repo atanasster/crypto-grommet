@@ -334,7 +334,7 @@ class ModelDesigner extends Component {
                 <Box pad='medium'>
                   <Heading level={2}>Parameters</Heading>
                   <Box>
-                    <FormField label='Lookback (lag) days' htmlFor='lookback_days'>
+                    <FormField label='Prediction days' htmlFor='lookback_days'>
                       <NumberInput
                         id='lookback_days'
                         min={1}
