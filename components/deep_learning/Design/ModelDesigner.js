@@ -84,7 +84,7 @@ class ModelDesigner extends Component {
 
   onDeleteLayer = () => {
     const { removeLayer } = this.state;
-    this.updateLayer('layers',
+    this.updateModel('layers',
       this.model.layers.filter((_, index) => (index !== removeLayer)));
     this.setState({ removeLayer: undefined });
   };
@@ -123,12 +123,7 @@ class ModelDesigner extends Component {
       const oldLayer = this.props.model.layers[editLayer];
       this.updateLayer(editLayer, { ...oldLayer, ...layer });
     } else {
-      const { model, onChange } = this.props;
-      const updated = {
-        ...model,
-        layers: [...model.layers, layer],
-      };
-      onChange(updated);
+      this.updateModel('layers', [...this.model.layers, layer]);
     }
     this.setState({ editLayer: undefined });
   };
