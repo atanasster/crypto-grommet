@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text, Paragraph, TextInput } from 'grommet';
+import { Box, Text, Paragraph } from 'grommet';
+import TextInput from '../grommet/TextInput/TextInput';
 import { searchQuery } from '../../graphql/entities';
 
 const entityLinks = {
