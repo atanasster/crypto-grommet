@@ -4,13 +4,12 @@ import next from 'next';
 import compression from 'compression';
 import path from 'path';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import {} from 'dotenv/config';
 import staticFiles from './static';
 import routes from './routes';
 import logger from './logger';
 import modules from './modules';
 
-dotenv.config();
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
