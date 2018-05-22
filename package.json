@@ -40,7 +40,7 @@
     "express": "^4.16.3",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
-    "grommet": "2.0.0-beta.2",
+    "grommet": "2.0.0-beta.3",
     "grommet-controls": "^0.26.3",
     "grommet-icons": "^0.16.0",
     "install": "^0.10.4",
@@ -69,7 +69,7 @@
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.37.4",
     "socket.io": "^2.0.4",
-    "styled-components": "^2.1.1",
+    "styled-components": "^3.2.6",
     "turndown": "^4.0.1",
     "url-search-params": "^0.10.0",
     "webpack-bundle-analyzer": "^2.11.1"

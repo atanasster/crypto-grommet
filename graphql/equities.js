@@ -65,6 +65,77 @@ export const equityPeersQuery = gql`
   }
 `;
 
+export const equityStatsQuery = gql`
+  query getEquity($symbol : String!) {
+    equity(symbol: $symbol) {
+      symbol: slug
+      image
+      name
+      CEO
+      url
+      description
+      equityType
+      exchange {
+        name
+      }
+      industry {
+        name
+      }
+      sector {
+        name
+      }
+      stats {
+        EPSSurpriseDollar
+        EPSSurprisePercent
+        consensusEPS
+        beta
+        EBITDA
+        cash
+        day200MovingAvg
+        day50MovingAvg
+        day5ChangePercent
+        debt
+        grossProfit
+        dividendRate
+        dividendYield
+        exDividendDate
+        float
+        insiderPercent
+        institutionPercent
+        latestEPS
+        latestEPSDate
+        marketCap
+        month1ChangePercent
+        month3ChangePercent
+        month6ChangePercent
+        numberOfEstimates
+        peRatioHigh
+        peRatioLow
+        priceToBook
+        priceToSales
+        profitMargin
+        returnOnAssets
+        returnOnCapital
+        returnOnEquity
+        revenue
+        revenuePerEmployee
+        revenuePerShare
+        sharesOutstanding
+        shortDate
+        shortInterest
+        shortRatio
+        ttmEPS
+        week52change
+        week52high
+        week52low
+        year1ChangePercent
+        year2ChangePercent
+        year5ChangePercent
+        ytdChangePercent
+      }
+    }
+  }
+`;
 export const volumeByVenueQuery = gql`
   query getEquity($symbol : String!) {
     equityVolumeByExchange(symbol: $symbol) {
