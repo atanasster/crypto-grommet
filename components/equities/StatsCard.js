@@ -100,6 +100,9 @@ class StatsCard extends Component {
     });
     return (
       <PagingTable
+        decorations={{
+          rowOdd: { background: { color: 'light-1' } },
+        }}
         resizable={false}
         columns={[
           {

@@ -62,6 +62,9 @@ class InfoCard extends Component {
     return (
       <PagingTable
         resizable={false}
+        decorations={{
+          rowOdd: { background: { color: 'light-1' } },
+        }}
         columns={[
           {
             maxWidth: 105,
