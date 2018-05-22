@@ -20,6 +20,14 @@ export const PercentValue = ({
   </Text>
 );
 
+export const PercentValuePrecalc = ({
+  value, decimals = 2, ...rest
+}) => (
+  <Text weight='bold' {...rest} >
+    {numeral(value).format(`0,0.${'0'.repeat(decimals)}`)}%
+  </Text>
+);
+
 export const LargeValue = ({
   value, ...rest
 }) => (

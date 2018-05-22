@@ -5,7 +5,7 @@ import { Box } from 'grommet';
 import { Card, PagingTable } from 'grommet-controls';
 import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
-import { FormattedCoinValue } from '../utils/formatters';
+import { FormattedCoinValue, PercentValuePrecalc } from '../utils/formatters';
 import { equityStatsQuery } from '../../graphql/equities';
 
 
@@ -18,9 +18,9 @@ class StatsCard extends Component {
     data.push({
       label: '52 week range',
       value: (
-        <Box direction='row' justify='end'>
+        <Box direction='row' justify='end' gap='xsmall'>
           <FormattedCoinValue value={stats.week52low} />
-          {' - '}
+          -
           <FormattedCoinValue value={stats.week52high} />
         </Box>
       ),
@@ -50,11 +50,53 @@ class StatsCard extends Component {
     });
     data.push({
       label: 'Dividend (yield)',
-      value: `${stats.dividendRate} (${stats.dividendYield})`,
+      value: (
+        <Box direction='row' justify='end' gap='xsmall'>
+          <FormattedCoinValue value={stats.dividendRate} />
+          <Box direction='row'>
+            (<PercentValuePrecalc value={stats.dividendYield} />)
+          </Box>
+        </Box>
+      ),
     });
     data.push({
       label: 'Ex-dividend date',
       value: stats.exDividendDate,
+    });
+    data.push({
+      label: 'PE ratio',
+      value: (
+        <Box direction='row' justify='end' gap='xsmall'>
+          <FormattedCoinValue value={stats.peRatioLow} />
+          -
+          <FormattedCoinValue value={stats.peRatioHigh} />
+        </Box>
+      ),
+    });
+    data.push({
+      label: 'Price / book',
+      value: <FormattedCoinValue value={stats.priceToBook} />,
+    });
+    data.push({
+      label: 'Price / sales',
+      value: <FormattedCoinValue value={stats.priceToSales} />,
+    });
+    data.push({
+      label: 'Insiders %',
+      value: <PercentValuePrecalc value={stats.insiderPercent} />,
+    });
+    data.push({
+      label: 'Institutions %',
+      value: <PercentValuePrecalc value={stats.institutionPercent} />,
+    });
+    data.push({
+      label: 'Short ratio',
+      value: (
+        <Box direction='row' justify='end' gap='xsmall'>
+          <PercentValuePrecalc value={stats.shortRatio} />
+          {stats.shortDate}
+        </Box>
+      ),
     });
     return (
       <PagingTable
