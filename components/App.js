@@ -166,6 +166,12 @@ class App extends Component {
                     label='git'
                     a11yTitle='Go to the github page for this project'
                   />
+                  <Anchor
+                    href='https://spectrum.chat/crypto-grommet'
+                    target='_blank'
+                    label='spectrum'
+                    a11yTitle='Go to the spectrum community for this project'
+                  />
                 </Box>
               </Box>
             </Box>
