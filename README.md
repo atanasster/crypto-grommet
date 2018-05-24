@@ -8,7 +8,9 @@ A react/redux/nodejs/express/passport/nextjs/graphql/apollo project built with:
 * CoinMarketCap: https://coinmarketcap.com/api/
 * Highcharts: http://www.highcharts.com
 
-Live site: https://crypto-grommet.com/
+**Live site**: https://crypto-grommet.com/
+
+**Community**: https://spectrum.chat/crypto-grommet
 
 To run this application, execute the following commands:
 
