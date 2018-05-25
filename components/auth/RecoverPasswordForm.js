@@ -20,12 +20,11 @@ class ResetPasswordForm extends Component {
 
   onSubmitReset = ({ email }) => {
     this.props.mutate({
-      variables: { input: { email } },
+      variables: { email },
     })
       .then((response) => {
-        console.log(response.data);
-        if (response.data && response.data.forgotPassword) {
-          this.props.addSuccessMessage(`A link was sent to your email (${response.data.forgotPassword}).`);
+        if (response.data && response.data.resetPassword.success) {
+          this.props.addSuccessMessage(`A link was sent to your email (${response.data.resetPassword.email}).`);
           if (this.props.onClose) {
             this.props.onClose();
           }

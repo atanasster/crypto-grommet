@@ -20,11 +20,18 @@ class RegistrationForm extends Component {
     }
   }
 
-  onSubmitRegister = ({ username, email, password }) => {
+  onSubmitRegister = ({
+    username, email, password, passwordConfirm,
+  }) => {
     this.props.mutate({
-      variables: { input: { username, email, password } },
+      variables: {
+        input: {
+          username, email, password, passwordConfirm,
+        },
+      },
     })
       .then((response) => {
+        console.log(response);
         if (response.data && response.data.register.user) {
           this.props.addSuccessMessage('Please check your email for a registration confirmation.');
           if (this.props.onClose) {
@@ -57,7 +64,7 @@ class RegistrationForm extends Component {
             />
             <PasswordInputField
               label='Confirm Password'
-              name='password1'
+              name='passwordConfirm'
               validation={[validators.equalsField('password')]}
             />
 

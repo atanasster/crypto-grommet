@@ -55,7 +55,7 @@ export default class AuthForm extends Component {
       default:
         return (
           <LoginForm
-            resitrationLimited={true}
+            regitrationLimited={false}
             onClose={this.props.onClose}
             onSwitchNewAccount={this.switchNewAccount}
             onSwitchRecoverPassword={this.switchRecoverPasswor}
@@ -76,7 +76,7 @@ export default class AuthForm extends Component {
   }
   render() {
     return (
-      <Box pad={{ vertical: 'medium' }} border='top'>
+      <Box pad={{ vertical: 'medium' }}>
         {this.renderScreen()}
       </Box>
     );

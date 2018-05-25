@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Box, Heading } from 'grommet';
 import App from './App';
 
@@ -10,9 +9,9 @@ import EquitiesMarketCapDistribution from './equities/MarketCapDistribution';
 import connect from '../redux';
 
 const HomePage = ({
-  defaultExchange, defaultCurrency, showLogin,
+  defaultExchange, defaultCurrency,
 }) => (
-  <App title='Crypto grommet home' showLogin={showLogin}>
+  <App title='Crypto grommet home'>
     <Box gap='small'>
       <Box border='top' align='center' fill='horizontal'>
         <Heading level={1}>
@@ -45,12 +44,5 @@ const mapStateToProps = state => ({
   defaultCurrency: state.settings.defaultCurrency,
 });
 
-HomePage.defaultProps = {
-  showLogin: false,
-};
-
-HomePage.propTypes = {
-  showLogin: PropTypes.bool,
-};
 
 export default connect(mapStateToProps)(HomePage);

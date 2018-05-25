@@ -16,8 +16,8 @@ import loginMutation from './graphql/Login.graphql';
 class LoginForm extends Component {
   // eslint-disable-next-line no-unused-vars
   openOAutPopup = (provider) => {
-    const { resitrationLimited } = this.props;
-    if (resitrationLimited) {
+    const { regitrationLimited } = this.props;
+    if (regitrationLimited) {
       this.cantRegister();
     } else {
       popupWindow(`${window.location.origin}/auth/${provider}`)
@@ -58,12 +58,12 @@ class LoginForm extends Component {
 
 
   render() {
-    const { onSwitchNewAccount, onSwitchRecoverPassword, resitrationLimited } = this.props;
+    const { onSwitchNewAccount, onSwitchRecoverPassword, regitrationLimited } = this.props;
     return (
       <Box gap='small' overflow='scroll'>
         <Box direction='row'>
           <Text color='dark-3' size='small'>
-            New user? Signup for a <Anchor label='free account' onClick={resitrationLimited ? this.cantRegister : onSwitchNewAccount} />
+            New user? Signup for a <Anchor label='free account' onClick={regitrationLimited ? this.cantRegister : onSwitchNewAccount} />
           </Text>
         </Box>
         <Box pad={{ vertical: 'small' }}>
@@ -118,7 +118,7 @@ class LoginForm extends Component {
           </Form>
         </Box>
         <Text size='small'>
-          <Anchor label='forgot password?' onClick={resitrationLimited ? this.cantRegister : onSwitchRecoverPassword} />
+          <Anchor label='forgot password?' onClick={regitrationLimited ? this.cantRegister : onSwitchRecoverPassword} />
         </Text>
       </Box>
     );

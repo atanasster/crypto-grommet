@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Box, Anchor, Menu, Text } from 'grommet';
 import { Menu as MenuIcon, User } from 'grommet-icons';
 import { bindActionCreators } from 'redux';
@@ -18,13 +17,7 @@ class NavMenu extends Component {
     const { nav: { active } } = this.props;
     this.props.navActivate(!active);
   };
-  componentDidMount() {
-    if (this.props.showLogin && !this.props.user) {
-      // Layer can not render in SSR
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({ loginForm: true });
-    }
-  }
+
   onCloseMenu = () => {
     this.props.navActivate(false);
   };
@@ -115,14 +108,6 @@ class NavMenu extends Component {
     );
   }
 }
-
-NavMenu.defaultProps = {
-  showLogin: false,
-};
-
-NavMenu.propTypes = {
-  showLogin: PropTypes.bool,
-};
 
 const mapDispatchToProps = dispatch => bindActionCreators({ navActivate, signOut }, dispatch);
 

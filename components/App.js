@@ -80,7 +80,7 @@ class App extends Component {
   render() {
     const {
       children, description, title, visibleTitle,
-      notifications, menu, showLogin, themes: { themes },
+      notifications, menu, themes: { themes },
     } = this.props;
     const { theme = 'metro' } = this.state;
     const keywords = ['financeboards', 'equities', 'stock markets', 'crypto', 'cryptocurrencies'];
@@ -127,7 +127,7 @@ class App extends Component {
         <Grommet theme={themes[theme] || {}} >
           <Responsive onChange={this.onResponsive}>
             <Box style={{ height: 'auto', minHeight: '100vh' }}>
-              <NavMenu showLogin={showLogin} />
+              <NavMenu />
               <Notifications />
               <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small' flex={true}>
                 {menu && menu}
@@ -188,7 +188,6 @@ App.propTypes = {
   menu: PropTypes.element,
   title: PropTypes.string.isRequired,
   visibleTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  showLogin: PropTypes.bool,
 };
 
 App.defaultProps = {
@@ -196,7 +195,6 @@ App.defaultProps = {
   description: undefined,
   menu: undefined,
   visibleTitle: undefined,
-  showLogin: false,
 };
 
 const mapDispatchToProps = dispatch =>

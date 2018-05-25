@@ -1,3 +1,4 @@
+const email = require('./email');
 const facebook = require('./facebook');
 const google = require('./google');
 const linkedin = require('./linkedin');
@@ -6,4 +7,4 @@ const CombineModules = require('../combineModules');
 
 
 // module.exports = props;
-module.exports = new CombineModules([facebook, google, linkedin, github]);
+module.exports = new CombineModules([email, facebook, google, linkedin, github]);

@@ -7,7 +7,7 @@ routes.add({ name: 'home', pattern: `${SITE_ROOT}/`, page: `${SITE_ROOT}` });
 routes.add({ name: 'about', page: `${SITE_ROOT}/about` });
 
 // auth
-routes.add('reset_password', '/reset-password/:token', `${SITE_ROOT}/reset_password`);
+routes.add('reset_password', '/reset-password/:uid/:token', `${SITE_ROOT}/reset_password`);
 routes.add({ name: 'profile', pattern: '/profile', page: `${SITE_ROOT}/user/profile` });
 routes.add({ name: 'login', page: `${SITE_ROOT}/login` });
 

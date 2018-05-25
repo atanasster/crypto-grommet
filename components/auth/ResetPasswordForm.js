@@ -21,13 +21,17 @@ class ResetPasswordForm extends Component {
   }
 
 
-  onSubmitRegister = ({ password, passwordConfirmation }) => {
-    const { token } = this.props;
+  onSubmitRegister = ({ password, passwordConfirm }) => {
+    const { token, uid } = this.props;
     this.props.mutate({
-      variables: { input: { password, passwordConfirmation, token } },
+      variables: {
+        input: {
+          password, passwordConfirm, token, uid,
+        },
+      },
     })
       .then((response) => {
-        if (response.data && response.data.resetPassword.ok) {
+        if (response.data && response.data.resetPasswordConfirm.success) {
           this.props.addSuccessMessage('The password was successfully changed.');
           routerPush({ route: 'login' });
         }
@@ -49,7 +53,7 @@ class ResetPasswordForm extends Component {
           />
           <PasswordInputField
             label='Confirm Password'
-            name='passwordConfirmation'
+            name='passwordConfirm'
             validation={[validators.equalsField('password')]}
           />
 
