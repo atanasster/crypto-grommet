@@ -31,7 +31,6 @@ class RegistrationForm extends Component {
       },
     })
       .then((response) => {
-        console.log(response);
         if (response.data && response.data.register.user) {
           this.props.addSuccessMessage('Please check your email for a registration confirmation.');
           if (this.props.onClose) {
