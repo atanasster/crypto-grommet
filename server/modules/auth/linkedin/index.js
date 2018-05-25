@@ -1,12 +1,9 @@
 /* eslint-disable no-unused-vars */
 const passport = require('passport');
 const LinkedinStrategy = require('passport-linkedin-oauth2').Strategy;
-/*
-const { User, Sequelize } = require('../../../../database/models');
-const { userProfileFields, updateUserProfile } = require('../UserData');
-const generateTokens = require('../jwt');
 const oAuthtemplate = require('../popupTemplpate');
-*/
+const socialLoginMutation = require('../social_login_gql');
+const request = require('../../graphql_request');
 
 
 if (process.env.LINKEDIN_APP_ID) {
@@ -22,42 +19,25 @@ if (process.env.LINKEDIN_APP_ID) {
         const {
           id, username, displayName, name: { givenName: firstName, familyName: lastName },
           _json: { publicProfileUrl: profileUrl },
-          emails: [{ value }], photos: [{ value: picture }], gender,
+          emails: [{ value: email }], photos: [{ value: picture }], gender,
         } = profile;
         try {
-          /* let user = await User.findOne(
-            { where: { [Sequelize.Op.or]: [{ linkedin_id: id }, { email: value }] } }
-          );
-          if (!user) {
-            user = await User.create({
+          const result = await request(socialLoginMutation, {
+            input: {
               username: username || displayName,
-              email: value,
-              password: id,
-              is_active: true,
-              linkedin_name: displayName,
-              linkedin_id: id,
+              provider: 'linkedin',
+              providerId: id,
+              email,
               firstName,
               lastName,
               picture,
-              gender,
-              linkedin_url: profileUrl,
-            });
-          } else if (!user.linkedin_id) {
-            user = await updateUserProfile(user,
-              {
-                linkedin_name: displayName,
-                linkedin_id: id,
-                firstName,
-                lastName,
-                picture,
-                gender,
-                linkedin_url: profileUrl,
-              });
-          }
-          const userJSON = userProfileFields(user);
-          done(null, userJSON); */
+              url: profileUrl,
+            },
+          });
+          done(null, result.socialLogin);
         } catch (err) {
-          done(err, {});
+          const error = err.response && err.response.errors ? err.response.errors[0].message : err;
+          done(error, {});
         }
       })
     )
@@ -70,13 +50,12 @@ if (process.env.LINKEDIN_APP_ID) {
     });
 
     app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { session: false }), async (req, res) => {
-      /* const user = await User.findOne({ where: { id: req.user.id } });
-      const tokens = await generateTokens(user, req);
+      const { user, token } = req.user;
       res.send(oAuthtemplate({
         title: 'Success',
         status: 'success',
-        payload: { user: userProfileFields(user), tokens },
-      })); */
+        payload: { user, token },
+      }));
     });
   };
   module.exports = {

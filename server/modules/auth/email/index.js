@@ -1,5 +1,5 @@
 const url = require('url');
-const { request } = require('graphql-request');
+const request = require('../../graphql_request');
 
 
 const activateEmailMutation = `
@@ -19,7 +19,7 @@ const activateEmailMutation = `
 const middleware = (app) => {
   app.get('/activate/:uid/:token', (req, res) => {
     const { uid, token } = req.params;
-    request(process.env.GRAPHQL_SERVER, activateEmailMutation, { uid, token })
+    request(activateEmailMutation, { uid, token })
       .then(() => res.redirect(url.format({
         pathname: '/login',
       })))

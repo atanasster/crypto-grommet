@@ -1,12 +1,9 @@
 /* eslint-disable no-unused-vars */
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
-/*
-const { User, Sequelize } = require('../../../../database/models');
-const { userProfileFields, updateUserProfile } = require('../UserData');
-const generateTokens = require('../jwt');
 const oAuthtemplate = require('../popupTemplpate');
-*/
+const socialLoginMutation = require('../social_login_gql');
+const request = require('../../graphql_request');
 
 if (process.env.GITHUB_APP_ID) {
   passport.use(
@@ -22,36 +19,23 @@ if (process.env.GITHUB_APP_ID) {
       (async (accessToken, refreshToken, profile, done) => {
         const {
           id, username, displayName,
-          profileUrl, emails: [{ value }], photos: [{ value: picture }],
+          profileUrl, emails: [{ value: email }], photos: [{ value: picture }],
         } = profile;
         try {
-          /* let user = await User.findOne(
-            { where: { [Sequelize.Op.or]: [{ github_id: id }, { email: value }] } }
-          );
-          if (!user) {
-            user = await User.create({
+          const result = await request(socialLoginMutation, {
+            input: {
               username: username || displayName,
-              email: value,
-              password: id,
-              is_active: true,
-              github_name: displayName || username,
-              github_id: id,
+              provider: 'github',
+              providerId: id,
+              email,
               picture,
-              github_url: profileUrl,
-            });
-          } else if (!user.github_id) {
-            user = await updateUserProfile(user,
-              {
-                github_name: displayName || username,
-                github_id: id,
-                picture,
-                github_url: profileUrl,
-              });
-          }
-          const userJSON = userProfileFields(user);
-          done(null, userJSON); */
+              url: profileUrl,
+            },
+          });
+          done(null, result.socialLogin);
         } catch (err) {
-          done(err, {});
+          const error = err.response && err.response.errors ? err.response.errors[0].message : err;
+          done(error, {});
         }
       })
     )
@@ -63,13 +47,12 @@ if (process.env.GITHUB_APP_ID) {
       passport.authenticate('github')(req, res, next);
     });
     app.get('/auth/github/callback', passport.authenticate('github', { session: false }), async (req, res) => {
-      /* const user = await User.findOne({ where: { id: req.user.id } });
-      const tokens = await generateTokens(user, req);
+      const { user, token } = req.user;
       res.send(oAuthtemplate({
         title: 'Success',
         status: 'success',
-        payload: { user: userProfileFields(user), tokens },
-      })); */
+        payload: { user, token },
+      }));
     });
   };
 
