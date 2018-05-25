@@ -36,7 +36,6 @@ if (process.env.FACEBOOK_APP_ID) {
           });
           done(null, result.socialLogin);
         } catch (err) {
-          console.log(err);
           const error = err.response && err.response.errors ? err.response.errors[0].message : err;
           done(error, {});
         }
@@ -50,7 +49,6 @@ if (process.env.FACEBOOK_APP_ID) {
       passport.authenticate('facebook')(req, res, next);
     });
     app.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), async (req, res) => {
-      console.log('/auth/facebook/callback', req);
       const { user, token } = req.user;
       res.send(oAuthtemplate({
         title: 'Success',
