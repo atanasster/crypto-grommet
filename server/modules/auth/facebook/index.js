@@ -34,10 +34,10 @@ if (process.env.FACEBOOK_APP_ID) {
               url: profileUrl,
             },
           });
-          done(null, result.socialLogin);
+          return done(null, result.socialLogin);
         } catch (err) {
           const error = err.response && err.response.errors ? err.response.errors[0].message : err;
-          done(error, {});
+          return done(error, {});
         }
       })
     )
@@ -48,7 +48,7 @@ if (process.env.FACEBOOK_APP_ID) {
     app.get('/auth/facebook', (req, res, next) => {
       passport.authenticate('facebook')(req, res, next);
     });
-    app.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), async (req, res) => {
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', { session: false }), (req, res) => {
       const { user, token } = req.user;
       res.send(oAuthtemplate({
         title: 'Success',

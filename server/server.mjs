@@ -1,5 +1,6 @@
 import express from 'express';
 import LRUCache from 'lru-cache';
+import bodyParser from 'body-parser';
 import next from 'next';
 import compression from 'compression';
 import path from 'path';
@@ -65,6 +66,8 @@ const routerHandler = routes.getRequestHandler(
 app.prepare()
   .then(() => {
     const server = express();
+    server.use(bodyParser.json());
+
     if (!dev) {
       server.use(compression({ threshold: 0 }));
     }

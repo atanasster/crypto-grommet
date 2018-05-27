@@ -32,10 +32,10 @@ if (process.env.GITHUB_APP_ID) {
               url: profileUrl,
             },
           });
-          done(null, result.socialLogin);
+          return done(null, result.socialLogin);
         } catch (err) {
           const error = err.response && err.response.errors ? err.response.errors[0].message : err;
-          done(error, {});
+          return done(error, {});
         }
       })
     )
@@ -46,7 +46,7 @@ if (process.env.GITHUB_APP_ID) {
     app.get('/auth/github', (req, res, next) => {
       passport.authenticate('github')(req, res, next);
     });
-    app.get('/auth/github/callback', passport.authenticate('github', { session: false }), async (req, res) => {
+    app.get('/auth/github/callback', passport.authenticate('github', { session: false }), (req, res) => {
       const { user, token } = req.user;
       res.send(oAuthtemplate({
         title: 'Success',
