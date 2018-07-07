@@ -97,9 +97,11 @@ class NavMenu extends Component {
             </RoutedAnchor>
           </Box>
           <Box direction='row' align='center' gap='small'>
-            <SearchEntity
-              onChange={this.onSearchSelect}
-            />
+            <Box>
+              <SearchEntity
+                onChange={this.onSearchSelect}
+              />
+            </Box>
             {this.renderMenu()}
           </Box>
         </Box>
