@@ -3,10 +3,9 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Text, Menu, Stack, FormField, Button } from 'grommet';
+import { Box, Heading, Text, Menu, Stack, FormField, Button, Diagram } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
 import { NumberInput } from 'grommet-controls';
-import Diagram from '../../grommet/Diagram/Diagram';
 import EditLayer from './EditLayer';
 import Confirmation from '../../grommet-controls/Confirmation/Confirmation';
 import SelectDataset from '../../datasets/SelectDataset';
@@ -35,6 +34,7 @@ const layerConnections = (indexFrom, fromLayer, indexTo, toLayer) => {
   for (let from = 0; from < (fromLayer.length || fromLayer.config.units); from += 1) {
     for (let to = 0; to < (toLayer.length || toLayer.config.units); to += 1) {
       connections.push({
+        anchor: 'vertical',
         fromTarget: nodeName(indexFrom, from),
         toTarget: nodeName(indexTo, to),
         color: 'dark-5',
