@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Heading, Text, Menu, Stack, FormField, Button, Diagram } from 'grommet';
+import { Box, Heading, Text, Menu, FormField, Button, Diagram } from 'grommet';
 import { SettingsOption } from 'grommet-icons';
 import { NumberInput } from 'grommet-controls';
 import EditLayer from './EditLayer';
@@ -296,18 +296,20 @@ class ModelDesigner extends Component {
                 <Heading level={2}>Network topology</Heading>
                 {addButton}
               </Box>
-              <Stack>
-                <Box fill='horizontal' gap='large'>
+              <Box style={{ position: 'relative' }}>
+                <Box fill='horizontal' gap='large' >
                   <Features features={model.features} onChange={this.onChangeFeatures} />
                   {layerNodes}
                   <Targets targets={model.targets} onChange={this.onChangeTargets} />
                 </Box>
                 <Diagram
-                  style={{ pointerEvents: 'none' }}
+                  style={{
+                    pointerEvents: 'none', position: 'absolute', top: 0, left: 0, bottom: 0, right: 0,
+                  }}
                   connections={connections}
                   calcPoints={calcDiagramEdgePoints}
                 />
-              </Stack>
+              </Box>
             </Box>
           );
           let editTarget;
