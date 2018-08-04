@@ -46,7 +46,7 @@
     "graphql-request": "^1.6.0",
     "graphql-tag": "^2.8.0",
     "grommet": "https://github.com/grommet/grommet/tarball/NEXT-stable",
-    "grommet-controls": "^0.30.8",
+    "grommet-controls": "^0.30.9",
     "grommet-icons": "https://github.com/grommet/grommet-icons/tarball/stable",
     "install": "^0.10.4",
     "ip": "^1.1.5",
