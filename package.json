@@ -45,7 +45,7 @@
     "graphql": "^0.13.2",
     "graphql-request": "^1.6.0",
     "graphql-tag": "^2.8.0",
-    "grommet": "https://github.com/grommet/grommet/tarball/NEXT-stable",
+    "grommet": "^2.0.0-beta.5",
     "grommet-controls": "0.35.5",
     "grommet-icons": "https://github.com/grommet/grommet-icons/tarball/stable",
     "install": "^0.10.4",
@@ -72,7 +72,7 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "socket.io": "^2.0.4",
-    "styled-components": "^3.2.6",
+    "styled-components": "^3.3.0",
     "turndown": "^4.0.1",
     "url-search-params": "^0.10.0",
     "webpack-bundle-analyzer": "^2.11.1"
