@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { Box, Text, Anchor, Button } from 'grommet';
 import { Form } from 'grommet-controls';
 import { EmailInputField } from 'grommet-controls/components/Form/Fields';
-import validators from 'grommet-controls/components/Form/validators';
+import { validators } from 'grommet-controls/components/Form/validators';
 import connect from '../../redux';
 import { addError, addSuccessMessage } from '../../redux/notifications/actions';
 import ForgotPasswordMutation from './graphql/ForgotPassword.graphql';
