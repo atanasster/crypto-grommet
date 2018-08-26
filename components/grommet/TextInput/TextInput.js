@@ -5,11 +5,12 @@ import { compose } from 'recompose';
 import { Box, Button, Keyboard, Drop } from 'grommet';
 import { withTheme } from 'grommet/components/hocs';
 
-import StyledTextInput, {
+import {
+  StyledTextInput,
   StyledTextInputContainer,
   StyledSuggestions,
 } from 'grommet/components/TextInput/StyledTextInput';
-import doc from 'grommet/components/TextInput/doc';
+import { doc } from 'grommet/components/TextInput/doc';
 
 function renderLabel(suggestion) {
   if (suggestion && typeof suggestion === 'object') {

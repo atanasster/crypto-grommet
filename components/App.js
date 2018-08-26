@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { bindActionCreators } from 'redux';
 import { graphql } from 'react-apollo';
 import styled from 'styled-components';
+import * as gcThemes from 'grommet-controls/themes';
+import * as grommetThemes from 'grommet/themes';
 import {
   Grommet,
   Responsive,
@@ -21,9 +23,10 @@ import RoutedAnchor from './RoutedAnchor';
 import NavMenu from './NavMenu';
 import { navActivate, updateResponsive } from '../redux/nav/actions';
 import { signIn } from '../redux/auth/actions';
-import { selectTheme } from '../redux/themes/actions';
 import CURRENT_USER_QUERY from './auth/graphql/CurrentUserQuery.graphql';
 import { initGA, logPageView } from './utils/analytics';
+
+const themes = { ...gcThemes, ...grommetThemes };
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;
@@ -33,10 +36,6 @@ class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = { theme: props.router.query.theme };
-  }
-
-  changeTheme(themeName) {
-    this.props.selectTheme(themeName);
   }
 
   componentDidMount() {
@@ -69,18 +68,11 @@ class App extends Component {
       this.setState({ theme: nextProps.router.query.theme });
     }
   }
-  onThemeChange = ({ option: theme }) => {
-    const { router } = this.props;
-    const path = { pathname: router.pathname, query: { ...router.query, theme } };
-    this.changeTheme(theme);
-    router.replace(path, path, { shallow: true });
-  };
-
 
   render() {
     const {
       children, description, title, visibleTitle,
-      notifications, menu, themes: { themes },
+      notifications, menu,
     } = this.props;
     const { theme = 'metro' } = this.state;
     const keywords = ['financeboards', 'equities', 'stock markets', 'crypto', 'cryptocurrencies'];
@@ -124,7 +116,7 @@ class App extends Component {
           }
           <meta name='keywords' content={keywords.join(',')} />
         </Head>
-        <Grommet theme={themes[theme] || {}} >
+        <Grommet theme={themes[theme] || themes.metro} >
           <Responsive onChange={this.onResponsive}>
             <Box style={{ height: 'auto', minHeight: '100vh' }}>
               <NavMenu />
@@ -199,12 +191,11 @@ App.defaultProps = {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    signIn, navActivate, updateResponsive, selectTheme,
+    signIn, navActivate, updateResponsive,
   }, dispatch);
 
 const mapStateToProps = state => ({
   nav: state.nav,
-  themes: state.themes,
   token: state.auth.token,
 });
 

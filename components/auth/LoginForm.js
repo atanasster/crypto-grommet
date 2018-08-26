@@ -60,7 +60,7 @@ class LoginForm extends Component {
   render() {
     const { onSwitchNewAccount, onSwitchRecoverPassword, regitrationLimited } = this.props;
     return (
-      <Box gap='small' overflow='scroll'>
+      <Box gap='small' overflow='auto'>
         <Box direction='row'>
           <Text color='dark-3' size='small'>
             New user? Signup for a <Anchor label='free account' onClick={regitrationLimited ? this.cantRegister : onSwitchNewAccount} />

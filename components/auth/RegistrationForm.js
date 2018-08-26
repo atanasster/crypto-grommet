@@ -45,7 +45,7 @@ class RegistrationForm extends Component {
   render() {
     const { onSwitchLogin } = this.props;
     return (
-      <Box gap='small' overflow='scroll'>
+      <Box gap='small' overflow='auto'>
         <Text color='status-disabled' size='small'>
           Already have an account? <Anchor label='log in' onClick={onSwitchLogin} />
         </Text>
