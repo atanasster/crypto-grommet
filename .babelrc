@@ -9,10 +9,9 @@
     "production": {
       "plugins" : [
         ["transform-imports", {
-          "grommet-controls": {"transform": "grommet-controls/components/${member}", "preventFullImport": true },
           "grommet": {"transform": "grommet/components/${member}", "preventFullImport": true },
           "grommet-icons": {"transform": "grommet-icons/icons/${member}", "preventFullImport": true }
-        }],
+        }]
       ]
     },
     "alias": {
