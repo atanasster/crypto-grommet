@@ -14,10 +14,12 @@ const entityLinks = {
 class SearchEntity extends React.Component {
   state = {
     data: { },
+    showDrop: undefined,
   };
 
   onSearch = async (e) => {
     const { client } = this.context;
+    this.setState({ showDrop: undefined });
     const { types } = this.props;
     const { data } = await client.query({
       query: searchQuery,
@@ -26,7 +28,7 @@ class SearchEntity extends React.Component {
         search: e.target.value,
       },
     });
-    this.setState({ data });
+    this.setState({ data, showDrop: data && data.search.length > 0 });
   };
   static contextTypes = {
     client: PropTypes.object.isRequired,
@@ -59,7 +61,7 @@ class SearchEntity extends React.Component {
         type.results.forEach((entity) => {
           suggestions.push({
             label: (
-              <Box fill='horizontal'>
+              <Box fill='horizontal' pad='xsmall'>
                 <Text><strong>{entity.slug}</strong></Text>
                 <Box direction='row' justify='between'>
                   <Paragraph size='small' margin='none'>
@@ -81,10 +83,12 @@ class SearchEntity extends React.Component {
 
   render() {
     const { value } = this.props;
+    const { showDrop } = this.state;
     return (
       <TextInput
         defaultValue={value}
         placeholder='search'
+        showDrop={showDrop}
         suggestions={this.createSuggestions()}
         onChange={this.onSearch}
         onSelect={this.onSelect}
