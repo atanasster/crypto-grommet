@@ -86,7 +86,7 @@ export default ConnectedCoin;
 
 
 export const CoinToCoin = ({ coin, toCoin, exchange }) => (
-  <Box align='center' fill='hoizontal'>
+  <Box align='center' fill='horizontal'>
     <ConnectedCoin
       coin={coin}
       toCoin={toCoin}

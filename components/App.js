@@ -9,13 +9,13 @@ import * as gcThemes from 'grommet-controls/themes';
 import * as grommetThemes from 'grommet/themes';
 import {
   Grommet,
-  Responsive,
   Heading,
   Paragraph,
   Anchor,
   Markdown,
   Box,
 } from 'grommet';
+import { ResponsiveContext } from 'grommet/contexts';
 import { Notification } from 'grommet-controls';
 import connect from '../redux';
 import Notifications from './Notifications';
@@ -52,7 +52,11 @@ class App extends Component {
     this.props.navActivate(!active);
   };
   onResponsive = (size) => {
-    this.props.updateResponsive(size === 'narrow');
+    const isNarrow = size === 'narrow';
+    const { nav: { responsive } } = this.props;
+    if (responsive !== isNarrow) {
+      this.props.updateResponsive(size === 'narrow');
+    }
   };
 
 
@@ -117,57 +121,62 @@ class App extends Component {
           <meta name='keywords' content={keywords.join(',')} />
         </Head>
         <Grommet theme={themes[theme] || themes.metro} >
-          <Responsive onChange={this.onResponsive}>
-            <Box style={{ height: 'auto', minHeight: '100vh' }}>
-              <NavMenu />
-              <Notifications />
-              <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small' flex={true}>
-                {menu && menu}
-                {notifications && notifications.map(
-                  (msg, index) => (<Notification key={`msg_${index}`} {...msg} />)
-                )}
+          <ResponsiveContext.Consumer>
+            {(size) => {
+              this.onResponsive(size);
+              return (
+                <Box style={{ height: 'auto', minHeight: '100vh' }}>
+                  <NavMenu />
+                  <Notifications />
+                  <Box pad={{ horizontal: 'large', top: 'medium' }} gap='small' flex={true}>
+                    {menu && menu}
+                    {notifications && notifications.map(
+                      (msg, index) => (<Notification key={`msg_${index}`} {...msg} />)
+                    )}
 
-                {header}
-                <Box >
-                  {children}
+                    {header}
+                    <Box >
+                      {children}
+                    </Box>
+                  </Box>
+                  <Box
+                    tag='footer'
+                    direction='row'
+                    justify='center'
+                    pad={{ top: 'large' }}
+                    justifySelf='end'
+                  >
+                    <Box
+                      basis='large'
+                      border='top'
+                      direction='row'
+                      justify='center'
+                      pad='medium'
+                      gap='medium'
+                    >
+                      <RoutedAnchor
+                        route='about'
+                        label='about'
+                        a11yTitle='About crypto-grommet'
+                      />
+                      <Anchor
+                        href='https://github.com/atanasster/crypto-grommet'
+                        target='_blank'
+                        label='git'
+                        a11yTitle='Go to the github page for this project'
+                      />
+                      <Anchor
+                        href='https://spectrum.chat/crypto-grommet'
+                        target='_blank'
+                        label='spectrum'
+                        a11yTitle='Go to the spectrum community for this project'
+                      />
+                    </Box>
+                  </Box>
                 </Box>
-              </Box>
-              <Box
-                tag='footer'
-                direction='row'
-                justify='center'
-                pad={{ top: 'large' }}
-                justifySelf='end'
-              >
-                <Box
-                  basis='large'
-                  border='top'
-                  direction='row'
-                  justify='center'
-                  pad='medium'
-                  gap='medium'
-                >
-                  <RoutedAnchor
-                    route='about'
-                    label='about'
-                    a11yTitle='About crypto-grommet'
-                  />
-                  <Anchor
-                    href='https://github.com/atanasster/crypto-grommet'
-                    target='_blank'
-                    label='git'
-                    a11yTitle='Go to the github page for this project'
-                  />
-                  <Anchor
-                    href='https://spectrum.chat/crypto-grommet'
-                    target='_blank'
-                    label='spectrum'
-                    a11yTitle='Go to the spectrum community for this project'
-                  />
-                </Box>
-              </Box>
-            </Box>
-          </Responsive>
+              );
+            }}
+          </ResponsiveContext.Consumer>
         </Grommet>
       </div>
     );

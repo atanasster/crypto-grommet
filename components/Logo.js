@@ -1,8 +1,7 @@
 import React from 'react';
-import Icon from 'grommet-icons/Icon';
 
 const Logo = props => (
-  <Icon viewBox='0 0 240 240' a11yTitle='Crypto grommet' {...props}>
+  <svg viewBox='0 0 240 240' {...props}>
     <g fill='none'>
       <rect stroke='none' x='0' y='0' width='120' height='120' />
       <g className='paths' >
@@ -11,7 +10,7 @@ const Logo = props => (
         <polygon id='svg_3' points='27.049699783325195,163.8779822587967 6.859650135040283,176.05094063282013 136.5070037841797,237.41091072559357 237.552001953125,176.54593575000763 217.46299743652344,167.04598152637482 136.5070037841797,215.73790657520294 27.049699783325195,163.8779822587967 ' fill='#e5e5e5' />
       </g>
     </g>
-  </Icon>
+  </svg>
 );
 
 export default Logo;

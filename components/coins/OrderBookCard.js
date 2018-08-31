@@ -5,7 +5,6 @@ import ReactHighcharts from 'react-highcharts';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { longDate } from 'grommet-controls/utils/moment';
 import { CoinToCoin, hasICO } from './Coin';
 import { ConnectedExchange } from '../exchanges/Exchange';
@@ -141,16 +140,16 @@ export class ConnectedOrderBook extends Component {
     const { asks, bids, realToSymbol } = orderBook;
     return (
       <Card>
-        <CardTitle border='bottom'>
+        <Card.CardTitle border='bottom'>
           <CoinToCoin coin={orderBook.coin} toCoin={{ symbol: realToSymbol }} exchange={this.props.exchange.name} border='bottom' />
-        </CardTitle>
-        <CardSubTitle border='bottom'>
+        </Card.CardTitle>
+        <Card.CardSubTitle border='bottom'>
           <ConnectedExchange exchange={orderBook.exchange} />
-        </CardSubTitle>
+        </Card.CardSubTitle>
         <Box basis='small' direction='row'>
           {this.renderChart()}
         </Box>
-        <CardContent>
+        <Card.CardContent>
           <Box direction='row' pad=' small'>
             <Box basis='1/2' align='center' gap='small'>
               <Text size='medium'><strong>Bid</strong></Text>
@@ -161,7 +160,7 @@ export class ConnectedOrderBook extends Component {
               {renderAskBidTable(asks)}
             </Box>
           </Box>
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

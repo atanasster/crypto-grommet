@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box } from 'grommet';
 import { Card, PagingTable } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
 import { equityPeersQuery } from '../../graphql/equities';
 
@@ -45,17 +44,17 @@ class PriceCard extends Component {
     }
     return (
       <Card>
-        <CardTitle border='bottom'>
+        <Card.CardTitle border='bottom'>
           <Equity equity={equity} size='large' />
-        </CardTitle>
-        <CardSubTitle border='bottom'>
+        </Card.CardTitle>
+        <Card.CardSubTitle border='bottom'>
           Company peers
-        </CardSubTitle>
-        <CardContent >
+        </Card.CardSubTitle>
+        <Card.CardContent >
           <Box full='horizontal' pad='small' >
             {this.renderPeers(equity.peers)}
           </Box>
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

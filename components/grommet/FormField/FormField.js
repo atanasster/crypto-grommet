@@ -1,17 +1,16 @@
 import React, { Children, cloneElement, Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import { compose } from 'recompose';
 import { Box, Text } from 'grommet';
 import { parseMetricToNum, getFirstFocusableDescendant } from 'grommet/utils';
-import { withTheme } from 'grommet/components/hocs';
-import doc from 'grommet/components/FormField/doc';
+import { ThemeContext } from 'grommet/contexts';
+import { doc } from 'grommet/components/FormField/doc';
 
 class FormField extends Component {
   state = {};
 
-  render() {
+  renderThemed(theme) {
     const {
-      children, error, help, htmlFor, label, style, theme,
+      children, error, help, htmlFor, label, style,
       ...rest
     } = this.props;
     const { formField } = theme;
@@ -120,12 +119,17 @@ class FormField extends Component {
       </Box>
     );
   }
+  render() {
+    return (
+      <ThemeContext.Consumer>
+        {theme => this.renderThemed(theme)}
+      </ThemeContext.Consumer>
+    );
+  }
 }
 
 if (process.env.NODE_ENV !== 'production') {
   doc(FormField);
 }
 
-export default compose(
-  withTheme,
-)(FormField);
+export default FormField;

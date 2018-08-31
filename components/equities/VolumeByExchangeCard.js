@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import { Box } from 'grommet';
 import { Card, PagingTable } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { PercentValue, LargeValue } from '../utils/formatters';
 import Equity from './Equity';
 import { volumeByVenueQuery, equityInfoQuery } from '../../graphql/equities';
@@ -35,13 +34,13 @@ class PriceCard extends Component {
     }
     return (
       <Card>
-        <CardTitle border='bottom'>
+        <Card.CardTitle border='bottom'>
           <Equity equity={equity} size='large' />
-        </CardTitle>
-        <CardSubTitle border='bottom'>
+        </Card.CardTitle>
+        <Card.CardSubTitle border='bottom'>
           Volume by venue
-        </CardSubTitle>
-        <CardContent >
+        </Card.CardSubTitle>
+        <Card.CardContent >
           {equityVolumeByExchange &&
           <Box full='horizontal' pad='small' >
             <PagingTable
@@ -75,7 +74,7 @@ class PriceCard extends Component {
             />
           </Box>
             }
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box } from 'grommet';
 import { Card, PagingTable } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
 import { FormattedCoinValue, PercentValuePrecalc } from '../utils/formatters';
 import { equityStatsQuery } from '../../graphql/equities';
@@ -128,17 +127,17 @@ class StatsCard extends Component {
     }
     return (
       <Card>
-        <CardTitle border='bottom'>
+        <Card.CardTitle border='bottom'>
           <Equity equity={equity} size='large' />
-        </CardTitle>
-        <CardSubTitle border='bottom'>
+        </Card.CardTitle>
+        <Card.CardSubTitle border='bottom'>
           Key stats
-        </CardSubTitle>
-        <CardContent >
+        </Card.CardSubTitle>
+        <Card.CardContent >
           <Box full='horizontal' pad='small' >
             {this.renderStats(equity)}
           </Box>
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

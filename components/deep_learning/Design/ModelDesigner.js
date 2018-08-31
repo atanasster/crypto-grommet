@@ -324,7 +324,7 @@ class ModelDesigner extends Component {
               />);
           }
           return (
-            <Box flex={true} fill='true'>
+            <Box flex={true} fill={true}>
               <TrainModel />
               <PredictModel />
               <Box direction='row-responsive' justify='between'>

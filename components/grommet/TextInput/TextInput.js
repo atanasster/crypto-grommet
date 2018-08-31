@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
-
 import { Box, Button, Keyboard, Drop } from 'grommet';
-import { withTheme } from 'grommet/components/hocs';
+import { ThemeContext } from 'grommet/contexts';
 
-import StyledTextInput, {
+import {
+  StyledTextInput,
   StyledTextInputContainer,
   StyledSuggestions,
 } from 'grommet/components/TextInput/StyledTextInput';
-import doc from 'grommet/components/TextInput/doc';
 
 function renderLabel(suggestion) {
   if (suggestion && typeof suggestion === 'object') {
@@ -29,11 +26,6 @@ function stringLabel(suggestion) {
 }
 
 class TextInput extends Component {
-  static contextTypes = {
-    grommet: PropTypes.object,
-    theme: PropTypes.object,
-  }
-
   static defaultProps = {
     dropAlign: { top: 'bottom', left: 'left' },
     messages: {
@@ -173,8 +165,8 @@ class TextInput extends Component {
     this.setState({ showDrop: false });
   };
 
-  renderSuggestions = () => {
-    const { suggestions, theme } = this.props;
+  renderSuggestions = (theme) => {
+    const { suggestions } = this.props;
     const { activeSuggestionIndex, selectedSuggestionIndex } = this.state;
     let items;
     if (suggestions && suggestions.length > 0) {
@@ -204,7 +196,7 @@ class TextInput extends Component {
     );
   };
 
-  render() {
+  renderThemed = (theme) => {
     const {
       defaultValue, dropAlign, dropTarget, id, plain, value, onFocus, onInput, onKeyDown,
       ...rest
@@ -225,7 +217,7 @@ class TextInput extends Component {
           onClickOutside={() => this.setState({ showDrop: false })}
           onEsc={() => this.setState({ showDrop: false })}
         >
-          {this.renderSuggestions()}
+          {this.renderSuggestions(theme)}
         </Drop>
       );
     }
@@ -267,12 +259,13 @@ class TextInput extends Component {
       </StyledTextInputContainer>
     );
   }
+  render() {
+    return (
+      <ThemeContext.Consumer>
+        {theme => this.renderThemed(theme)}
+      </ThemeContext.Consumer>
+    );
+  }
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  doc(TextInput);
-}
-
-export default compose(
-  withTheme,
-)(TextInput);
+export default TextInput;

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box, Menu } from 'grommet';
 import { Card } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Equity from './Equity';
 import PriceTableStream from './PriceTableStream';
 import PriceChart from './PriceChart';
@@ -38,13 +37,13 @@ class PriceCard extends Component {
     const { points } = this.state;
     return (
       <Card>
-        <CardTitle border='bottom'>
+        <Card.CardTitle border='bottom'>
           <Equity equity={equity} size='large' />
-        </CardTitle>
-        <CardSubTitle border='bottom'>
+        </Card.CardTitle>
+        <Card.CardSubTitle border='bottom'>
           IEX Real-Time Price
-        </CardSubTitle>
-        <CardContent >
+        </Card.CardSubTitle>
+        <Card.CardContent >
           <Box pad='small'>
             <Box>
               <Box justify='between' direction='row'>
@@ -64,7 +63,7 @@ class PriceCard extends Component {
             </Box>
             <PriceTableStream symbol={symbol} />
           </Box>
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

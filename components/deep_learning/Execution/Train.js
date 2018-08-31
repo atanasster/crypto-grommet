@@ -1,7 +1,7 @@
 import React from 'react';
 import * as tf from '@tensorflow/tfjs';
 import { Box, Text } from 'grommet';
-import Value from '../../grommet-controls/Value/Value';
+import { Value } from 'grommet-controls';
 import LossHistoryChart from './LossHistoryChart';
 import { prepareTestTrainData } from '../../../tensorflow/run/data_preparation';
 import createTFModel from '../../../tensorflow/run/create_model';

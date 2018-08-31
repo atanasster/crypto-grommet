@@ -4,7 +4,6 @@ import { graphql } from 'react-apollo';
 import numeral from 'numeral';
 import { Box, Anchor } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import { shortDate } from 'grommet-controls/utils/moment';
 import Coin, { hasICO } from './Coin';
 import { icoDetailsQuery } from '../../graphql/coins';
@@ -126,17 +125,17 @@ class ICOCard extends Component {
         size={{ height: 'large' }}
         subTitle='SUB'
       >
-        <CardTitle>
+        <Card.CardTitle>
           {coin && <Coin coin={coin} />}
-        </CardTitle>
-        <CardSubTitle>
+        </Card.CardTitle>
+        <Card.CardSubTitle>
           {coin && coin.icoStatus}
-        </CardSubTitle>
-        <CardContent>
+        </Card.CardSubTitle>
+        <Card.CardContent>
           <Box pad='small' fill='horizontal'>
             {this.renderTable()}
           </Box>
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

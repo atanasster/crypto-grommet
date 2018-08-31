@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import { Box, Menu } from 'grommet';
 import { Card } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import Exchange from '../exchanges/Exchange';
 import { CoinToCoin, hasICO } from './Coin';
 import PriceTableStream from './PriceTableStream';
@@ -50,13 +49,13 @@ class PriceCard extends Component {
     const { period, points } = this.state;
     return (
       <Card>
-        <CardTitle border='bottom'>
+        <Card.CardTitle border='bottom'>
           <CoinToCoin coin={coin} toCoin={toCoin} exchange={exchange} border='bottom' />
-        </CardTitle>
-        <CardSubTitle border='bottom'>
+        </Card.CardTitle>
+        <Card.CardSubTitle border='bottom'>
           <Exchange exchange={exchange} />
-        </CardSubTitle>
-        <CardContent >
+        </Card.CardSubTitle>
+        <Card.CardContent >
           <Box pad='small'>
             <Box>
               <Box justify='between' direction='row'>
@@ -86,7 +85,7 @@ class PriceCard extends Component {
             </Box>
             <PriceTableStream coin={coin} toCoin={toCoin} exchange={exchange} />
           </Box>
-        </CardContent>
+        </Card.CardContent>
       </Card>
     );
   }

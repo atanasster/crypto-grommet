@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ColorInput } from 'grommet-controls';
-import colorPalette from 'grommet-controls/components/Colors/palettes/materialColors';
+import { ColorInput, materialColors } from 'grommet-controls';
 import FlatField from './FlatField';
 
 
@@ -18,7 +17,7 @@ export default class ColorEditor extends React.Component {
     return (
       <FlatField label={label} htmlFor={name}>
         <ColorInput
-          colors={colorPalette}
+          colors={materialColors}
           name={name}
           value={value || ''}
           onChange={this.onChange}

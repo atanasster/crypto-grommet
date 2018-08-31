@@ -4,7 +4,6 @@ import numeral from 'numeral';
 import { Close, Checkmark } from 'grommet-icons';
 import { Box, Text } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
-import { CardTitle, CardSubTitle, CardContent } from 'grommet-controls/components/Card';
 import connect from '../../redux';
 import Coin from '../coins/Coin';
 import CardScroll from '../CardScroll';
@@ -87,20 +86,20 @@ class ExchangeFees extends Component {
         <Card
           size={{ width: 'large', height: 'large' }}
         >
-          <CardTitle>
+          <Card.CardTitle>
             Funding fees
-          </CardTitle>
-          <CardSubTitle>
+          </Card.CardTitle>
+          <Card.CardSubTitle>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
               <Text>Percentage:</Text>{yesNoIcon(fundingFees.percentage)}
             </Box>
             <Box direction='row' justify='between' margin={{ horizontal: 'small' }}>
               <Text>Tier based:</Text>{yesNoIcon(fundingFees.tierBased)}
             </Box>
-          </CardSubTitle>
-          <CardContent>
+          </Card.CardSubTitle>
+          <Card.CardContent>
             {table}
-          </CardContent>
+          </Card.CardContent>
         </Card>
       );
     }
@@ -152,10 +151,10 @@ class ExchangeFees extends Component {
       }
       return (
         <Card size={{ width: 'large', height: 'large' }}>
-          <CardTitle>
+          <Card.CardTitle>
             Trading fees
-          </CardTitle>
-          <CardSubTitle>
+          </Card.CardTitle>
+          <Card.CardSubTitle>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
               <Text>Percentage:</Text>
               {yesNoIcon(coinExchangeFees.tradingFees.percentage)}
@@ -164,10 +163,10 @@ class ExchangeFees extends Component {
               <Text>Tier based:</Text>
               {yesNoIcon(coinExchangeFees.tradingFeestierBased)}
             </Box>
-          </CardSubTitle>
-          <CardContent>
+          </Card.CardSubTitle>
+          <Card.CardContent>
             {table}
-          </CardContent>
+          </Card.CardContent>
         </Card>
       );
     }
