@@ -12,7 +12,7 @@
       },
       "grommet-controls/themes": {
         "transform": "grommet-controls/es6/themes/${member}",
-        "preventFullImport": false
+        "preventFullImport": true
       },
       "grommet": {
         "transform": "grommet/es6/components/${member}",
@@ -26,10 +26,10 @@
       },
       "grommet/themes": {
         "transform": "grommet/es6/themes/${member}",
-        "preventFullImport": false,
+        "preventFullImport": true,
         "skipDefaultConversion": true
       },
-      "-grommet-icons": {
+      "grommet-icons": {
          "transform": "grommet-icons/es6/icons/${member}",
          "preventFullImport": true,
          "skipDefaultConversion": true

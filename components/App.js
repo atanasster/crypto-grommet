@@ -5,8 +5,8 @@ import Head from 'next/head';
 import { bindActionCreators } from 'redux';
 import { graphql } from 'react-apollo';
 import styled from 'styled-components';
-import * as gcThemes from 'grommet-controls/themes';
-import * as grommetThemes from 'grommet/themes';
+import { black, materialdark, materiallight, metro } from 'grommet-controls/themes';
+import { dark, grommet } from 'grommet/themes';
 import {
   Grommet,
   Heading,
@@ -26,7 +26,9 @@ import { signIn } from '../redux/auth/actions';
 import CURRENT_USER_QUERY from './auth/graphql/CurrentUserQuery.graphql';
 import { initGA, logPageView } from './utils/analytics';
 
-const themes = { ...gcThemes, ...grommetThemes };
+const themes = {
+  black, materialdark, materiallight, metro, dark, grommet,
+};
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;
