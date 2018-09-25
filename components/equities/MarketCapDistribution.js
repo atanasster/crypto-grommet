@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import { Box, Distribution } from 'grommet';
 import { Spinning } from 'grommet-controls';
+import { colorFromIndex } from 'grommet-controls/utils';
 import Equity, { pushEquityPath } from './Equity';
 import { FormattedCoinValue } from '../utils/formatters';
 import connect from '../../redux';
@@ -36,14 +37,10 @@ class MarketCapDistribution extends Component {
       <Box fill='horizontal' basis='large'>
         <Distribution values={values} style={{ width: '100%' }}>
           {(item) => {
-            const colors = [
-              'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
-            ];
-            const colorIdx = item.index % colors.length;
             const smallCap = responsive || item.index > 4;
             return (
               <Box
-                background={colors[colorIdx]}
+                background={colorFromIndex(item.index)}
                 border='all'
                 fill={true}
                 pad={smallCap ? null : 'small'}
