@@ -5,8 +5,7 @@ import Head from 'next/head';
 import { bindActionCreators } from 'redux';
 import { graphql } from 'react-apollo';
 import styled from 'styled-components';
-import { black, materialdark, materiallight, metro } from 'grommet-controls/themes';
-import { dark, grommet } from 'grommet/themes';
+import { dark, grommet, black, materialdark, materiallight, metro } from 'grommet-controls/themes';
 import {
   Grommet,
   Heading,
