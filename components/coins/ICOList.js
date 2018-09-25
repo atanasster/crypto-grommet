@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Box, Markdown } from 'grommet';
-import { shortDate } from 'grommet-controls/utils/moment';
+import { shortDate } from 'grommet-controls/utils';
 import connect from '../../redux';
 import Coin from './Coin';
 import ICOCard from './ICOCard';

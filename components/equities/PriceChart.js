@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import { Chart } from 'grommet';
-import { longDate } from 'grommet-controls/utils/moment';
+import { longDate } from 'grommet-controls/utils';
 import { priceHistoryQuery } from '../../graphql/equities';
 
 

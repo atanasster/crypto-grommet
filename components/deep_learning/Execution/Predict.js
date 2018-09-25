@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Text } from 'grommet';
-import { shortDate } from 'grommet-controls/utils/moment';
+import { shortDate } from 'grommet-controls/utils';
 import { Value } from 'grommet-controls';
 import { ModelContext } from '../StateProvider';
 import predict from '../../../tensorflow/run/predictions';

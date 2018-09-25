@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import numeral from 'numeral';
 import { Box, Anchor } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
-import { shortDate } from 'grommet-controls/utils/moment';
+import { shortDate } from 'grommet-controls/utils';
 import Coin, { hasICO } from './Coin';
 import { icoDetailsQuery } from '../../graphql/coins';
 

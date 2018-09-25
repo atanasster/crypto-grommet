@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
 import { PagingTable } from 'grommet-controls';
-import { longDate } from 'grommet-controls/utils/moment';
+import { longDate } from 'grommet-controls/utils';
 import { subscribeLastPrices, unSubscribeLastPrices } from '../../sockets/price_stream/IEXPrices';
 import { valueToColor } from '../utils/formatters';
 

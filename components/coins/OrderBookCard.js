@@ -5,7 +5,7 @@ import ReactHighcharts from 'react-highcharts';
 import numeral from 'numeral';
 import { Box, Text } from 'grommet';
 import { PagingTable, Card } from 'grommet-controls';
-import { longDate } from 'grommet-controls/utils/moment';
+import { longDate } from 'grommet-controls/utils';
 import { CoinToCoin, hasICO } from './Coin';
 import { ConnectedExchange } from '../exchanges/Exchange';
 import { orderBookQuery } from '../../graphql/exchanges';
