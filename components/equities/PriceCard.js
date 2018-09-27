@@ -7,6 +7,7 @@ import Equity from './Equity';
 import PriceTableStream from './PriceTableStream';
 import PriceChart from './PriceChart';
 import { equityDetailsQuery } from '../../graphql/equities';
+import DoubleTitle from '../DoubleTitle';
 
 const optionLimit = [
   { label: '60 points', value: 60 },
@@ -37,12 +38,10 @@ class PriceCard extends Component {
     const { points } = this.state;
     return (
       <Card>
-        <Card.CardTitle border='bottom'>
+        <DoubleTitle>
           <Equity equity={equity} size='large' />
-        </Card.CardTitle>
-        <Card.CardSubTitle border='bottom'>
           IEX Real-Time Price
-        </Card.CardSubTitle>
+        </DoubleTitle>
         <Card.CardContent >
           <Box pad='small'>
             <Box>

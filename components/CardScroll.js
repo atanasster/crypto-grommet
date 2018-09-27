@@ -1,14 +1,10 @@
 import React from 'react';
-import { Box } from 'grommet';
+import { Grid } from 'grommet';
 
 
 export default ({ children }) => (
-  <Box flex='grow' overflow='auto' fill='horizontal'>
-    <Box pad='small'>
-      <Box direction='row' wrap={true} justify='between'>
-        {children}
-      </Box>
-    </Box>
-  </Box>
+  <Grid columns='medium' gap='small' fill='horizontal'>
+    {children}
+  </Grid>
 );
 

@@ -6,6 +6,7 @@ import connect from '../../redux';
 import CardScroll from '../CardScroll';
 import Coin, { CoinPath } from '../coins/Coin';
 import { exchangeMarketsQuery } from '../../graphql/exchanges';
+import DoubleTitle from '../DoubleTitle';
 
 class ExchangeCurrencies extends Component {
   renderItem = (label, value) => (
@@ -66,16 +67,14 @@ class ExchangeCurrencies extends Component {
     if (coinExchangeCurrency && coinExchangeCurrency.currencies) {
       currencies = coinExchangeCurrency.currencies.map((currency, index) => (
         <Card key={`curr_${index}`}>
-          <Card.CardTitle border='bottom'>
+          <DoubleTitle>
             <Coin
               coin={currency.coin || { symbol: currency.symbol }}
               toCoin={{ symbol: defaultCurrency }}
               exchange={coinExchangeCurrency.name}
             />
-          </Card.CardTitle>
-          <Card.CardSubTitle>
             {`precision: ${currency.precision}`}
-          </Card.CardSubTitle>
+          </DoubleTitle>
           <Card.CardContent>
             {this.renderCurrencyPairs(currency.symbol)}
           </Card.CardContent>

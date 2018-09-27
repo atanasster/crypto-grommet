@@ -8,6 +8,7 @@ import connect from '../../redux';
 import Coin from '../coins/Coin';
 import CardScroll from '../CardScroll';
 import { exchangeFeesQuery } from '../../graphql/exchanges';
+import DoubleTitle from '../DoubleTitle';
 
 const redIcon = {
   icon: {
@@ -86,17 +87,15 @@ class ExchangeFees extends Component {
         <Card
           size={{ width: 'large', height: 'large' }}
         >
-          <Card.CardTitle>
+          <DoubleTitle>
             Funding fees
-          </Card.CardTitle>
-          <Card.CardSubTitle>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
               <Text>Percentage:</Text>{yesNoIcon(fundingFees.percentage)}
             </Box>
             <Box direction='row' justify='between' margin={{ horizontal: 'small' }}>
               <Text>Tier based:</Text>{yesNoIcon(fundingFees.tierBased)}
             </Box>
-          </Card.CardSubTitle>
+          </DoubleTitle>
           <Card.CardContent>
             {table}
           </Card.CardContent>
@@ -151,10 +150,8 @@ class ExchangeFees extends Component {
       }
       return (
         <Card size={{ width: 'large', height: 'large' }}>
-          <Card.CardTitle>
+          <DoubleTitle>
             Trading fees
-          </Card.CardTitle>
-          <Card.CardSubTitle>
             <Box direction='row' align='center' margin={{ horizontal: 'small' }}>
               <Text>Percentage:</Text>
               {yesNoIcon(coinExchangeFees.tradingFees.percentage)}
@@ -163,7 +160,7 @@ class ExchangeFees extends Component {
               <Text>Tier based:</Text>
               {yesNoIcon(coinExchangeFees.tradingFeestierBased)}
             </Box>
-          </Card.CardSubTitle>
+          </DoubleTitle>
           <Card.CardContent>
             {table}
           </Card.CardContent>

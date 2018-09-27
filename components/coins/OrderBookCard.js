@@ -9,7 +9,7 @@ import { longDate } from 'grommet-controls/utils';
 import { CoinToCoin, hasICO } from './Coin';
 import { ConnectedExchange } from '../exchanges/Exchange';
 import { orderBookQuery } from '../../graphql/exchanges';
-
+import DoubleTitle from '../DoubleTitle';
 
 function renderAskBidTable(data) {
   return (
@@ -140,12 +140,10 @@ export class ConnectedOrderBook extends Component {
     const { asks, bids, realToSymbol } = orderBook;
     return (
       <Card>
-        <Card.CardTitle border='bottom'>
+        <DoubleTitle>
           <CoinToCoin coin={orderBook.coin} toCoin={{ symbol: realToSymbol }} exchange={this.props.exchange.name} border='bottom' />
-        </Card.CardTitle>
-        <Card.CardSubTitle border='bottom'>
           <ConnectedExchange exchange={orderBook.exchange} />
-        </Card.CardSubTitle>
+        </DoubleTitle>
         <Box basis='small' direction='row'>
           {this.renderChart()}
         </Box>

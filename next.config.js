@@ -1,4 +1,5 @@
 const Dotenv = require('dotenv-webpack');
+const path = require('path');
 const withTM = require('next-plugin-transpile-modules');
 
 const initExport = {
@@ -16,6 +17,16 @@ const initExport = {
           openAnalyzer: true,
         })
       );
+    }
+    if (process.env.NODE_ENV === 'alias') {
+      config.module.rules.push({
+        loader: 'babel-loader',
+        test: /\.js(\?[^?]*)?$/,
+        include: [path.resolve(__dirname, '../grommet-controls/src/js')],
+        options: {
+          presets: ['next/babel'],
+        },
+      });
     }
     config.module.rules.push({
       test: /\.(graphql|gql)$/,

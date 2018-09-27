@@ -5,7 +5,7 @@ import { Box } from 'grommet';
 import { Card, PagingTable } from 'grommet-controls';
 import Equity from './Equity';
 import { equityPeersQuery } from '../../graphql/equities';
-
+import DoubleTitle from '../DoubleTitle';
 
 class PriceCard extends Component {
   renderPeers = (peers) => {
@@ -44,12 +44,10 @@ class PriceCard extends Component {
     }
     return (
       <Card>
-        <Card.CardTitle border='bottom'>
+        <DoubleTitle>
           <Equity equity={equity} size='large' />
-        </Card.CardTitle>
-        <Card.CardSubTitle border='bottom'>
           Company peers
-        </Card.CardSubTitle>
+        </DoubleTitle>
         <Card.CardContent >
           <Box full='horizontal' pad='small' >
             {this.renderPeers(equity.peers)}

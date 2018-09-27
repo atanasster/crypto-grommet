@@ -12,7 +12,7 @@ const HomePage = ({
   defaultExchange, defaultCurrency,
 }) => (
   <App title='Crypto grommet home'>
-    <Box gap='small'>
+    <Box gap='small' fill='horizontal'>
       <Box border='top' align='center' fill='horizontal'>
         <Heading level={1}>
           <strong>Prices</strong>

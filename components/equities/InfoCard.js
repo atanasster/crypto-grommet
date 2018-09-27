@@ -6,7 +6,7 @@ import { Card, PagingTable } from 'grommet-controls';
 import Equity from './Equity';
 import { FormattedCoinValue } from '../utils/formatters';
 import { equityStatsQuery } from '../../graphql/equities';
-
+import DoubleTitle from '../DoubleTitle';
 
 class InfoCard extends Component {
   renderStats = ({
@@ -89,12 +89,10 @@ class InfoCard extends Component {
     }
     return (
       <Card>
-        <Card.CardTitle border='bottom'>
+        <DoubleTitle>
           <Equity equity={equity} size='large' />
-        </Card.CardTitle>
-        <Card.CardSubTitle border='bottom'>
           Company overview
-        </Card.CardSubTitle>
+        </DoubleTitle>
         <Card.CardContent >
           <Box full='horizontal' pad='small' >
             <Paragraph>

@@ -7,7 +7,7 @@ import { PagingTable, Card } from 'grommet-controls';
 import { shortDate } from 'grommet-controls/utils';
 import Coin, { hasICO } from './Coin';
 import { icoDetailsQuery } from '../../graphql/coins';
-
+import DoubleTitle from '../DoubleTitle';
 
 class ICOCard extends Component {
   renderTable() {
@@ -125,12 +125,10 @@ class ICOCard extends Component {
         size={{ height: 'large' }}
         subTitle='SUB'
       >
-        <Card.CardTitle>
+        <DoubleTitle>
           {coin && <Coin coin={coin} />}
-        </Card.CardTitle>
-        <Card.CardSubTitle>
           {coin && coin.icoStatus}
-        </Card.CardSubTitle>
+        </DoubleTitle>
         <Card.CardContent>
           <Box pad='small' fill='horizontal'>
             {this.renderTable()}

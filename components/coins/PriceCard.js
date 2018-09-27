@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
@@ -9,6 +8,7 @@ import { CoinToCoin, hasICO } from './Coin';
 import PriceTableStream from './PriceTableStream';
 import PriceChart from './PriceChart';
 import { coinInfoQuery } from '../../graphql/coins';
+import DoubleTitle from '../DoubleTitle';
 
 const optionDuration = [
   { label: 'Daily', value: 'day' },
@@ -49,12 +49,10 @@ class PriceCard extends Component {
     const { period, points } = this.state;
     return (
       <Card>
-        <Card.CardTitle border='bottom'>
+        <DoubleTitle>
           <CoinToCoin coin={coin} toCoin={toCoin} exchange={exchange} border='bottom' />
-        </Card.CardTitle>
-        <Card.CardSubTitle border='bottom'>
           <Exchange exchange={exchange} />
-        </Card.CardSubTitle>
+        </DoubleTitle>
         <Card.CardContent >
           <Box pad='small'>
             <Box>

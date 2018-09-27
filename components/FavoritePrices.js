@@ -7,7 +7,7 @@ import CoinPriceCard from './coins/PriceCard';
 import EquityPriceCard from './equities/PriceCard';
 
 const FavoritePrices = ({
-  favCoins, favEquities, exchange, responsive, numCards,
+  favCoins, favEquities, exchange, numCards,
 }) => {
   const cards = [...favEquities.slice(0, numCards), ...favCoins.slice(0, numCards)]
     .map((pair, index) => {
@@ -32,8 +32,8 @@ const FavoritePrices = ({
       );
     });
   return (
-    <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-      <CardScroll responsive={responsive}>
+    <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center' fill='horizontal'>
+      <CardScroll>
         {cards}
       </CardScroll>
     </Box>
