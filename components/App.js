@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { bindActionCreators } from 'redux';
 import { graphql } from 'react-apollo';
 import styled from 'styled-components';
-import { dark, grommet, black, materialdark, materiallight, metro, light } from 'grommet-controls/themes';
 import {
   Grommet,
   Heading,
@@ -16,6 +15,7 @@ import {
 } from 'grommet';
 import { ResponsiveContext } from 'grommet/contexts';
 import { Notification } from 'grommet-controls';
+import { metro } from 'grommet-controls/themes';
 import connect from '../redux';
 import Notifications from './Notifications';
 import RoutedAnchor from './RoutedAnchor';
@@ -25,20 +25,12 @@ import { signIn } from '../redux/auth/actions';
 import CURRENT_USER_QUERY from './auth/graphql/CurrentUserQuery.graphql';
 import { initGA, logPageView } from './utils/analytics';
 
-const themes = {
-  light, black, materialdark, materiallight, metro, dark, grommet,
-};
 
 const LargeParagraph = styled(Paragraph)`
   max-width: 100%;
 `;
 
 class App extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = { theme: props.router.query.theme };
-  }
-
   componentDidMount() {
     this.props.navActivate(false);
     if (!window.GA_INITIALIZED) {
@@ -53,10 +45,10 @@ class App extends Component {
     this.props.navActivate(!active);
   };
   onResponsive = (size) => {
-    const isNarrow = size === 'narrow';
+    const isNarrow = size === 'small';
     const { nav: { responsive } } = this.props;
     if (responsive !== isNarrow) {
-      this.props.updateResponsive(size === 'narrow');
+      this.props.updateResponsive(size === 'small');
     }
   };
 
@@ -69,9 +61,6 @@ class App extends Component {
     if (nextProps.user && nextProps.user !== this.props.user) {
       this.props.signIn({ user: nextProps.user });
     }
-    if (nextProps.router.query.theme !== this.state.theme) {
-      this.setState({ theme: nextProps.router.query.theme });
-    }
   }
 
   render() {
@@ -79,7 +68,6 @@ class App extends Component {
       children, description, title, visibleTitle,
       notifications, menu,
     } = this.props;
-    const { theme = 'metro' } = this.state;
     const keywords = ['financeboards', 'equities', 'stock markets', 'crypto', 'cryptocurrencies'];
     if (title) {
       keywords.push(title);
@@ -121,7 +109,7 @@ class App extends Component {
           }
           <meta name='keywords' content={keywords.join(',')} />
         </Head>
-        <Grommet theme={themes[theme] || themes.metro} >
+        <Grommet theme={metro} >
           <ResponsiveContext.Consumer>
             {(size) => {
               this.onResponsive(size);
