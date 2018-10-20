@@ -34,6 +34,7 @@ if (process.env.GITHUB_APP_ID) {
           });
           return done(null, result.socialLogin);
         } catch (err) {
+          console.log('err', JSON.stringify(err));
           const error = err.response && err.response.errors ? err.response.errors[0].message : err;
           return done(error, {});
         }
