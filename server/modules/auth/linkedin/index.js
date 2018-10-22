@@ -44,7 +44,6 @@ if (process.env.LINKEDIN_APP_ID) {
   );
 
   const middleware = (app) => {
-    app.use(passport.initialize());
     app.get('/auth/linkedin', (req, res, next) => {
       passport.authenticate('linkedin')(req, res, next);
     });

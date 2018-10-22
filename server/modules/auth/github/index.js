@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const passport = require('passport');
-const GitHubStrategy = require('passport-github').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 const oAuthtemplate = require('../popupTemplpate');
 const socialLoginMutation = require('../social_login_gql');
 const request = require('../../graphql_request');
@@ -35,14 +35,13 @@ if (process.env.GITHUB_APP_ID) {
           return done(null, result.socialLogin);
         } catch (err) {
           const error = err.response && err.response.errors ? err.response.errors[0].message : err;
-          return done(error, null);
+          return done(error);
         }
       })
     )
   );
 
   const middleware = (app) => {
-    app.use(passport.initialize());
     app.get('/auth/github', (req, res, next) => {
       passport.authenticate('github')(req, res, next);
     });

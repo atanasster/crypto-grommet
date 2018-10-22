@@ -46,7 +46,6 @@ if (process.env.GOOGLE_APP_ID) {
   );
 
   const middleware = (app) => {
-    app.use(passport.initialize());
     app.get('/auth/google', (req, res, next) => {
       passport.authenticate('google', {
         scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],

@@ -44,7 +44,6 @@ if (process.env.FACEBOOK_APP_ID) {
   );
 
   const middleware = (app) => {
-    app.use(passport.initialize());
     app.get('/auth/facebook', (req, res, next) => {
       passport.authenticate('facebook')(req, res, next);
     });
