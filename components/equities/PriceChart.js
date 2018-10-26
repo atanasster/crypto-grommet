@@ -1,24 +1,22 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { Chart } from 'grommet';
-import { longDate } from 'grommet-controls/utils';
+import PriceHistoryChart from '../charts/PriceHistoryChart';
 import { priceHistoryQuery } from '../../graphql/equities';
 
 
 const PriceChart = ({ color, data: { prices } }) => {
   if (prices && prices.list) {
+    const dataset = {
+      label: 'test',
+      data: prices.list.results.map(d => ({ x: d.date, y: d.close })),
+      fill: false,
+      color,
+    };
     return (
-      <Chart
-        thickness='xsmall'
-        type='line'
-        color={color}
-        size={{ width: 'full', height: 'xsmall' }}
-        style={{ cursor: 'pointer' }}
-        values={prices.list.results.map((price, index) => ({
-          value: [index, price.close],
-          label: longDate(price.date),
-        }))}
-      />);
+      <PriceHistoryChart
+        data={dataset}
+      />
+    );
   }
   return null;
 };

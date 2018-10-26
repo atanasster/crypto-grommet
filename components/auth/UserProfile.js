@@ -10,7 +10,6 @@ class UserProfile extends Component {
     if (!user) {
       return null;
     }
-    console.log(user);
     return (
       <Card size={{ width: 'xlarge' }}>
         <DoubleTitle>
