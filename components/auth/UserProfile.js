@@ -10,11 +10,12 @@ class UserProfile extends Component {
     if (!user) {
       return null;
     }
+    console.log(user);
     return (
       <Card size={{ width: 'xlarge' }}>
         <DoubleTitle>
           <Box direction='row'>
-            {user.profile.image && <ImageStamp src={user.profile.image} round='full' />}
+            {user.profile && user.profile.image && <ImageStamp src={user.profile.image} round='full' />}
             <Heading margin='small'>{user.username}</Heading>
           </Box>
           {user.email}
