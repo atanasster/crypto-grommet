@@ -5,7 +5,7 @@ import connect from '../../redux/index';
 import CardScroll from '../CardScroll';
 import PriceCard from './PriceCard';
 
-const FavoritePrices = ({ favEquities, responsive, numCards }) => {
+const FavoritePrices = ({ favEquities, numCards }) => {
   const cards = favEquities.slice(0, numCards).map((pair, index) => {
     const colors = [
       'brand', 'accent-1', 'accent-2', 'neutral-1', 'neutral-2', 'neutral-3', 'status-ok', 'status-warning',
@@ -20,8 +20,8 @@ const FavoritePrices = ({ favEquities, responsive, numCards }) => {
     );
   });
   return (
-    <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-      <CardScroll responsive={responsive}>
+    <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center' fill='horizontal'>
+      <CardScroll>
         {cards}
       </CardScroll>
     </Box>
@@ -38,7 +38,6 @@ FavoritePrices.propTypes = {
 
 const mapStateToProps = (state, props) => ({
   favEquities: state.settings.favEquities,
-  responsive: state.nav.responsive,
   exchange: props.exchange || state.settings.aggregatedExchange,
 });
 

@@ -6,7 +6,7 @@ import CardScroll from '../CardScroll';
 import PriceCard from './PriceCard';
 
 const FavoritePrices = ({
-  favCoins, exchange, responsive, numCards,
+  favCoins, exchange, numCards,
 }) => {
   const cards = favCoins.slice(0, numCards).map((pair, index) => {
     const colors = [
@@ -24,8 +24,8 @@ const FavoritePrices = ({
     );
   });
   return (
-    <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center'>
-      <CardScroll responsive={responsive}>
+    <Box margin={{ bottom: 'xsmall' }} pad='xsmall' align='center' fill='horizontal'>
+      <CardScroll>
         {cards}
       </CardScroll>
     </Box>
@@ -41,7 +41,6 @@ FavoritePrices.propTypes = {
 };
 const mapStateToProps = (state, props) => ({
   favCoins: state.settings.favCoins,
-  responsive: state.nav.responsive,
   exchange: props.exchange || state.settings.aggregatedExchange,
 });
 
