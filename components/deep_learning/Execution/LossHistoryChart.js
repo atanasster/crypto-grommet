@@ -1,44 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveLine } from '@nivo/line';
+import { findDOMNode } from 'react-dom';
+import * as tfvis from '@tensorflow/tfjs-vis';
+import { Box } from 'grommet';
 
 class LossHistoryChart extends React.Component {
   render() {
     const { loss, valLoss, width = '300px' } = this.props;
-    const data = [];
-    if (loss && loss.length > 0) {
-      data.push({
-        id: 'train',
-        color: 'hsl(9, 70%, 50%)',
-        data: loss.map((y, epoch) => ({ x: `Epoch ${epoch}`, y })),
-      });
-    }
-    if (valLoss && valLoss.length === loss.length) {
-      data.push({
-        id: 'val.',
-        color: 'hsl(220, 70%, 50%)',
-        data: valLoss.map((y, epoch) => ({ x: `Epoch ${epoch}`, y })),
-      });
-    }
     return (
-      <div style={{ width, height: '60px' }} >
-        {data.length > 0 ? (
-          <ResponsiveLine
-            colors='d310'
-            data={data}
-            minY='auto'
-            stacked={true}
-            curve='natural'
-            enableDots={true}
-            dotSize={10}
-            tooltipFormat={value => value.toFixed(3)}
-            dotColor='inherit:darker(0.3)'
-            dotBorderWidth={2}
-            dotBorderColor='#ffffff'
-            enableArea={loss.length > 5}
-          />
-        ) : null}
-      </div>
+      <Box
+        width={width}
+        height='70px'
+        ref={(r) => {
+            const container = findDOMNode(r);
+            if (container) {
+              const logs = loss.map((l, i) => (
+                {
+                  loss: l,
+                  val_loss: valLoss ? valLoss[i] : undefined,
+                }
+              ));
+              tfvis.show.history(container, logs, ['loss', 'val_loss'],
+              {
+                width: container.offsetWidth,
+                height: container.offsetHeight,
+                yLabel: null,
+                xLabel: null,
+              });
+            }
+          }}
+      />
     );
   }
 }

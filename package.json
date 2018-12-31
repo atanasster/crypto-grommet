@@ -26,8 +26,8 @@
     "start-server": "NODE_ENV=production PORT=8568 node --experimental-modules server/server.mjs"
   },
   "dependencies": {
-    "@nivo/line": "^0.33.0",
-    "@tensorflow/tfjs": "^0.10.3",
+    "@tensorflow/tfjs": "^0.14.1",
+    "@tensorflow/tfjs-vis": "^0.4.0",
     "apollo-client-preset": "^1.0.8",
     "apollo-link-context": "^1.0.8",
     "babel-plugin-module-resolver": "^3.1.0",
