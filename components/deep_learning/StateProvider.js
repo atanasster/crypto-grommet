@@ -51,7 +51,7 @@ const DEFAULT_STATE = {
 
 export const ModelContext = React.createContext(DEFAULT_STATE);
 
-const HISTORY_STORAGE_NAME = 'HISTORY_STORAGE';
+const HISTORY_STORAGE_NAME = 'LOCAL_MODEL_DATA';
 
 export default class Provider extends React.Component {
   state = DEFAULT_STATE;

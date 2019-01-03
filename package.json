@@ -70,7 +70,6 @@
     "react-ga": "^2.5.0",
     "react-highcharts": "^16.0.2",
     "react-json-pretty": "^1.7.6",
-    "react-promise": "^2.0.3",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",

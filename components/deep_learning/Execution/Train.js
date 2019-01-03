@@ -27,7 +27,7 @@ class TrainModel extends React.Component {
     const beginMs = Date.now();
     try {
       const {
-        xTrain, yTrain, xTest, yTest, scalers, lasValue,
+        xTrain, yTrain, xTest, yTest, scalers, lastValue,
       } = await prepareTestTrainData(model, (status => this.updateStatus(status)));
       let xTrainR;
       let xTestR;
@@ -40,7 +40,8 @@ class TrainModel extends React.Component {
         xTestR = xTest;
       }
       const scaler = scalers[scalers.length - 1];
-      const tfModel = createTFModel(model, xTrainR.shape.slice(1));
+      const inputShape = xTrainR.shape.slice(1);
+      const tfModel = createTFModel(model, inputShape);
       const optimizer = tensorflow.createObject(model.optimizer);
       tfModel.compile({
         loss: model.loss,
@@ -112,8 +113,9 @@ class TrainModel extends React.Component {
           tfModel: JSON.stringify(tfModel.getConfig()),
           model: { ...model, layers: savedLayers },
           epoch: model.epochs,
-          lasValue,
+          lastValue,
           scalers,
+          inputShape,
           date: Date.now(),
           timing,
           loss: loss[loss.length - 1],

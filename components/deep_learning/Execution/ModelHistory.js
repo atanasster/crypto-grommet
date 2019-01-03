@@ -1,4 +1,6 @@
 import React from 'react';
+import { findDOMNode } from 'react-dom';
+import * as tfvis from '@tensorflow/tfjs-vis';
 import { Box, Button, Text, Anchor } from 'grommet';
 import { PagingTable } from 'grommet-controls';
 import JSONPretty from 'react-json-pretty';
@@ -9,6 +11,7 @@ import Symbol from '../../Symbol';
 import { periodToTime, formatTraingTime } from '../utils';
 import pushRoute from '../../Router';
 import PredictModel from './Predict';
+import createTFModel from '../../../tensorflow/run/create_model';
 
 class ModelHistory extends React.Component {
   state = {
@@ -19,9 +22,35 @@ class ModelHistory extends React.Component {
   onExpand = row => (
     <Box gap='medium'>
       <PredictModel model={row.original} />
-      {row.original.tfModel && <JSONPretty json={JSON.parse(row.original.tfModel)} />}
+      <Box direction='row-responsive' height='large'>
+        <Box basis='1/2' >
+          <Box
+            width='50%'
+            fill='vertical'
+          >
+            <Box>
+              <Box background='light-1' pad={{ horizontal: 'small' }} border={{ color: 'light-3', side: 'bottom' }}>
+                model summary
+              </Box>
+              <Box
+                ref={(r) => {
+                  const container = findDOMNode(r);
+                  if (container) {
+                    const model = createTFModel(row.original.model, row.original.inputShape);
+                    tfvis.show.modelSummary(container, model);
+                  }
+                }}
+                fill='vertical'
+              />
+            </Box>
+          </Box>
+        </Box>
+        <Box basis='1/2' overflow='scroll'>
+          {row.original.tfModel && <JSONPretty json={JSON.parse(row.original.tfModel)} />}
+        </Box>
+      </Box>
     </Box>
-  );
+  )
 
   onClearHistory = (clearHistory) => {
     clearHistory();
