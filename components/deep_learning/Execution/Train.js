@@ -39,7 +39,6 @@ class TrainModel extends React.Component {
         xTrainR = xTrain;
         xTestR = xTest;
       }
-      console.log('data shape:', xTrainR.shape, yTrain.shape, xTestR.shape, yTest.shape);
       const scaler = scalers[scalers.length - 1];
       const tfModel = createTFModel(model, xTrainR.shape.slice(1));
       const optimizer = tensorflow.createObject(model.optimizer);
@@ -99,8 +98,8 @@ class TrainModel extends React.Component {
         const savedLayers = model.layers.map((layer, index) => {
           // eslint-disable-next-line no-param-reassign
           const weights = [];
-          if (history.model.layers.length >= index) {
-            const tfLayer = history.model.layers[index + 1];
+          if (tfModel.layers.length > index) {
+            const tfLayer = tfModel.layers[index];
             tfLayer.weights.forEach((weight) => {
               const data = weight.read().dataSync();
               const { shape } = weight;
@@ -110,7 +109,7 @@ class TrainModel extends React.Component {
           return { ...layer, weights };
         });
         const item = {
-          tfModel: JSON.stringify(history.model.getConfig()),
+          tfModel: JSON.stringify(tfModel.getConfig()),
           model: { ...model, layers: savedLayers },
           epoch: model.epochs,
           lasValue,
