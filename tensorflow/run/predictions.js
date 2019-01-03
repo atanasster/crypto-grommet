@@ -3,7 +3,7 @@ import createTFModel from './create_model';
 import { loadDatasets, normalizeData, scaleData } from './data_preparation';
 
 
-export default async (savedModel) => {
+export const loadSavedModel = async (savedModel) => {
   const data = await loadDatasets(
     savedModel.model.features,
     savedModel.model.dataPoints,
@@ -31,8 +31,19 @@ export default async (savedModel) => {
     } else {
       xDataR = xData;
     }
-    const tfModel = createTFModel(savedModel.model, xDataR.shape.slice(1));
-    const p = tfModel.predict(xDataR);
+    return {
+      tfModel: createTFModel(savedModel.model, xDataR.shape.slice(1)),
+      xData: xDataR,
+      normalized,
+    };
+  }
+  return { tfModel: null };
+};
+
+export default async (savedModel) => {
+  const { tfModel, xData, normalized } = await loadSavedModel(savedModel);
+  if (tfModel) {
+    const p = tfModel.predict(xData);
     const scaler = savedModel.scalers[savedModel.scalers.length - 1];
     const scaledPredict = p.dataSync().map(v => v / scaler);
     const numPoints = savedModel.model.lookbackDays;
