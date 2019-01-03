@@ -56,9 +56,16 @@ function convertToTensors(features, targets, testSplit) {
 
 const dataKey = item => (`${item.type}_${item.symbol}`);
 
-const dateToSort = date => (
-  date ? `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}` : null
-);
+const dateToSort = (date) => {
+  if (date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    month = month <= 9 ? `0${month}}` : month;
+    day = day <= 9 ? `0${day}}` : day;
+    return `${date.getFullYear()}/${month}/${day}`;
+  }
+  return null;
+};
 
 function mergeData(fields, loadedData) {
   const data = {};
