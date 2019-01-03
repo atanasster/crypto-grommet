@@ -3,7 +3,7 @@ import { CoinGQL } from './coins/Coin';
 import { EquityGQL } from './equities/Equity';
 
 const Symbol = ({
-  symbol, type, display = ['image'], disableLink = true,
+  symbol, type, display = ['symbol'], disableLink = true,
 }) => {
   switch (type) {
     case 'coin':
