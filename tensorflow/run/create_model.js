@@ -2,7 +2,7 @@ import * as tf from '@tensorflow/tfjs/dist/index';
 import tensorflow from '../config';
 
 
-export default (model, shape) => {
+export default (model) => {
   const tfModel = tf.sequential();
   let tfLayer;
   model.layers.forEach((l, index) => {
@@ -12,7 +12,7 @@ export default (model, shape) => {
       config.units = model.targets.length;
     }
     if (tfLayer === undefined) {
-      config.inputShape = shape;
+      config.inputShape = [model.features.length, 1];
     } else {
       // config.inputDims = tfLayer.units;
       // config.inputShape = tfLayer.output.shape;

@@ -20,7 +20,7 @@ class ModelHistory extends React.Component {
   };
 
   onExpand = (row) => {
-    const model = createTFModel(row.original.model, row.original.inputShape);
+    const model = createTFModel(row.original.model);
     return (
       <Box gap='medium'>
         <PredictModel model={row.original} />

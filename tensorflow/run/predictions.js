@@ -31,7 +31,7 @@ export default async (savedModel) => {
     } else {
       xDataR = xData;
     }
-    const tfModel = createTFModel(savedModel.model, savedModel.inputShape);
+    const tfModel = createTFModel(savedModel.model);
     const p = tfModel.predict(xDataR);
     const scaler = savedModel.scalers[savedModel.scalers.length - 1];
     const scaledPredict = p.dataSync().map(v => v / scaler);

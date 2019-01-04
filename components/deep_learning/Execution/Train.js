@@ -22,12 +22,12 @@ class TrainModel extends React.Component {
 
 
   async onTrain(model, addToHistory) {
-    let trainingStats = { history: { loss: [], val_loss: [] } };
+    let trainingStats = { history: { loss: [], val_loss: [] }, epoch: null };
     this.setState({ trainingStats });
     const beginMs = Date.now();
     try {
       const {
-        xTrain, yTrain, xTest, yTest, scalers, lastValue,
+        xTrain, yTrain, xTest, yTest, scalers,
       } = await prepareTestTrainData(model, (status => this.updateStatus(status)));
       let xTrainR;
       let xTestR;
@@ -40,8 +40,7 @@ class TrainModel extends React.Component {
         xTestR = xTest;
       }
       const scaler = scalers[scalers.length - 1];
-      const inputShape = xTrainR.shape.slice(1);
-      const tfModel = createTFModel(model, inputShape);
+      const tfModel = createTFModel(model);
       const optimizer = tensorflow.createObject(model.optimizer);
       tfModel.compile({
         loss: model.loss,
@@ -111,10 +110,7 @@ class TrainModel extends React.Component {
         });
         const item = {
           model: { ...model, layers: savedLayers },
-          epoch: model.epochs,
-          lastValue,
           scalers,
-          inputShape,
           date: Date.now(),
           timing,
           loss: loss[loss.length - 1],
@@ -164,7 +160,7 @@ class TrainModel extends React.Component {
                 <Text size='small'>{statusText}</Text>
               </Box>
               <Box direction='row' gap='medium' basis='1/3'>
-                <Value label='epoch' value={epoch} />
+                <Value label='epoch' value={epoch === undefined ? model.epochs : (epoch || undefined)} />
                 <Value label='loss (mse)' value={loss ? loss.toFixed(5) : undefined} />
                 <Value label='val. loss (mse)' value={valLoss ? valLoss.toFixed(5) : undefined} />
                 <Value label={`duration (${units})`} value={time} />
