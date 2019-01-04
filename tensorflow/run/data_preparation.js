@@ -60,8 +60,8 @@ const dateToSort = (date) => {
   if (date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
-    month = month <= 9 ? `0${month}}` : month;
-    day = day <= 9 ? `0${day}}` : day;
+    month = month <= 9 ? `0${month}` : month;
+    day = day <= 9 ? `0${day}` : day;
     return `${date.getFullYear()}/${month}/${day}`;
   }
   return null;
