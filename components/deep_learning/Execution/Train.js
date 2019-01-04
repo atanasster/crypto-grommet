@@ -110,7 +110,6 @@ class TrainModel extends React.Component {
           return { ...layer, weights };
         });
         const item = {
-          tfModel: JSON.stringify(tfModel.getConfig()),
           model: { ...model, layers: savedLayers },
           epoch: model.epochs,
           lastValue,

@@ -19,38 +19,40 @@ class ModelHistory extends React.Component {
     confirmLoadModel: false,
   };
 
-  onExpand = row => (
-    <Box gap='medium'>
-      <PredictModel model={row.original} />
-      <Box direction='row-responsive' height='large'>
-        <Box basis='1/2' >
-          <Box
-            width='50%'
-            fill='vertical'
-          >
-            <Box>
-              <Box background='light-1' pad={{ horizontal: 'small' }} border={{ color: 'light-3', side: 'bottom' }}>
-                model summary
+  onExpand = (row) => {
+    const model = createTFModel(row.original.model, row.original.inputShape);
+    return (
+      <Box gap='medium'>
+        <PredictModel model={row.original} />
+        <Box direction='row-responsive' height='large'>
+          <Box basis='1/2' >
+            <Box
+              width='50%'
+              fill='vertical'
+            >
+              <Box>
+                <Box background='light-1' pad={{ horizontal: 'small' }} border={{ color: 'light-3', side: 'bottom' }}>
+                  model summary
+                </Box>
+                <Box
+                  ref={(r) => {
+                    const container = findDOMNode(r);
+                    if (container) {
+                      tfvis.show.modelSummary(container, model);
+                    }
+                  }}
+                  fill='vertical'
+                />
               </Box>
-              <Box
-                ref={(r) => {
-                  const container = findDOMNode(r);
-                  if (container) {
-                    const model = createTFModel(row.original.model, row.original.inputShape);
-                    tfvis.show.modelSummary(container, model);
-                  }
-                }}
-                fill='vertical'
-              />
             </Box>
           </Box>
-        </Box>
-        <Box basis='1/2' overflow='scroll'>
-          {row.original.tfModel && <JSONPretty json={JSON.parse(row.original.tfModel)} />}
+          <Box basis='1/2' overflow='scroll'>
+            {model && <JSONPretty json={model.getConfig()} />}
+          </Box>
         </Box>
       </Box>
-    </Box>
-  )
+    );
+  }
 
   onClearHistory = (clearHistory) => {
     clearHistory();
