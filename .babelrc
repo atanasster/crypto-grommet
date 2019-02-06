@@ -14,6 +14,11 @@
         "transform": "grommet-controls/es6/themes/${member}",
         "preventFullImport": true
       },
+      "grommet-controls/chartjs": {
+        "transform": "grommet-controls/es6/chartjs/${member}",
+        "preventFullImport": true,
+        "skipDefaultConversion": true
+      },
       "grommet-controls/utils": {
         "transform": "grommet-controls/es6/utils",
         "preventFullImport": true,

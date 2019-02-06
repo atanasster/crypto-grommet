@@ -1,0 +1,7 @@
+mutation model_save($input: ModelInputType!) {
+  modelSave(input: $input) {
+    model {
+      id
+    }
+  }
+}

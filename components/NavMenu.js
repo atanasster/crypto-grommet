@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Box, Anchor, Menu, Text } from 'grommet';
 import { Menu as MenuIcon, User } from 'grommet-icons';
+import { Header } from 'grommet-controls';
 import { bindActionCreators } from 'redux';
 import AppIcon from './Logo';
 import connect from '../redux/index';
@@ -80,15 +81,9 @@ class NavMenu extends Component {
       layer = <Login onClose={() => this.setState({ loginForm: false })} />;
     }
     return (
-      <div>
-        <Box
-          tag='header'
-          direction='row'
-          justify='between'
-          align='center'
-          pad='small'
-          border='bottom'
-          background='brand'
+      <React.Fragment>
+        <Header
+          position='sticky'
         >
           <Box direction='row' align='center' gap='small'>
             <AppIcon color='plain' />
@@ -104,9 +99,9 @@ class NavMenu extends Component {
             </Box>
             {this.renderMenu()}
           </Box>
-        </Box>
+        </Header>
         {layer}
-      </div>
+      </React.Fragment>
     );
   }
 }

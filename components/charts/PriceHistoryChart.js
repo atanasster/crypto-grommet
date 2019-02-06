@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart } from 'grommet-controls';
+import { LineChart } from 'grommet-controls/chartjs';
 
 export default ({ data }) => (
   data && (

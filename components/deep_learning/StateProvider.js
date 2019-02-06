@@ -9,6 +9,7 @@ const DEFAULT_STATE = {
     id: 0,
     name: 'Apple price prediction',
     targets: [{
+      dataset: 'price_history',
       field: 'close',
       symbol: 'AAPL',
       type: 'equity',
@@ -19,6 +20,8 @@ const DEFAULT_STATE = {
     batchSize: 8,
     epochs: 20,
     testSplit: 0.33,
+    optimizer: { type: 'Optimizer', config: { type: 'SGD' } },
+    loss: 'meanSquaredError',
     layers: [
       {
         type: 'Layer',
@@ -39,12 +42,16 @@ const DEFAULT_STATE = {
         },
       },
     ],
-    optimizer: { type: 'Optimizer', config: { type: 'SGD' } },
-    loss: 'meanSquaredError',
     features: [
-      { field: 'close', symbol: 'AAPL', type: 'equity' },
-      { field: 'close', symbol: 'MSFT', type: 'equity' },
-      { field: 'close', symbol: 'HPQ', type: 'equity' },
+      {
+        dataset: 'price_history', field: 'close', symbol: 'AAPL', type: 'equity',
+      },
+      {
+        dataset: 'price_history', field: 'close', symbol: 'MSFT', type: 'equity',
+      },
+      {
+        dataset: 'price_history', field: 'close', symbol: 'HPQ', type: 'equity',
+      },
     ],
   },
 };
@@ -82,11 +89,11 @@ export default class Provider extends React.Component {
   };
 
   updateModel = (propName, value) => {
-    this.setState({ model: { ...this.state.model, [propName]: value } });
+    this.setState({ model: { ...this.state.model, [propName]: value }, modified: true });
   };
 
   loadModel = (model) => {
-    this.setState({ model });
+    this.setState({ model, modified: false });
   };
 
   clearHistory = () => {
