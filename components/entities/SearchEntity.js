@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Text, Paragraph, TextInput } from 'grommet';
+import { AnnounceContext } from 'grommet/es6/contexts/AnnounceContext';
 import { searchQuery } from '../../graphql/entities';
 
 const entityLinks = {
@@ -85,14 +86,19 @@ class SearchEntity extends React.Component {
     const { value } = this.props;
     const { showDrop } = this.state;
     return (
-      <TextInput
-        defaultValue={value}
-        placeholder='search'
-        showDrop={showDrop}
-        suggestions={this.createSuggestions()}
-        onChange={this.onSearch}
-        onSelect={this.onSelect}
-      />
+      <AnnounceContext.Consumer>
+        {announce => (
+          <TextInput
+            announce={announce}
+            defaultValue={value}
+            placeholder='search'
+            showDrop={showDrop}
+            suggestions={this.createSuggestions()}
+            onChange={this.onSearch}
+            onSelect={this.onSelect}
+          />
+        )}
+      </AnnounceContext.Consumer>
     );
   }
 }
