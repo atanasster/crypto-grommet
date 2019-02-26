@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
-const withTM = require('next-plugin-transpile-modules');
 
 const dedupeDependencies = (dependencies, alias) => (
   dependencies.reduce((res, dependecy) => ({ ...res, [dependecy]: path.resolve(`./node_modules/${dependecy}`) }), alias)
@@ -35,7 +34,6 @@ const initExport = {
     });
     return config;
   },
-  transpileModules: ['grommet-controls', 'grommet', 'grommet-icons'],
 };
 
-module.exports = withTM(initExport);
+module.exports = initExport;

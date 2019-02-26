@@ -12,8 +12,8 @@ import {
   Anchor,
   Markdown,
   Box,
+  ResponsiveContext,
 } from 'grommet';
-import { ResponsiveContext } from 'grommet/contexts';
 import { Notification } from 'grommet-controls';
 import { metro } from 'grommet-controls/themes';
 import connect from '../redux';

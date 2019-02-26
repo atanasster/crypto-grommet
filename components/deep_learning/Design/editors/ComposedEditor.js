@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Select } from 'grommet';
+import { Box, Select, FormField } from 'grommet';
 import tensorflow from '../../../../tensorflow/config';
-import FormField from '../../../grommet/FormField/FormField';
+// import FormField from '../../../grommet/FormField/FormField';
 import NumericEditor from './NumericEditor';
 import BooleanEditor from './BooleanEditor';
 import TextEditor from './TextEditor';
