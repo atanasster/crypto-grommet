@@ -8,11 +8,11 @@ import { FormattedCoinValue, ColoredPercentChange } from '../utils/formatters';
 import RoutedAnchor from '../RoutedAnchor';
 
 class CoinsList extends React.Component {
-  onExpand = (row) => {
+  onExpand = ({ row }) => {
     const { exchange, currency } = this.props;
     return (
       <CoinDashboard
-        symbol={row.original.symbol}
+        symbol={row.symbol}
         toSymbol={currency}
         exchange={exchange}
       />
@@ -26,11 +26,11 @@ class CoinsList extends React.Component {
     } = this.props;
     const columns = [
       {
-        Header: 'Coin',
-        accessor: 'symbol',
-        Cell: cell => (
+        title: 'Coin',
+        name: 'symbol',
+        formatter: ({ row }) => (
           <Coin
-            coin={cell.original}
+            coin={row}
             toCoin={{ symbol: 'USD' }}
             exchange={exchange}
             level={4}
@@ -38,62 +38,59 @@ class CoinsList extends React.Component {
           />
         ),
       }, {
-        Header: 'Market cap',
-        accessor: 'stats.marketCap',
-        maxWidth: 150,
-        Cell: cell => (
+        title: 'Market cap',
+        name: 'stats.marketCap',
+        formatter: ({ value, row }) => (
           <FormattedCoinValue
-            value={cell.value}
-            coin={cell.original}
+            value={value}
+            coin={row}
             large={true}
           />
         ),
-        getProps: () => ({ align: 'end' }),
+        align: 'right',
       }, {
-        Header: 'Algo',
-        accessor: 'algorithm.name',
-        Cell: cell => (cell.value && (
-          <RoutedAnchor route='coins_by_algo' params={{ algorithm: cell.value }} >
-            {cell.value}
+        title: 'Algo',
+        name: 'algorithm.name',
+        formatter: ({ value }) => (value ? (
+          <RoutedAnchor route='coins_by_algo' params={{ algorithm: value }} >
+            {value}
           </RoutedAnchor>
-        )
+        ) : null
         ),
       }, {
-        Header: 'Proof',
-        accessor: 'proofType.name',
-        Cell: cell => (cell.value && (
-          <RoutedAnchor route='coins_by_prooftype' params={{ proofType: cell.value }} >
-            {cell.value}
+        title: 'Proof',
+        name: 'proofType.name',
+        formatter: ({ value }) => (value ? (
+          <RoutedAnchor route='coins_by_prooftype' params={{ proofType: value }} >
+            {value}
           </RoutedAnchor>
-        )
+        ) : null
         ),
       },
       {
-        Header: 'Price',
-        accessor: 'stats.price',
-        maxWidth: 120,
-        Cell: cell => (<FormattedCoinValue value={cell.value} coin={cell.original.coin} />),
-        getProps: () => ({ align: 'end' }),
+        title: 'Price',
+        name: 'stats.price',
+        formatter: ({ value, row }) => (<FormattedCoinValue value={value} coin={row.coin} />),
+        align: 'right',
       }, {
-        Header: '%7d',
-        accessor: 'stats.percentChange7d',
-        maxWidth: 120,
-        Cell: cell => (<ColoredPercentChange value={cell.value / 100} />),
-        getProps: () => ({ textAlign: 'end' }),
+        title: '%7d',
+        name: 'stats.percentChange7d',
+        formatter: ({ value }) => (<ColoredPercentChange value={value / 100} />),
+        align: 'right',
       }, {
-        Header: 'Circulation',
-        accessor: 'stats.availableSupply',
-        Cell: cell => (
-          <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
+        title: 'Circulation',
+        name: 'stats.availableSupply',
+        formatter: ({ value, row }) => (
+          <FormattedCoinValue value={value} coin={row.coin} large={true} />
         ),
-        getProps: () => ({ textAlign: 'end' }),
+        align: 'right',
       }, {
-        Header: 'Total',
-        accessor: 'stats.totalSupply',
-        Cell: cell => (
-          <FormattedCoinValue value={cell.value} coin={cell.original.coin} large={true} />
+        title: 'Total',
+        name: 'stats.totalSupply',
+        formatter: ({ value, row }) => (
+          <FormattedCoinValue value={value} coin={row.coin} large={true} />
         ),
-        getProps: () => ({ textAlign: 'end' }),
+        align: 'right',
       },
     ];
     return (
@@ -102,8 +99,8 @@ class CoinsList extends React.Component {
         loadMoreEntries={loadMoreEntries}
         data={data}
         onExpand={this.onExpand}
-        aliases={{ 'stats': 'tickers_coinkeystats' }}
-        ordering={[{ id: 'stats.marketCap', desc: true }]}
+        aliases={{ 'stats': 'tickers_coinkeystats', 'symbol': 'slug' }}
+        sorting={[{ columnName: 'stats.marketCap', direction: 'desc' }]}
         gqlProps={{
  hasMarketCap: true, hasICO: false, algorithm, proofType,
 }}

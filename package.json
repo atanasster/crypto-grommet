@@ -26,6 +26,8 @@
     "start-server": "NODE_ENV=production PORT=8568 node --experimental-modules server/server.mjs"
   },
   "dependencies": {
+    "@devexpress/dx-react-core": "^1.10.4",
+    "@devexpress/dx-react-grid": "^1.10.4",
     "@tensorflow/tfjs": "^0.14.1",
     "@tensorflow/tfjs-vis": "^0.4.0",
     "apollo-client-preset": "^1.0.8",
@@ -41,6 +43,7 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "dotenv-webpack": "^1.5.5",
+    "dx-react-grid-grommet": "^1.0.9",
     "express": "^4.16.3",
     "graphql": "^0.13.2",
     "graphql-request": "^1.6.0",

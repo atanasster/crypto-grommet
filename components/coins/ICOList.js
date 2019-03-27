@@ -9,17 +9,17 @@ import { allICOCoinsQuery } from '../../graphql/coins';
 
 
 class ICOList extends Component {
-  onExpand = row => (
+  onExpand = ({ row }) => (
     <Box direction='row' pad='small' gap='medium'>
       <Box>
-        {row.original.icoDescription && (
+        {row.icoDescription && (
           <Markdown >
-            {row.original.icoDescription}
+            {row.icoDescription}
           </Markdown>
         )}
       </Box>
       <ICOCard
-        symbol={row.original.symbol}
+        symbol={row.symbol}
       />
     </Box>
   );
@@ -27,11 +27,11 @@ class ICOList extends Component {
     const { data, loadMoreEntries } = this.props;
     const columns = [
       {
-        Header: 'Coin',
-        accessor: 'name',
-        Cell: cell => (
+        title: 'Coin',
+        name: 'name',
+        formatter: ({ row }) => (
           <Coin
-            coin={cell.original}
+            coin={row}
             toCoin={{ symbol: this.props.defaultCurrency }}
             exchange={this.props.defaultExchange}
             level={4}
@@ -39,23 +39,23 @@ class ICOList extends Component {
           />
         ),
       }, {
-        Header: 'Status',
-        accessor: 'icoStatus',
+        title: 'Status',
+        name: 'icoStatus',
       }, {
-        Header: 'Start date',
-        accessor: 'icoDate',
-        Cell: cell => (shortDate(cell.value)),
+        title: 'Start date',
+        name: 'icoDate',
+        formatter: ({ value }) => (shortDate(value)),
       }, {
-        Header: 'End date',
-        accessor: 'icoEndDate',
-        Cell: cell => (cell.value ? shortDate(cell.value) : 'N/A'),
+        title: 'End date',
+        name: 'icoEndDate',
+        formatter: ({ value }) => (value ? shortDate(value) : 'N/A'),
       }, {
-        Header: 'Token type',
-        accessor: 'icoTokenType',
+        title: 'Token type',
+        name: 'icoTokenType',
       }, {
-        Header: 'Funding target',
-        getProps: () => ({ textAlign: 'end' }),
-        accessor: 'icoFundingTarget',
+        title: 'Funding target',
+        name: 'icoFundingTarget',
+        align: 'right',
       },
     ];
     return (

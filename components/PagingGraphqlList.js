@@ -2,14 +2,99 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Box } from 'grommet';
-import { PagingTable } from 'grommet-controls';
+import { Spinning } from 'grommet-controls';
+import {
+  PagingState,
+  SortingState,
+  CustomPaging,
+  DataTypeProvider,
+  RowDetailState,
+} from '@devexpress/dx-react-grid';
+import {
+  Grid,
+  Table,
+  TableHeaderRow,
+  PagingPanel,
+  TableRowDetail,
+} from 'dx-react-grid-grommet';
 
 class PagingGraphqlList extends Component {
-  fetchData = ({ pageSize, page, sorted }) => {
-    const { loadMoreEntries, aliases, gqlProps } = this.props;
+  constructor(props) {
+    super(props);
+    const getCellValue = (row, columnName) => {
+      if (columnName) {
+        const columns = columnName.split('.');
+        let result = row;
+        for (let i = 0; i < columns.length; i += 1) {
+          if (!result) {
+            return undefined;
+          }
+          result = result[columns[i]];
+        }
+        return result;
+      }
+      return row[columnName];
+    };
+
+    this.state = {
+      pageSizes: [5, 15, 25],
+      currentPage: 0,
+      columnExtensions: props.columns.map(column => (
+        { columnName: column.name, wordWrapEnabled: true, align: column.align }
+      )),
+      pageSize: props.pageSize,
+      sorting: props.sorting,
+      columns: props.columns.map(column => (
+        { name: column.name, title: column.title, getCellValue }
+      )),
+    };
+    this.formatters = props.columns.filter(column => column.formatter).map(column => (
+      <DataTypeProvider
+        key={`data_provider_${column.name}`}
+        for={column.name}
+        formatterComponent={column.formatter}
+      />
+    ));
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentDidUpdate() {
+    this.fetchData();
+  }
+
+  changeCurrentPage = (currentPage) => {
+    this.setState({
+      currentPage,
+    });
+  };
+
+  changeSorting = (sorting) => {
+    this.setState({
+      sorting,
+    });
+  };
+
+  changePageSize = (pageSize) => {
+    const { totalCount, currentPage: stateCurrentPage } = this.state;
+    const totalPages = Math.ceil(totalCount / pageSize);
+    const currentPage = Math.min(stateCurrentPage, totalPages - 1);
+
+    this.setState({
+      pageSize,
+      currentPage,
+    });
+  }
+  fetchData = () => {
+    const { pageSize, currentPage, sorting } = this.state;
+    const {
+      loadMoreEntries, aliases, gqlProps,
+    } = this.props;
     let ordering;
-    if (sorted.length > 0) {
-      const orderingFields = sorted[0].id.split('.');
+    if (sorting.length > 0) {
+      const orderingFields = sorting[0].columnName.split('.');
       let aliased = false;
       for (let i = 0; i < orderingFields.length; i += 1) {
         if (aliases[orderingFields[i]] !== undefined) {
@@ -23,37 +108,60 @@ class PagingGraphqlList extends Component {
       } else {
         [orderField] = orderingFields;
       }
-      ordering = sorted[0].desc ? `-${orderField}` : orderField;
+      ordering = sorting[0].direction === 'desc' ? `-${orderField}` : orderField;
     }
     loadMoreEntries({
-      offset: pageSize * page, limit: pageSize, ordering, gqlProps,
+      offset: pageSize * (currentPage || 0), limit: pageSize, ordering, gqlProps,
     });
   };
 
   render() {
     const {
-      data: { list, loading }, columns, ordering, pageSize, onExpand,
+      data: { list, loading }, onExpand,
     } = this.props;
+    const {
+      columns, pageSizes, currentPage, columnExtensions, sorting, pageSize,
+    } = this.state;
     if (!list) {
       return null;
     }
     return (
       <Box fill='horizontal'>
-        <PagingTable
-          decorations={{
-            table: { elevation: 'medium' },
-            rowEven: { background: { color: 'light-1' } },
-          }}
-          manual={true}
-          pages={Math.floor(list.totalCount / pageSize) + 1}
-          loading={loading}
-          onFetchData={this.fetchData}
-          SubComponent={onExpand}
-          defaultPageSize={pageSize}
-          data={list.results}
+        <Grid
+          rows={list.results}
           columns={columns}
-          defaultSorted={ordering}
-        />
+        >
+          {this.formatters}
+          <SortingState
+            sorting={sorting}
+            onSortingChange={this.changeSorting}
+          />
+          <PagingState
+            currentPage={currentPage}
+            onCurrentPageChange={this.changeCurrentPage}
+            pageSize={pageSize}
+            onPageSizeChange={this.changePageSize}
+          />
+          <CustomPaging
+            totalCount={list.totalCount}
+          />
+          {onExpand && (
+            <RowDetailState />
+          )}
+          <Table
+            columnExtensions={columnExtensions}
+          />
+          <TableHeaderRow showSortingControls={true} />
+          {onExpand && (
+            <TableRowDetail
+              contentComponent={onExpand}
+            />
+          )}
+          <PagingPanel
+            pageSizes={pageSizes}
+          />
+        </Grid>
+        {loading && <Spinning />}
       </Box>
     );
   }
@@ -99,7 +207,7 @@ export const withGraphQLList = (gqlQuery, WrappedComponent) => (
 );
 
 PagingGraphqlList.defaultProps = {
-  ordering: undefined,
+  sorting: [],
   pageSize: 25,
   aliases: {},
   gqlProps: undefined,
@@ -108,9 +216,14 @@ PagingGraphqlList.defaultProps = {
 
 PagingGraphqlList.propTypes = {
   data: PropTypes.object.isRequired,
-  columns: PropTypes.array.isRequired,
+  columns: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    formatter: PropTypes.func,
+    align: PropTypes.string,
+  })).isRequired,
   loadMoreEntries: PropTypes.func.isRequired,
-  ordering: PropTypes.array,
+  sorting: PropTypes.array,
   pageSize: PropTypes.number,
   aliases: PropTypes.object,
   gqlProps: PropTypes.object,
@@ -118,3 +231,4 @@ PagingGraphqlList.propTypes = {
 };
 
 export default PagingGraphqlList;
+

@@ -8,32 +8,32 @@ import { allExchangesQuery } from '../../graphql/exchanges';
 const ExchangesList = ({ data, loadMoreEntries, country }) => {
   const columns = [
     {
-      Header: 'Exchange',
-      accessor: 'name',
-      Cell: cell => (
-        <ConnectedExchange size='medium' exchange={cell.original} />
+      title: 'Exchange',
+      name: 'name',
+      formatter: ({ row }) => (
+        <ConnectedExchange size='medium' exchange={row} />
       ),
     }, {
-      Header: 'Countries',
-      accessor: 'countries',
-      Cell: cell => (
+      title: 'Countries',
+      name: 'countries',
+      formatter: ({ value }) => (
         <Box direction='row'>
-          <ExchangeCountries countries={cell.value} />
+          <ExchangeCountries countries={value} />
         </Box>),
     }, {
-      Header: 'www',
-      accessor: 'url',
-      Cell: cell => cell.value && cell.value.map(href => (
+      title: 'www',
+      name: 'url',
+      formatter: ({ value, row }) => (value ? value.map(href => (
         <Box key={`www_${href}`} pad={{ horizontal: 'small' }}>
           <Anchor
-            a11yTitle={`Visit the exchange ${cell.original.name} web site`}
+            a11yTitle={`Visit the exchange ${row.name} web site`}
             href={href}
             target='_blank'
           >
             <Text truncate={true}>{href}</Text>
           </Anchor>
         </Box>
-      )),
+      )) : null),
     },
   ];
   return (

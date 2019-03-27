@@ -8,8 +8,8 @@ import Equity from './Equity';
 import { allEquitiesQuery } from '../../graphql/equities';
 
 class EquitiesList extends Component {
-  onExpand = row => (
-    <EquityDashboard symbol={row.original.symbol} />
+  onExpand = ({ row }) => (
+    <EquityDashboard symbol={row.symbol} />
   );
   render() {
     const {
@@ -17,64 +17,64 @@ class EquitiesList extends Component {
     } = this.props;
     const columns = [
       {
-        Header: 'Ticker',
-        accessor: 'symbol',
+        title: 'Ticker',
+        name: 'symbol',
         maxWidth: 200,
-        Cell: cell => (
+        formatter: ({ row }) => (
           <Equity
-            equity={cell.original}
+            equity={row}
           />
         ),
       },
       {
-        Header: 'Name',
-        accessor: 'name',
+        title: 'Name',
+        name: 'name',
       }, {
-        Header: 'Market cap',
-        accessor: 'stats.marketCap',
-        Cell: cell => (
+        title: 'Market cap',
+        name: 'stats.marketCap',
+        formatter: ({ value }) => (
           <FormattedCoinValue
-            value={cell.value}
+            value={value}
             large={true}
           />
         ),
-        getProps: () => ({ align: 'end' }),
+        align: 'right',
       },
       {
-        Header: '%5d',
-        accessor: 'stats.day5ChangePercent',
+        title: '%5d',
+        name: 'stats.day5ChangePercent',
         maxWidth: 120,
-        Cell: cell => (<ColoredPercentChange value={cell.value} />),
-        getProps: () => ({ textAlign: 'end' }),
+        formatter: ({ value }) => (<ColoredPercentChange value={value} />),
+        align: 'right',
       },
       {
-        Header: 'Exchange',
-        accessor: 'exchange.name',
-        Cell: cell => (cell.value && (
-          <RoutedAnchor route='equities_by_exchange' params={{ exchange: cell.value }} >
-            {cell.value}
+        title: 'Exchange',
+        name: 'exchange.name',
+        formatter: ({ value }) => (value ? (
+          <RoutedAnchor route='equities_by_exchange' params={{ exchange: value }} >
+            {value}
           </RoutedAnchor>
-        )
+        ) : null
         ),
       },
       {
-        Header: 'Industry',
-        accessor: 'industry.name',
-        Cell: cell => (cell.value && (
-          <RoutedAnchor route='equities_by_industry' params={{ industry: cell.value }} >
-            {cell.value}
+        title: 'Industry',
+        name: 'industry.name',
+        formatter: ({ value }) => (value ? (
+          <RoutedAnchor route='equities_by_industry' params={{ industry: value }} >
+            {value}
           </RoutedAnchor>
-        )
+        ) : null
         ),
       },
       {
-        Header: 'Sector',
-        accessor: 'sector.name',
-        Cell: cell => (cell.value && (
-          <RoutedAnchor route='equities_by_sector' params={{ sector: cell.value }} >
-            {cell.value}
+        title: 'Sector',
+        name: 'sector.name',
+        formatter: ({ value }) => (value ? (
+          <RoutedAnchor route='equities_by_sector' params={{ sector: value }} >
+            {value}
           </RoutedAnchor>
-        )
+        ) : null
         ),
       },
     ];
@@ -84,9 +84,9 @@ class EquitiesList extends Component {
         loadMoreEntries={loadMoreEntries}
         data={data}
         onExpand={this.onExpand}
-        aliases={{ 'stats': 'tickers_keystats' }}
+        aliases={{ 'stats': 'tickers_keystats', 'symbol': 'slug' }}
         gqlProps={{ exchange, industry, sector }}
-        ordering={[{ id: 'stats.marketCap', desc: true }]}
+        sorting={[{ columnName: 'stats.marketCap', direction: 'desc' }]}
       />
     );
   }
