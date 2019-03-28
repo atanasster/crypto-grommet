@@ -107,6 +107,23 @@ export const allICOCoinsQuery = gql`
         icoTokenType
         icoFundingTarget
         icoDescription
+        icoBlogURL
+        icoWebsiteURL
+        icoWhitePaperURL
+        icoFeatures
+        icoStartPrice
+        icoStartPriceCurrency
+        icoFundsRaisedList
+        icoTokenPercentageForInvestors
+        icoTokenReserveSplit
+        icoTokenSupply
+        icoTokenSupplyPostICO
+        icoFundingCap
+        icoFundsRaisedUSD
+        icoJurisdiction
+        icoLegalAdvisers
+        icoLegalForm
+        icoPaymentMethod
       }
     }  
   }

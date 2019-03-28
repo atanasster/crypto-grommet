@@ -84,6 +84,7 @@ class NavMenu extends Component {
       <React.Fragment>
         <Header
           position='sticky'
+          zIndex={21}
         >
           <Box direction='row' align='center' gap='small'>
             <AppIcon color='plain' />

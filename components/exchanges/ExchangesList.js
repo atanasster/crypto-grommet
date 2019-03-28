@@ -41,7 +41,7 @@ const ExchangesList = ({ data, loadMoreEntries, country }) => {
       columns={columns}
       loadMoreEntries={loadMoreEntries}
       data={data}
-      ordering={[{ id: 'name' }]}
+      sorting={[{ columnName: 'name', direction: 'asc' }]}
       gqlProps={{ country }}
     />
   );

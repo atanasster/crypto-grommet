@@ -121,18 +121,15 @@ class ICOCard extends Component {
       return null;
     }
     return (
-      <Card
-        size={{ height: 'large' }}
-        subTitle='SUB'
-      >
-        <DoubleTitle>
-          {coin && <Coin coin={coin} />}
-          {coin && coin.icoStatus}
-        </DoubleTitle>
+      <Card>
+        <Card.CardTitle>
+          <DoubleTitle>
+            {coin && <Coin coin={coin} />}
+            {coin && coin.icoStatus}
+          </DoubleTitle>
+        </Card.CardTitle>
         <Card.CardContent>
-          <Box pad='small' fill='horizontal'>
-            {this.renderTable()}
-          </Box>
+          {this.renderTable()}
         </Card.CardContent>
       </Card>
     );

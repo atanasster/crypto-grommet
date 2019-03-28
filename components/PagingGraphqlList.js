@@ -11,11 +11,16 @@ import {
   RowDetailState,
 } from '@devexpress/dx-react-grid';
 import {
+  ColumnChooser,
+  DragDropProvider,
   Grid,
-  Table,
-  TableHeaderRow,
   PagingPanel,
+  Table,
+  TableColumnReordering,
+  TableColumnVisibility,
+  TableHeaderRow,
   TableRowDetail,
+  Toolbar,
 } from 'dx-react-grid-grommet';
 
 class PagingGraphqlList extends Component {
@@ -42,6 +47,8 @@ class PagingGraphqlList extends Component {
       columnExtensions: props.columns.map(column => (
         { columnName: column.name, wordWrapEnabled: true, align: column.align }
       )),
+      columnOrder: props.columns.map(column => column.name),
+      hiddenColumnNames: props.columns.filter(column => column.visibility === 'hidden').map(column => column.name),
       pageSize: props.pageSize,
       sorting: props.sorting,
       columns: props.columns.map(column => (
@@ -61,20 +68,25 @@ class PagingGraphqlList extends Component {
     this.fetchData();
   }
 
-  componentDidUpdate() {
-    this.fetchData();
-  }
+  changeColumnOrder = (newOrder) => {
+    this.setState({ columnOrder: newOrder });
+  };
 
+  hiddenColumnNamesChange = (hiddenColumnNames) => {
+    this.setState({ hiddenColumnNames });
+  };
   changeCurrentPage = (currentPage) => {
     this.setState({
       currentPage,
     });
+    this.fetchData();
   };
 
   changeSorting = (sorting) => {
     this.setState({
       sorting,
     });
+    this.fetchData();
   };
 
   changePageSize = (pageSize) => {
@@ -86,7 +98,9 @@ class PagingGraphqlList extends Component {
       pageSize,
       currentPage,
     });
-  }
+    this.fetchData();
+  };
+
   fetchData = () => {
     const { pageSize, currentPage, sorting } = this.state;
     const {
@@ -121,17 +135,19 @@ class PagingGraphqlList extends Component {
     } = this.props;
     const {
       columns, pageSizes, currentPage, columnExtensions, sorting, pageSize,
+      columnOrder, hiddenColumnNames,
     } = this.state;
     if (!list) {
       return null;
     }
     return (
-      <Box fill='horizontal'>
+      <Box fill='horizontal' align='center'>
         <Grid
           rows={list.results}
           columns={columns}
         >
           {this.formatters}
+          <DragDropProvider />
           <SortingState
             sorting={sorting}
             onSortingChange={this.changeSorting}
@@ -151,7 +167,17 @@ class PagingGraphqlList extends Component {
           <Table
             columnExtensions={columnExtensions}
           />
+          <TableColumnReordering
+            order={columnOrder}
+            onOrderChange={this.changeColumnOrder}
+          />
           <TableHeaderRow showSortingControls={true} />
+          <TableColumnVisibility
+            hiddenColumnNames={hiddenColumnNames}
+            onHiddenColumnNamesChange={this.hiddenColumnNamesChange}
+          />
+          <Toolbar />
+          <ColumnChooser />
           {onExpand && (
             <TableRowDetail
               contentComponent={onExpand}
@@ -221,6 +247,7 @@ PagingGraphqlList.propTypes = {
     title: PropTypes.string.isRequired,
     formatter: PropTypes.func,
     align: PropTypes.string,
+    width: PropTypes.number,
   })).isRequired,
   loadMoreEntries: PropTypes.func.isRequired,
   sorting: PropTypes.array,
