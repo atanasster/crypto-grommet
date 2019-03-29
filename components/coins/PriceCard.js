@@ -54,24 +54,24 @@ class PriceCard extends Component {
           <Exchange exchange={exchange} />
         </DoubleTitle>
         <Card.CardContent >
-          <Box pad='small'>
-            <Box>
-              <Box justify='between' direction='row'>
-                <Menu
-                  a11yTitle='Select period'
-                  items={optionDuration.filter(item => (item.value !== period)).map(item => (
-                    { ...item, onClick: () => this.onSelectPeriod(item) }
-                  ))}
-                  label={optionDuration.find(p => (p.value === period)).label}
-                />
-                <Menu
-                  a11yTitle='Select data points'
-                  items={optionLimit.filter(item => (item.value !== points)).map(item => (
-                    { value: item.value, label: `${item.value} ${period}s`, onClick: () => this.onSelectPoints(item) }
-                  ))}
-                  label={`${optionLimit.find(p => (p.value === points)).value} ${period}s`}
-                />
-              </Box>
+          <Box pad='small' flex={false}>
+            <Box justify='between' direction='row'>
+              <Menu
+                a11yTitle='Select period'
+                items={optionDuration.filter(item => (item.value !== period)).map(item => (
+                  { ...item, onClick: () => this.onSelectPeriod(item) }
+                ))}
+                label={optionDuration.find(p => (p.value === period)).label}
+              />
+              <Menu
+                a11yTitle='Select data points'
+                items={optionLimit.filter(item => (item.value !== points)).map(item => (
+                  { value: item.value, label: `${item.value} ${period}s`, onClick: () => this.onSelectPoints(item) }
+                ))}
+                label={`${optionLimit.find(p => (p.value === points)).value} ${period}s`}
+              />
+            </Box>
+            <Box basis='small'>
               <PriceChart
                 color={color}
                 symbol={coin.symbol}

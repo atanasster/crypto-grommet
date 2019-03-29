@@ -90,7 +90,8 @@ class PagingGraphqlList extends Component {
   };
 
   changePageSize = (pageSize) => {
-    const { totalCount, currentPage: stateCurrentPage } = this.state;
+    const { currentPage: stateCurrentPage } = this.state;
+    const { data: { list: { totalCount } } } = this.props;
     const totalPages = Math.ceil(totalCount / pageSize);
     const currentPage = Math.min(stateCurrentPage, totalPages - 1);
 
@@ -125,7 +126,10 @@ class PagingGraphqlList extends Component {
       ordering = sorting[0].direction === 'desc' ? `-${orderField}` : orderField;
     }
     loadMoreEntries({
-      offset: pageSize * (currentPage || 0), limit: pageSize, ordering, gqlProps,
+      offset: pageSize * currentPage,
+      limit: pageSize,
+      ordering,
+      gqlProps,
     });
   };
 

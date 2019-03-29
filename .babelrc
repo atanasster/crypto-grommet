@@ -12,6 +12,13 @@
           "module-resolver", { "alias": {"grommet-controls": "../grommet-controls/src/js" } }
         ]
       ]
+    },
+    "dx-grid": {
+      "plugins": [
+        [
+          "module-resolver", { "alias": {"dx-react-grid-grommet": "../dx-react-grid-grommet/src" } }
+        ]
+      ]
     }
   }
 }

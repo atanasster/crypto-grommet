@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "PORT=8568 node --experimental-modules server/server.mjs ",
     "alias": "NODE_ENV=alias PORT=8568 node --experimental-modules server/server.mjs ",
+    "dx-grid": "NODE_ENV=dx-grid PORT=8568 node --experimental-modules server/server.mjs ",
     "build": "NODE_ENV=production next build",
     "check": "./node_modules/.bin/eslint .",
     "heroku-postbuild": "npm run build",
@@ -43,7 +44,7 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "dotenv-webpack": "^1.5.5",
-    "dx-react-grid-grommet": "^1.0.9",
+    "dx-react-grid-grommet": "^1.0.10",
     "express": "^4.16.3",
     "graphql": "^14.2.0",
     "graphql-request": "^1.8.2",
@@ -91,6 +92,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "next-transpile-modules": "^2.2.0",
     "pre-commit": "^1.2.2"
   },
   "pre-commit": [

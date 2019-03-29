@@ -84,10 +84,12 @@ class NavMenu extends Component {
       <React.Fragment>
         <Header
           position='sticky'
-          zIndex={21}
         >
           <Box direction='row' align='center' gap='small'>
-            <AppIcon color='plain' />
+            <AppIcon
+              color='plain'
+              size='large'
+            />
             <RoutedAnchor route='home' a11yTitle='Go to home page' >
               <Text size='large'>crypto-grommet</Text>
             </RoutedAnchor>

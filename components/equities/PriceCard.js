@@ -44,16 +44,16 @@ class PriceCard extends Component {
         </DoubleTitle>
         <Card.CardContent >
           <Box pad='small'>
-            <Box>
-              <Box justify='between' direction='row'>
-                <Menu
-                  a11yTitle='Select data points'
-                  items={optionLimit.filter(item => (item.value !== points)).map(item => (
-                    { value: item.value, label: `${item.value} days`, onClick: () => this.onSelectPoints(item) }
-                  ))}
-                  label={`${optionLimit.find(p => (p.value === points)).value} days `}
-                />
-              </Box>
+            <Box justify='between' direction='row'>
+              <Menu
+                a11yTitle='Select data points'
+                items={optionLimit.filter(item => (item.value !== points)).map(item => (
+                  { value: item.value, label: `${item.value} days`, onClick: () => this.onSelectPoints(item) }
+                ))}
+                label={`${optionLimit.find(p => (p.value === points)).value} days `}
+              />
+            </Box>
+            <Box basis='small'>
               <PriceChart
                 color={color}
                 symbol={symbol}

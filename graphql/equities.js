@@ -12,6 +12,50 @@ export const allEquitiesQuery = gql`
         stats {
           marketCap
           day5ChangePercent
+          EPSSurpriseDollar
+          EPSSurprisePercent
+          consensusEPS
+          beta
+          EBITDA
+          cash
+          day200MovingAvg
+          day50MovingAvg
+          debt
+          grossProfit
+          dividendRate
+          dividendYield
+          exDividendDate
+          float
+          insiderPercent
+          institutionPercent
+          latestEPS
+          latestEPSDate
+          month1ChangePercent
+          month3ChangePercent
+          month6ChangePercent
+          numberOfEstimates
+          peRatioHigh
+          peRatioLow
+          priceToBook
+          priceToSales
+          profitMargin
+          returnOnAssets
+          returnOnCapital
+          returnOnEquity
+          revenue
+          revenuePerShare
+          sharesOutstanding
+          shortDate
+          shortInterest
+          shortRatio
+          ttmEPS
+          week52change
+          week52high
+          week52low
+          year1ChangePercent
+          year2ChangePercent
+          year5ChangePercent
+          ytdChangePercent
         }
         exchange {
           name

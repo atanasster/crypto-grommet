@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
+const withTM = require('next-transpile-modules');
 
 const dedupeDependencies = (dependencies, alias) => (
   dependencies.reduce((res, dependecy) => ({ ...res, [dependecy]: path.resolve(`./node_modules/${dependecy}`) }), alias)
@@ -24,7 +25,12 @@ const initExport = {
     }
     if (process.env.NODE_ENV === 'alias') {
       config.resolve.alias = dedupeDependencies(
-        ['styled-components', 'grommet', 'grommet-icons'], config.resolve.alias
+        ['@babel', 'styled-components', 'grommet', 'grommet-icons', 'react', 'react-dom', 'polished'], config.resolve.alias
+      );
+    }
+    if (process.env.NODE_ENV === 'dx-grid') {
+      config.resolve.alias = dedupeDependencies(
+        ['@babel', '@devexpress', 'styled-components', 'grommet', 'grommet-controls', 'grommet-icons', 'react', 'react-dom', 'polished'], config.resolve.alias
       );
     }
     config.module.rules.push({
@@ -36,4 +42,11 @@ const initExport = {
   },
 };
 
-module.exports = initExport;
+
+if (process.env.NODE_ENV === 'alias') {
+  initExport.transpileModules = ['grommet-controls'];
+}
+if (process.env.NODE_ENV === 'dx-grid') {
+  initExport.transpileModules = ['dx-react-grid-grommet'];
+}
+module.exports = withTM(initExport);
